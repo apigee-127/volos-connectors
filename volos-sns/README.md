@@ -2,7 +2,7 @@
 
 The Volos SNS connector is a Node.js module that lets you use Amazon Simple Notification Service (SNS) through a RESTful API. The module is designed to work on Apigee Edge but can be run anywhere Node.js applications can run.  You can use this module without any dependency on Apigee.
 
-## Quick example
+### Quick example
 
 This module allows maps SNS operations to RESTful API resources and query parameters. You can perform CRUD operations on objects like subscriptions, publications, and topics. 
 
@@ -12,7 +12,8 @@ For example, you might ask for a list of your SNS subscriptions like this:
 
 and get back a JSON response like this:
 
-```{
+```
+{
     "ResponseMetadata": {
         "RequestId": "d6cc8493-8c95-5389-bbe4-c8a9e4de09ec"
     },
@@ -43,7 +44,7 @@ $ npm install volos-sns
 
 There are two examples below, one basic example and one that uses the ``avault`` (Apigee Vault) Node.js module, which is a secure local storage module. Apigee Vault is used to encrypt sensitive login credentials sent to the backend database.
 
-## Simple example without Apigee Vault
+### Simple example without Apigee Vault
 
 The example below shows a simple usage of the ``volos-sns`` connector using the ``http`` module to proxy requests to the connector.  Note that you need to specify your SNS credentials (not a best practice).
 
@@ -71,7 +72,7 @@ svr.listen(9089, function () {
 ```
 
 
-## Simple example using the Apigee Vault for local secure storage
+### Simple example using the Apigee Vault for local secure storage
 
 This example shows the usage of the ``avault`` module to provide a secure local storage option for credentials and endpoint configuration.  
 
@@ -107,7 +108,7 @@ vault.get('my_profile_key', function (profileString) {
 
 To use this connector you need a correctly configured SNS connection for your AWS SNS account. 
 
-## SNS connection profile
+### SNS connection profile
 
 The SNS configuration profile is used by the connector to establish a connection to the backend SNS account. The profile includes the following fields:
 
@@ -126,7 +127,7 @@ var profile = {
 };
 ```
 
-## Optional: Encrypting the connection profile with Apigee Vault 
+### Optional: Encrypting the connection profile with Apigee Vault 
 
 The ``avault`` module provides local, double-key encrypted storage of sensetive information such as credentials and system endpoints.  This provides an option to store these kinds of data in a format other than `text/plain`.
 
