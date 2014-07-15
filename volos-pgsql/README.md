@@ -1,7 +1,7 @@
 # Volos PostgreSQL connector 
 
 
-The Volos PostgreSQL connector is a Node.js module that lets you fetch data from a Postgres database using a RESTful API.  It is a part of the Volos Node.js modules from Apigee and is designed to work on Apigee Edge but can be run anywhere Node.js applications can run.  There is no dependency on Apigee for the module to be used.
+The Volos PostgreSQL connector is a Node.js module that lets you fetch data from a Postgres database using a RESTful API.  It is one of the Volos Node.js modules from Apigee. The module is designed to work on Apigee Edge but can be run anywhere Node.js applications can run.  You can use this module without any dependency on Apigee.
 
 ## Quick example
 
@@ -57,8 +57,7 @@ To get a larger set of fields per row, use the query parameter ``expand=true``. 
 ]
 ```
 
-Installation
-------------
+# Installation
 
 The ``volos-pgsql`` module is designed for Node.js and is available through npm:
 
@@ -66,8 +65,8 @@ The ``volos-pgsql`` module is designed for Node.js and is available through npm:
 $ npm install volos-pgsql
 ```
 
-Usage
------
+# Usage
+
 There are two examples below, one basic example and one that uses the ``avault`` (Apigee Vault) Node.js module, which is a secure local storage module. Apigee Vault is used to encrypt sensitive login credentials sent to the backend database.
 
 
@@ -130,8 +129,7 @@ vault.get('my_profile_key', function (profileString) {
 });
 ```
 
-Getting Started With Your App
------------------------------
+# Getting started with your app
 
 To use this connector you need two things:  
 
@@ -139,8 +137,7 @@ To use this connector you need two things:
 * A customized SQL-to-REST mapping file
 
 
-Database Connection Profile
----------------------------
+# Database connection profile
 
 The database configuration profile is used by the connector to establish a connection to the backend database. The profile includes the following fields:
 
@@ -175,7 +172,7 @@ Note that these are the same keys that are required in the plaintext version of 
 
 For more detailed usage of the `avault` module please refer to the avault page on GitHub.
 
-# SQL to REST Mapping
+# SQL to REST mapping
 
 The file ``queryToRestMap.js`` maps SQL query parameters to RESTful API resources. The file is JSON, and the pattern you need to follow to configure your mappings is fairly straightforward. Let's see how this works.
 
@@ -255,7 +252,7 @@ Let's look at the parts one by one:
 
 In this case the query parameter `foobar` would be mapped to the WHERE clause of the SQL statement for the `id` column.  Also note that `lower_id` includes a call to the `lower(string)` function of PostgreSQL.
 
-### Note the following with regard to query parameters:
+## Note the following with regard to query parameters:
 * If you have a join query you may need to include table aliases for your query parameter statements
 * Don't neglect the escaped quotes (`\'`) if you want the values of your query parameters to be interpreted as strings
 
