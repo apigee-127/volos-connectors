@@ -41,6 +41,7 @@ Volos Connectors includes modules for the following SQL database connections:
 
 # Asynchronous Messaging & Email
 <a name="connectors_messaging"></a>
+
 | Provider | Volos Connector |
 | -------- | --------------- |
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/aws-logo-304x200.png" alt="Amazon AWS" width="150px"/> | [Volos Amazon SQS Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-sqs) <br/> [Volos Amazon SNS Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-sns) | 
