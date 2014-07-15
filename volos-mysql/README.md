@@ -4,7 +4,7 @@ The Volos MySQL connector is a Node.js module that lets you perform CRUD operati
 
 ## Quick example
 
-The module allows you to map SQL queries to RESTful API resources and query parameters. For example, a properly configured SQL connector could map a SQL query like this:
+This module allows you to map SQL queries to RESTful API resources and query parameters. For example, a properly configured SQL connector could map a SQL query like this:
 
 ```
 SELECT emp_name, emp_id FROM employees WHERE emp_id='jdoe'
@@ -98,7 +98,7 @@ svr.listen(9089, function () {
 
 ## Simple example using the Apigee Vault for local secure storage
 
-This example shows the usage of the avault module to provide a secure local storage option for credentials and endpoint configuration.  
+This example shows the usage of the ``avault`` module to provide a secure local storage option for credentials and endpoint configuration.  
 
 This example assumes you have configured a vault and loaded a configuration profile with a key '*my_profile_key*'. See the section "Database configuration profile" below for a quick example. For a complete description of the ``avault`` module see the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
 
@@ -127,14 +127,14 @@ vault.get('my_profile_key', function (profileString) {
 });
 ```
 
-# Getting Started With Your App
+# Getting started with your app
 
 To use this connector you need two things:  
 
 * A correctly configured database connection profile _*and*_
 * A customized SQL-to-REST mapping file
 
-## Database Connection Profile
+## Database connection profile
 
 The database configuration profile is used by the connector to establish a connection to the backend database. The profile includes the following fields:
 
