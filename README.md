@@ -37,7 +37,7 @@ Volos Connectors includes modules for the following SQL database connections:
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/aws-logo-304x200.png" alt="Amazon AWS" width="150px"/> | [Volos Amazon S3 Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-s3) |
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/ftp-logo.png" alt="ftp" width="150px"/> | Volos FTP Connector (coming soon) |
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/Box-logo.png" alt="Box.com" width="100px"/> | Volos Amazon Box.com Connector (coming soon) |
-| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/dropbox-logos_dropbox-vertical-blue" alt="Dropbox.com" width="150px"/> | Volos Amazon Dropbox Connector (coming soon) |
+| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/dropbox-logos_dropbox-vertical-blue.png" alt="Dropbox.com" width="150px"/> | Volos Amazon Dropbox Connector (coming soon) |
 
 # Asynchronous Messaging & Email
 <a name="connectors_messaging"></a>
