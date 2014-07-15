@@ -149,7 +149,9 @@ To send an email through the API, simply send a request to the ``/mail`` resourc
 
 Remember to escape invalid URL characters, like white space. For example:
 
-``curl 'http://localhost:9057/mail?from=myemail@gmail.com&to=youremail@gmail.com&subject=Hello%20world&html=<b>Just%20saying%20hello!</b>'``
+```
+curl 'http://localhost:9057/mail?from=myemail@gmail.com&to=youremail@gmail.com&subject=Hello%20world&html=<b>Just%20saying%20hello!</b>'
+```
 
 **Tip:** You can also specify any of these optional query parameters:
 
@@ -157,12 +159,13 @@ Remember to escape invalid URL characters, like white space. For example:
 
 A successful response looks something like this:
 
-````Message sent: 250 2.0.0 OK 1405104395 d4sm8260652igc.5 - gsmtp
+```
+Message sent: 250 2.0.0 OK 1405104395 d4sm8260652igc.5 - gsmtp
 {
     "message": "250 2.0.0 OK 1405104395 d4sm8260652igc.5 - gsmtp",
     "messageId": "c4864d7712f67066f79962191344e4@my-macbook-air.local"
 }
-````
+```
 
 For more information about Nodemailer, see the [Nodemailer page on GitHub](https://github.com/andris9/Nodemailer).
 
