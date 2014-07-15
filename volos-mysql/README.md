@@ -283,9 +283,9 @@ Here's an example POST mapping. It adds a new employee to the database:
 
 For example:
 
-    ```
-    curl -X POST -Content-Type: application/json http://localhost:9090/employees -d {"id": "jdoe", "firstname": "Jim", "lastname": "Doe"} 
-    ```
+```
+curl -X POST -Content-Type: application/json http://localhost:9090/employees -d {"id": "jdoe", "firstname": "Jim", "lastname": "Doe"} 
+```
 
 Follow the same pattern for DELETE operations. Refer to the default ``queryToRestMap.js`` file for more examples. 
 
