@@ -26,7 +26,7 @@ which generates a JSON response like this:
 ]
 ```
 
-The SQL-to-REST mapping is enabled by simple JSON configuration:
+The SQL-to-REST mapping is enabled by simple JSON configuration. Here is a sample:
 
 ```
 'employees': {
@@ -56,8 +56,7 @@ To get a larger set of fields per row, use the query parameter ``expand=true``. 
 ]
 ```
 
-Installation
-------------
+# Installation
 
 The ``volos-mysql`` module is designed for Node.js and is available through npm:
 
@@ -66,7 +65,6 @@ $ npm install volos-mysql
 ```
 
 # Usage
------
 There are two examples below, one basic example and one that uses the ``avault`` (Apigee Vault) Node.js module, which is a secure local storage module. Apigee Vault is used to encrypt sensitive login credentials sent to the backend database.
 
 ## Simple example without Apigee Vault
