@@ -6,15 +6,16 @@ The Volos LDAP connector connector lets you search and update an LDAP server thr
 
 This module maps LDAP search and update operations to RESTful API resources and query parameters. For example, a properly configured LDAP connector might map these LDAP attributes:
 
-``cn=engineering,ou=departments,dc=api-connectors,dc=com``
+`cn=engineering,ou=departments,dc=api-connectors,dc=com`
 
 to a REST resource called ``/engineering``, which you might call like this:
 
-``curl http://localhost:9056/departments/engineering``
+`curl http://localhost:9056/departments/engineering`
 
 and which might generate a JSON response like this:
 
-```{
+```
+{
         "distinguishedName": {
             "cn": "engineering",
             "ou": "departments",
@@ -61,7 +62,7 @@ To get a larger result set, use the query parameter ``expand=true``. This option
 
 # Installation
 
-The ``volos-ldap`` module is designed for Node.js and is available through npm:
+The `volos-ldap` module is designed for Node.js and is available through npm:
 
 ```
 $ npm install volos-ldap
@@ -70,7 +71,7 @@ $ npm install volos-ldap
 
 # Usage
 
-There are two examples below, one basic example and one that uses the ``avault`` (Apigee Vault) Node.js module, which is a secure local storage module. Apigee Vault is used to encrypt sensitive login credentials sent to the backend database.
+There are two examples below, one basic example and one that uses the `avault` (Apigee Vault) Node.js module, which is a secure local storage module. Apigee Vault is used to encrypt sensitive login credentials sent to the backend database.
 
 ## Simple example without Apigee Vault
 
