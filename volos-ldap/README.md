@@ -246,3 +246,7 @@ The API call for this mapping might look like this:
     http://localhost:9056/people \
     -d { ??? }
 ````
+
+License
+-------
+MIT
