@@ -24,12 +24,14 @@ Volos Connectors includes modules for the following SQL database connections:
 
 # NoSQL Database Connectors
 <a name="connectors_nosql"></a>
+
 | Database | Volos Connector |
 | -------- | --------------- |
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/MongoDB_Logo.png" alt="MongoDB" width="150px"/> | [Volos MongoDB Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-mongodb) |
 
 # Cloud Storage Connectors
 <a name="connectors_storage"></a>
+
 | Provider | Volos Connector |
 | -------- | --------------- |
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/aws-logo-304x200.png" alt="Amazon AWS" width="150px"/> | [Volos Amazon S3 Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-s3) |
