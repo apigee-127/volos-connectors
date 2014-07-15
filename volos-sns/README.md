@@ -177,7 +177,9 @@ For example, to get a list of all of your subscriptions:
 
 To get a list of all the objects in a specific subscription:
 
-``curl http://localhost:9099/subscriptions?arn=arn:aws:sns:us-east-1:650324470758:emailsupport:cd7ac02f-07a2-410a-b3c4-6ea6b51cdfb5``
+```
+curl http://localhost:9099/subscriptions?arn=arn:aws:sns:us-east-1:650324470758:emailsupport:cd7ac02f-07a2-410a-b3c4-6ea6b51cdfb5
+```
 
 You might get a response like this:
 
