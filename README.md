@@ -9,7 +9,7 @@ Volos Connectors includes modules for the following SaaS Providers:
 | SaaS Provider | Volos Connector |
 | -------- | --------------- |
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/salesforce_logo-300x235.jpg" alt="Salesforce.com" width="100px"/> | Volos Salesforce.com Connector |
-| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/netsuite-logo-600x500.png" alt="Salesforce.com" width="100px"/> | Volos Netsuite Connector |
+| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/netsuite-logo-600x500.png" alt="Salesforce.com" width="100px"/> | Volos Netsuite Connector (coming soon) |
 
 
 # SQL Database Connectors
