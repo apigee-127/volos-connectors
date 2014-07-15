@@ -2,7 +2,7 @@
 
 The Volos MySQL connector is a Node.js module that lets you perform CRUD operations on a MySQL database using a RESTful API.  It is one of the Volos Node.js modules from Apigee. The module is designed to work on Apigee Edge but can be run anywhere Node.js applications can run.  You can use this module without any dependency on Apigee.
 
-## Quick example
+### Quick example
 
 This module allows you to map SQL queries to RESTful API resources and query parameters. For example, a properly configured SQL connector could map a SQL query like this:
 
@@ -67,7 +67,7 @@ $ npm install volos-mysql
 # Usage
 There are two examples below, one basic example and one that uses the ``avault`` (Apigee Vault) Node.js module, which is a secure local storage module. Apigee Vault is used to encrypt sensitive login credentials sent to the backend database.
 
-## Simple example without Apigee Vault
+### Simple example without Apigee Vault
 
 The example below shows a simple usage of the ``volos-mysql`` connector using the ``http`` module to proxy requests to the connector.  Note that you need to specify your credentials and the database endpoint in plaintext (not a best practice).
 
@@ -94,7 +94,7 @@ svr.listen(9089, function () {
 
 ```
 
-## Simple example using the Apigee Vault for local secure storage
+### Simple example using the Apigee Vault for local secure storage
 
 This example shows the usage of the ``avault`` module to provide a secure local storage option for credentials and endpoint configuration.  
 
@@ -132,7 +132,7 @@ To use this connector you need two things:
 * A correctly configured database connection profile _*and*_
 * A customized SQL-to-REST mapping file
 
-## Database connection profile
+### Database connection profile
 
 The database configuration profile is used by the connector to establish a connection to the backend database. The profile includes the following fields:
 
@@ -150,7 +150,7 @@ var profile = {
 };
 ```
 
-## Optional: Encrypting the connection profile with Apigee Vault 
+### Optional: Encrypting the connection profile with Apigee Vault 
 
 The ``avault`` module provides local, double-key encrypted storage of sensetive information such as credentials and system endpoints.  This provides an option to store these kinds of data in a format other than `text/plain`.
 
@@ -168,7 +168,7 @@ For more detailed usage of the `avault` module refer to the [Apigee Vault page o
 
 The file ``queryToRestMap.js`` maps SQL query parameters to RESTful API resources. The file is JSON, and the pattern you need to follow to configure your mappings is fairly straightforward. Let's see how this works.
 
-## Understanding the mapping file structure
+### Understanding the mapping file structure
 
 The ``queryToRestMap.js`` mapping file consists of a repeating pattern of JSON elements that map  SQL queries to REST API resources and query parameters. A sample pattern for retrieving employee information (GET requests) might look like this:
 
@@ -242,7 +242,7 @@ Let's look at the parts one by one:
 
 In this case the query parameter `foobar` would be mapped to the WHERE clause of the SQL statement for the `id` column.  Also note that `lower_id` includes a call to the `lower(string)` function of MySQL.
 
-## Configuring POST, PUT, and DELETE operations
+### Configuring POST, PUT, and DELETE operations
 
 You configure POST, PUT, and DELETE operations in the same ``queryToRestMap.js`` file. Again, you can follow the example pattern for each verb in the default file. 
 
@@ -283,11 +283,13 @@ Here's an example POST mapping. It adds a new employee to the database:
 
 For example:
 
-    ``curl -X POST -Content-Type: application/json http://localhost:9090/employees -d {"id": "jdoe", "firstname": "Jim", "lastname": "Doe"} ``
+    ```
+    curl -X POST -Content-Type: application/json http://localhost:9090/employees -d {"id": "jdoe", "firstname": "Jim", "lastname": "Doe"} 
+    ```
 
 Follow the same pattern for DELETE operations. Refer to the default ``queryToRestMap.js`` file for more examples. 
 
-## Note the following with regard to query parameters
+### Note the following with regard to query parameters
 * If you have a join query you may need to include table aliases for your query parameter statements
 * Don't neglect the escaped quotes (`\'`) if you want the values of your query parameters to be interpreted as strings
 
