@@ -8,7 +8,9 @@ To send an email with this connector, simply send an HTTP request to the ``/mail
 
 For example, you might send an email through the connector like this:
 
-``curl 'http://localhost:9089/mail?from=me@example.com&to=you@example.com&subject=Hello%20world&html=<b>Just%20saying%20hello!</b>'``
+```
+curl 'http://localhost:9089/mail?from=me@example.com&to=you@example.com&subject=Hello%20world&html=<b>Just%20saying%20hello!</b>'
+```
 
 # Installation
 
