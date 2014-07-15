@@ -49,6 +49,7 @@ Volos Connectors includes modules for the following SQL database connections:
 
 # Security (via API)
 <a name="connectors_security"></a>
+
 | Provider | Volos Connector |
 | -------- | --------------- |
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/OpenLDAP-logo.png" alt="LSAP" width="150px"/> | [Volos LDAP Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-ldap)
