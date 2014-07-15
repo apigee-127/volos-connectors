@@ -2,7 +2,7 @@
 
 The Volos Mailer connector lets you send email messages through a RESTful API. It is one of the Volos Node.js modules from Apigee. The module is designed to work on Apigee Edge but can be run anywhere Node.js applications can run.  You can use this module without any dependency on Apigee.
 
-## Quick example
+### Quick example
 
 To send an email with this connector, simply send an HTTP request to the ``/mail`` resource. A set of query parameters are used to specify the parts of the email such as from, to, subject, and message. 
 
@@ -19,10 +19,10 @@ $ npm install volos-mailer
 ```
 
 # Usage
------
+
 There are two examples below, one basic example and one that uses the ``avault`` (Apigee Vault) Node.js module, which is a secure local storage module. Apigee Vault is used to encrypt sensitive login credentials sent to the backend mail service.
 
-## Simple example without Apigee Vault
+### Simple example without Apigee Vault
 
 The example below shows a simple usage of the ``volos-mailer`` connector using the ``http`` module to proxy requests to the connector.  Note that you need to specify your credentials and the mail service endpoint in plaintext (not a best practice).
 
@@ -49,7 +49,7 @@ svr.listen(9089, function () {
 ```
 
 
-## Simple example using the Apigee Vault for local secure storage
+### Simple example using the Apigee Vault for local secure storage
 
 This example shows the usage of the ``avault`` module to provide a secure local storage option for credentials and endpoint configuration.  
 
@@ -85,7 +85,7 @@ vault.get('my_profile_key', function (profileString) {
 
 To use this connector you need to configure the Volos Mailer connection profile, start the Node.js server, and then you can start sending emails.
 
-## Database Connection Profile
+### Database Connection Profile
 
 This connector is requires the Node.js module called ``nodemailer``. This module allows you to connect directly to an SMTP server or to some "well known" mail services, like Gmail and Hotmail. 
 
@@ -118,27 +118,27 @@ var profile = {
 };
 ```
 
-## Optional: Encrypting the connection profile with Apigee Vault 
+### Optional: Encrypting the connection profile with Apigee Vault 
 
 The ``avault`` module provides local, double-key encrypted storage of sensetive information such as credentials and system endpoints.  This provides an option to store these kinds of data in a format other than `text/plain`.
 
 In order to insert a value into the vault a command-line tool is provided called `vaultcli`.  This tool comes with the `avault` module.  Here's an example:
 
 ```
-    ``./node_modules/avault/vaultcli.js --verbose --value='{"host":"my-smtp-server-address", "port": "my-smtp-server-port", "auth": {"user": "my-email username", "pass":"my-email-password"}}' my-vault-name``
+    ./node_modules/avault/vaultcli.js --verbose --value='{"host":"my-smtp-server-address", "port": "my-smtp-server-port", "auth": {"user": "my-email username", "pass":"my-email-password"}}' my-vault-name
 ```
 
 If you are using one of the well known email services, the command-line usage follows this pattern:
 
 ```
-    ``./node_modules/avault/vaultcli.js --verbose --value='{"host":"Gmail",  "auth": {"user": "my-gmail-username", "pass":"my-gmail-password"}}' my-vault-name``
+    ./node_modules/avault/vaultcli.js --verbose --value='{"host":"Gmail",  "auth": {"user": "my-gmail-username", "pass":"my-gmail-password"}}' my-vault-name
 ```
 
 Note that these are the same keys that are required in the plaintext version of the profile.  If this command completes successfully you will find two new files: `store.js` and `keys.js`. Place them in the root directory of the ``volos-mailer`` module. 
 
 For more detailed usage of the `avault` module refer to the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
 
-## Sending an email
+### Sending an email
 
 To send an email through the API, simply send a request to the ``/mail`` resource and provide these **required** query parameters:
 
@@ -166,6 +166,7 @@ A successful response looks something like this:
 
 For more information about Nodemailer, see the [Nodemailer page on GitHub](https://github.com/andris9/Nodemailer).
 
+# License
 
-
+MIT
 
