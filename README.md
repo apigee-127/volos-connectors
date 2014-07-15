@@ -23,7 +23,7 @@ Volos Connectors includes modules for the following SQL database connections:
 # NoSQL Database Connectors
 | Database | Volos Connector |
 | -------- | --------------- |
-| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/MongoDB_Logo.png" alt="MySQL" width="150px"/> | Volos MongoDB Connector: (link) |
+| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/MongoDB_Logo.png" alt="MySQL" width="150px"/> | [Volos MongoDB Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-mongodb) |
 
 # Cloud Storage Connectors
 | Provider | Volos Connector |
@@ -34,7 +34,7 @@ Volos Connectors includes modules for the following SQL database connections:
 | Provider | Volos Connector |
 | ----------------- | --------------- |
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/aws-logo-304x200.png" alt="Amazon AWS" width="150px"/> | [Volos Amazon SQS Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-sqs) <br/> [Volos Amazon SNS Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-sns)
-| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/RabbitMQLogo.png" alt="Amazon AWS" width="150px"/> | Volos RabbitMQ (AMQP) Connector
+| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/RabbitMQLogo.png" alt="Amazon AWS" width="150px"/> | [Volos RabbitMQ (AMQP) Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-rabbitmq)
 | Nodemailer | [Volos SMTP/Email Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-mailer) |
 
 # Security
