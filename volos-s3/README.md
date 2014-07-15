@@ -30,8 +30,7 @@ To get a larger set of attributes, use the query parameter ``expand=true``.  Thi
 
 ``curl http://localhost:9058/buckets?expand=true``
 
-Installation
-------------
+# Installation
 
 The ``volos-s3`` module is designed for Node.js and is available through npm:
 
@@ -40,7 +39,7 @@ $ npm install volos-s3
 ```
 
 # Usage
------
+
 There are two examples below, one basic example and one that uses the ``avault`` (Apigee Vault) Node.js module, which is a secure local storage module. Apigee Vault is used to encrypt sensitive login credentials sent to the backend database.
 
 ## Simple example without Apigee Vault
@@ -102,10 +101,7 @@ vault.get('my_profile_key', function (profileString) {
 
 # Getting started with your app
 
-To use this connector you need two things:  
-
-* a correctly configured S3 connection, *and* 
-* an S3-to-REST mapping file. 
+To use this connector you need two things a correctly configured S3 connection for your S3 account.
 
 ## S3 connection profile
 
@@ -137,8 +133,6 @@ In order to insert a value into the vault a command-line tool is provided called
 Note that these are the same keys that are required in the plaintext version of the profile.  If this command completes successfully you will find two new files: `store.js` and `keys.js`. Place them in the root directory of the ``volos-s3`` module. 
 
 For more detailed usage of the `avault` module refer to the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
-
------
 
 # Using the S3 connector
 
