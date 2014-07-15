@@ -2,15 +2,15 @@
 
 The Volos LDAP connector connector lets you search and update an LDAP server through a RESTful API. It is one of the Volos Node.js modules from Apigee. The module is designed to work on Apigee Edge but can be run anywhere Node.js applications can run. You can use this module without any dependency on Apigee.
 
-## Quick example
+### Quick example
 
 This module maps LDAP search and update operations to RESTful API resources and query parameters. For example, a properly configured LDAP connector might map these LDAP attributes:
 
-`cn=engineering,ou=departments,dc=api-connectors,dc=com`
+``cn=engineering,ou=departments,dc=api-connectors,dc=com``
 
 to a REST resource called ``/engineering``, which you might call like this:
 
-`curl http://localhost:9056/departments/engineering`
+``curl http://localhost:9056/departments/engineering``
 
 and which might generate a JSON response like this:
 
@@ -62,7 +62,7 @@ To get a larger result set, use the query parameter ``expand=true``. This option
 
 # Installation
 
-The `volos-ldap` module is designed for Node.js and is available through npm:
+The ``volos-ldap`` module is designed for Node.js and is available through npm:
 
 ```
 $ npm install volos-ldap
@@ -71,9 +71,9 @@ $ npm install volos-ldap
 
 # Usage
 
-There are two examples below, one basic example and one that uses the `avault` (Apigee Vault) Node.js module, which is a secure local storage module. Apigee Vault is used to encrypt sensitive login credentials sent to the backend database.
+There are two examples below, one basic example and one that uses the ``avault`` (Apigee Vault) Node.js module, which is a secure local storage module. Apigee Vault is used to encrypt sensitive login credentials sent to the backend database.
 
-## Simple example without Apigee Vault
+### Simple example without Apigee Vault
 
 The example below shows a simple usage of the ``volos-ldap`` connector using the ``http`` module to proxy requests to the connector.  Note that you need to specify your credentials and the LDAP server endpoint in plaintext (not a best practice).
 
@@ -101,7 +101,7 @@ svr.listen(9089, function () {
 ```
 
 
-## Simple example using the Apigee Vault for local secure storage
+### Simple example using the Apigee Vault for local secure storage
 
 This example shows the usage of the ``avault`` module to provide a secure local storage option for credentials and endpoint configuration.  
 
@@ -143,7 +143,7 @@ To use this connector you need two things:
 Let's start by configuring a connection and testing it with the default mapping file. After that, we'll dive into the details of customizing the mapping file. 
 
 
-## Database connection profile
+### Database connection profile
 
 The LDAP configuration profile is used by the connector to establish a connection to the backend LDAP server. The profile includes the following fields:
 
@@ -162,14 +162,14 @@ var profile = {
 };
 ```
 
-## Optional: Encrypting the connection profile with Apigee Vault 
+### Optional: Encrypting the connection profile with Apigee Vault 
 
 The ``avault`` module provides local, double-key encrypted storage of sensetive information such as credentials and system endpoints.  This provides an option to store these kinds of data in a format other than `text/plain`.
 
 In order to insert a value into the vault a command-line tool is provided called `vaultcli`.  This tool comes with the `avault` module.  Here's an example:
 
 ```
-    ./node_modules/avault/vaultcli.js --verbose --value='{"host":"my-ldap-server-ip", "port": "my-ldap-port", "binddn": "my-dn", "credentials": my-ldap-password"}' my-vault-name
+    ``./node_modules/avault/vaultcli.js --verbose --value='{"host":"my-ldap-server-ip", "port": "my-ldap-port", "binddn": "my-dn", "credentials": my-ldap-password"}' my-vault-name``
 ```
 
 Note that these are the same keys that are required in the plaintext version of the profile.  If this command completes successfully you will find two new files: `store.js` and `keys.js`. Place them in the root directory of the ``volos-ldap`` module. 
@@ -180,7 +180,7 @@ For more detailed usage of the `avault` module refer to the [Apigee Vault page o
 
 The file ``configurations.js`` contains the infomation that maps LDAP distinguished name attributes to RESTful API resources. The file is JSON, and the pattern you need to follow to configure your mappings is fairly straightforward. Let's see how this works.
 
-## Understanding the mapping file structure
+### Understanding the mapping file structure
 
 The ``configurations.js`` mapping file consists of a repeating pattern of JSON elements that map  LDAP queries to REST API resources and query parameters. The pattern looks like this (your mappings will be specific to your LDAP database):
 
@@ -206,7 +206,7 @@ Let's look at the parts one by one:
 * **queryParameters** - Lets you filter the response. 
 * **path** - The REST resource path for this API.
 
-## POSTing to the LDAP server
+### POSTing to the LDAP server
 
 You can define a mapping that does a POST to the LDAP server. For example, the following mapping lets you add a person by POSTing to ``/people``:
 
@@ -229,7 +229,6 @@ You can define a mapping that does a POST to the LDAP server. For example, the f
             path: '/people'
         }
 ````
-
 * **restSemantic** - The HTTP verb for this API. 
 * **idName** - ???
 * **base** - Specifies the LDAP relative distinguished names that will be mapped to the resource name. These RDNs must be in the LDAP entry specified when you configured the connection.
@@ -247,7 +246,3 @@ The API call for this mapping might look like this:
     http://localhost:9056/people \
     -d { ??? }
 ````
-
-
-
-
