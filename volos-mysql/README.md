@@ -164,9 +164,9 @@ In order to insert a value into the vault a command-line tool is provided called
 
 Note that these are the same keys that are required in the plaintext version of the profile.  If this command completes successfully you will find two new files: `store.js` and `keys.js`. Place them in the root directory of the ``volos-mysql`` module. 
 
-For more detailed usage of the `avault` module please refer to the avault page on GitHub.
+For more detailed usage of the `avault` module refer to the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
 
-# SQL to REST Mapping
+# SQL to REST mapping
 
 The file ``queryToRestMap.js`` maps SQL query parameters to RESTful API resources. The file is JSON, and the pattern you need to follow to configure your mappings is fairly straightforward. Let's see how this works.
 
