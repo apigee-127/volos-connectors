@@ -41,4 +41,4 @@ Volos Connectors includes modules for the following SQL database connections:
 | Provider | Volos Connector |
 | ----------------- | --------------- |
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/OpenLDAP-logo.png" alt="LSAP" width="150px"/> | [Volos LDAP Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-ldap)
-| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/PingIdentity_logo.png" alt="Ping Identity" width="150px"/> | [Volos Ping Identity Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-ping-identity)
+| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/PingIdentity_logo.png" alt="Ping Identity" height="100px"/> | [Volos Ping Identity Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-ping-identity)
