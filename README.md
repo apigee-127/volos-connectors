@@ -9,8 +9,8 @@ Volos Connectors includes modules for the following SaaS Providers:
 
 | Provider | Volos Connector |
 | :--------: | --------------- |
-| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/salesforce_logo-300x235.jpg" alt="Salesforce.com" width="100px"/> | [Volos Salesforce.com Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-salesforce) |
-| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/netsuite-logo-600x500.png" alt="Salesforce.com" width="100px"/> | Volos Netsuite Connector (coming soon) |
+| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/salesforce_logo-300x235.jpg" alt="Salesforce.com" width="150px"/> | [Volos Salesforce.com Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-salesforce) |
+| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/netsuite-logo-600x500.png" alt="Salesforce.com" width="150px"/> | Volos Netsuite Connector (coming soon) |
 
 # SQL Database Connectors
 <a name="connectors_sql"></a>
@@ -18,9 +18,9 @@ Volos Connectors includes modules for the following SQL database connections:
 
 | Database | Volos Connector |
 | :--------: | --------------- |
-| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/logo-mysql-170x115.png" alt="MySQL" width="100px"/> | [Volos MySQL Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-mysql) |
+| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/logo-mysql-170x115.png" alt="MySQL" width="150px"/> | [Volos MySQL Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-mysql) |
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/PostgreSQL_logo.3colors.120x120.png" alt="PostgreSQL" width="100px"/>  | [Volos PostgreSQL Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-pgsql) |
-| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/SQL-Server-2012.png" alt="MS SQL" width="100px"/> |  Volos MS SQL Connector (coming soon) |
+| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/SQL-Server-2012.png" alt="MS SQL" width="150px"/> |  Volos MS SQL Connector (coming soon) |
 
 # NoSQL Database Connectors
 <a name="connectors_nosql"></a>
@@ -37,7 +37,7 @@ Volos Connectors includes modules for the following SQL database connections:
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/aws-logo-304x200.png" alt="Amazon AWS" width="150px"/> | [Volos Amazon S3 Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-s3) |
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/ftp-logo.png" alt="ftp" width="150px"/> | Volos FTP Connector (coming soon) |
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/Box-logo.png" alt="Box.com" width="100px"/> | Volos Box.com Connector (coming soon) |
-| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/dropbox-logos_dropbox-vertical-blue.png" alt="Dropbox.com" width="150px"/> | Volos Dropbox Connector (coming soon) |
+| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/dropbox-logos_dropbox-vertical-blue.png" alt="Dropbox.com" height="100px"/> | Volos Dropbox Connector (coming soon) |
 
 # Asynchronous Messaging & Email
 <a name="connectors_messaging"></a>
