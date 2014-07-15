@@ -1,0 +1,263 @@
+Volos PostgreSQL Connector 
+==========================
+
+The Volos PostgreSQL connector is a Node.js module that lets you fetch data from a Postgres database using a RESTful API.  It is a part of the Volos Node.js modules from Apigee and is designed to work on Apigee Edge but can be run anywhere Node.js applications can run.  There is no dependency on Apigee for the module to be used.
+
+Quick Example
+-------------
+
+The module allows you to map SQL queries to RESTful API resources and query parameters. For example, a properly configured SQL connector could map a SQL query like this:
+
+```
+SELECT emp_name, emp_id FROM employees WHERE emp_id='jdoe'
+```
+to a RESTful API that you could call like this:
+
+```
+$ curl http://localhost:9089/employees/jdoe
+```
+
+which generates a JSON response like this:
+
+    
+```
+[
+    {
+        "emp_name": "Jane Doe",
+        "emp_id": "jdoe"
+    }
+]
+```    
+
+This is enabled by simple configuration:
+
+```
+'employees': {
+    queryStringBasic: 'SELECT emp_name, emp_id FROM hr.employees',
+    queryStringExpanded: 'SELECT * FROM hr.employees',
+    idName: 'emp_id',
+    queryParameters : {
+        id: 'emp_id = \'{id}\'',
+        name: 'emp_name = \'{name}\'',
+        role: 'role = \'{role}\'',
+        hire_date: 'hire_date = \'{hire_date}\''
+    }
+}
+```    
+
+You can also get a larger set of fields per row by using the query parameter ``expand=true`` which uses the ``queryStringExpanded`` SQL statment vs the ``queryStringBasic`` SQL statement.  This gives you the flexibility to have a small message payload for a subset of fields if those are all that are required.
+
+```
+[
+    {
+        "emp_id": "jdoe",
+        "emp_name": "Jane Doe",
+        "role": "Manager",
+        "hire_date": "06-27-1978"
+    }
+]
+```
+
+Installation
+------------
+
+The ``volos-pgsql`` module is designed for Node.js and is available via NPM:
+
+```
+$ npm install volos-pgsql
+```
+
+Usage
+-----
+There are two examples below, one basic example and one that uses the avault module which is a secure local storage module.
+
+### Simple example without the Apigee Vault
+
+
+The example below shows a simple usage of the ``volos-pgsql`` connector using the ``http`` module to proxy requests to the connector.  Note that you need to specify your credentials and the database endpoint in plaintext (less than desirable).
+
+```
+var pgConnector = require('volos-pgsql');
+var http = require('http');
+
+var profile = {
+  username: 'volos',
+  password: 'volos',
+  host: "nsa.rds.amazon.com",
+  port: "5432",
+  database: "volos"
+};
+
+var pgConnectorObject = new pgConnector.PgConnector({"profile": profile});
+
+var svr = http.createServer(function (req, resp) {
+  pgConnectorObject.dispatchRequest(req, resp);
+});
+
+svr.listen(9089, function () {
+  console.log('volos-pgsql node server is listening');
+});
+
+```
+
+### Simple example using the Apigee Vault for local secure storage
+This example shows the usage of the avault module to provide a secure local storage option for credentials and endpoint configuration.  This example assumes you have configured a vault and loaded a configuration profile with a key 'my_profile_key'.  For information on using the avault module please refer here: XYZ
+
+```
+var pgConnector = require('volos-pgsql');
+var http = require('http');
+var vault = require('avault').createVault(__dirname);
+
+var pgConnectorObject;
+
+vault.get('my_profile_key', function (profileString) {
+  if (!profileString) {
+    console.log('Error: required vault not found.');
+  } else {
+    var profile = JSON.parse(profileString);
+
+    var svr = http.createServer(function (req, resp) {
+      pgConnectorObject.dispatchRequest(req, resp);
+    });
+
+    svr.listen(9089, function () {
+      pgConnectorObject = new pgConnector.PgConnector({"profile": profile});
+      console.log('volos-pgsql node server is listening');
+    });
+  }
+});
+```
+
+Getting Started With Your App
+-----------------------------
+
+To use this connector you need two things:  
+
+* A correctly configured database connection profile _*and*_
+* A customized SQL-to-REST mapping file
+
+
+Database Connection Profile
+---------------------------
+
+The database configuration profile includes the following fields:
+
+* **username** - The username you use to log on to the database.
+* **password** - The password you use to log on to the database.
+* **host** - The database host IP address. For example: ``nsa.rds.amazonaws.com``
+* **port** - The port of the database.  For example: ``5432``
+* **database** - The name of the database you wish to access. 
+
+**Example:**
+```
+var profile = {
+  username: 'volos',
+  password: 'volos',
+  host: "nsa.rds.amazon.com",
+  port: "5432",
+  database: "volos"
+};
+```
+
+### Optional: Populating avault with a connection profile
+
+The ``avault`` module provides local, double-key encrypted storage of sensetive information such as credentials and system endpoints.  This provides an option to store these kinds of data in a format other than `text/plain`.
+
+In order to insert a value into the vault a command line tool is provided called `vaultcli`.  This tool comes with the `avault` module.  Below you will find an example of the usage of this tool to populate a value in the vault:
+
+
+```
+    $ vaultcli --verbose --value='{"username":"volos", "password": "volos", "host": "nsa.rds.amazon.com", "port":"5432", "database":"volos"}' my-vault-name
+```
+
+Note that these are the same keys that are required in the plaintext version of the profile.  If this command completes successfully you will find two new files: `store.js` and `keys.js`. Check to make sure they're present.
+
+For more detailed usage of the `avault` module please refer to the avault page on GitHub.
+
+
+SQL to REST Mapping
+-------------------
+
+The file ``queryToRestMap.js`` maps SQL query parameters to RESTful API resources. The file is JSON, and the pattern you need to follow to configure your mappings is fairly straightforward. Let's see how this works.
+
+> *Note:* For Version 1.0 the module only supports Read queries.  Updates will be made in the future for Create, Update and Delete.
+
+### Understanding the mapping file structure
+
+The mapping file consists of a repeating pattern of JSON elements that map  SQL queries to REST API resources and query parameters. A sample pattern for retrieving employee information might look like this:
+
+```
+    'employees': {
+        queryStringBasic: 'SELECT name, id, hire_date FROM employees',
+        queryStringExpanded: 'SELECT * from employees',
+        idName: 'employees',
+        queryParameters : {
+            name: 'name = \'{name}\'',
+            id: 'id = \'{id}\'',
+            role: 'role
+            hire_date: 'hire_date = \'{hire_date}\'',
+        }
+    },
+    'roles': {
+        queryStringBasic: 'SELECT role_name, role_id FROM hr.roles',
+        queryStringExpanded: 'SELECT * FROM hr.roles',
+        idName: 'role_id',
+        queryParameters : {
+            name: 'role_name = \'{name}\'',
+            pay_grade: 'grade = \'{pay_grade}\''
+        }
+    }
+```
+
+Let's look at the parts one by one:
+
+* `'employees'` and `'roles'` - The element names become the REST resource names. So, you might call this API like this: `curl http://localhost:9089/employees` or `curl http://localhost:9089/roles`
+* ``queryStringBasic`` - A SQL query that can be used to return a subset of the information of the `queryStringExpanded` if desired. 
+* ``queryStringExpanded`` - An unfiltered (or less filtered) query. The connector uses this query string when you specify the query parameter ``?expand=true``. For example:
+
+    ```
+    $ curl http://localhost:9089/employees?expand=true
+    ```
+
+* ``idName`` - The name of the database column to query against.
+* ``queryParameters`` - These let you filter the results of the SQL statement that gets executed and are translated to WHERE clauses of the SQL statement.  For example, to return a list of employees that were hired on January 1, 2014 you could make this call:
+
+    ```
+    $ curl http://localhost:9089/employees?hire_date=2014-01-01
+    ```
+    This would result in the following SQL being executed:
+    ```
+    SELECT * FROM hr.employees WHERE hire_date='2014-01-01'
+    ```
+    You can also use multiple query parameters as you might expect.  This example would return a list of all employees with the role of manager hired on January 1, 2014:
+
+    ```
+    $ curl http://localhost:9089/employees?hire_date=2014-01-01&role=manager
+    ```
+    This would result in the following SQL being executed:
+    ```
+    SELECT * FROM hr.employees WHERE hire_date='2014-01-01' AND role='manager'
+    ```
+**Note:** You can customize the query parameter names and they *do not* need to map directly to column names. For example, look at this set of query parameters for our employees example:
+
+    ```
+    queryParameters : {
+        name: 'name = \'{name}\'',
+        foobar: 'id = \'{foobar}\'',
+        lower_id: 'lower(id) = lower(\'{foobar}\')',
+        role: 'role = \'{role}\'',
+        hire_date: 'hire_date = \'{hire_date}\''
+    }
+```
+
+In this case the query parameter `foobar` would be mapped to the WHERE clause of the SQL statement for the `id` column.  Also note that `lower_id` includes a call to the `lower(string)` function of PostgreSQL.
+
+### Note the following with regard to query parameters:
+* If you have a join query you may need to include table aliases for your query parameter statements
+* Don't neglect the escaped quotes (`\'`) if you want the values of your query parameters to be interpreted as strings
+
+License
+-------
+MIT
+
+[avault page on GitHub]:https://github.com/apigee-127/avault
