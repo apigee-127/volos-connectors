@@ -10,7 +10,7 @@ This module maps LDAP search and update operations to RESTful API resources and 
 
 to a REST resource called ``/engineering``, which you might call like this:
 
-``curl http://localhost:9056/departments/engineering
+``curl http://localhost:9056/departments/engineering``
 
 and which might generate a JSON response like this:
 
