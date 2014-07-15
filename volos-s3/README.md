@@ -4,7 +4,7 @@ The ``volos-s3`` connector lets you perform CRUD operations on an Amazon Web Ser
 
 The Volos S3 connector is a Node.js module that lets you perform CRUD operations an Amazon Web Services Simple Storage Service (S3) account through a RESTful API. It is one of the Volos Node.js modules from Apigee. The module is designed to work on Apigee Edge but can be run anywhere Node.js applications can run.  You can use this module without any dependency on Apigee.
 
-## Quick example
+### Quick example
 
 This module maps S3 operations to RESTful API resources and query parameters. For example, this API call asks for a list of buckets:
 
@@ -12,7 +12,8 @@ This module maps S3 operations to RESTful API resources and query parameters. Fo
 
 and you get back a JSON response like this:
 
-````[{
+````
+[{
     "Buckets": [
         {
             "Name": "com.mycompany.bucket",
@@ -42,7 +43,7 @@ $ npm install volos-s3
 
 There are two examples below, one basic example and one that uses the ``avault`` (Apigee Vault) Node.js module, which is a secure local storage module. Apigee Vault is used to encrypt sensitive login credentials sent to the backend database.
 
-## Simple example without Apigee Vault
+### Simple example without Apigee Vault
 
 The example below shows a simple usage of the ``volos-s3`` connector using the ``http`` module to proxy requests to the connector.  Note that you need to specify your S3 credentials (not a best practice).
 
@@ -68,7 +69,7 @@ svr.listen(9089, function () {
 
 ```
 
-## Simple example using the Apigee Vault for local secure storage
+### Simple example using the Apigee Vault for local secure storage
 
 This example shows the usage of the ``avault`` module to provide a secure local storage option for credentials and endpoint configuration.  
 
@@ -103,7 +104,7 @@ vault.get('my_profile_key', function (profileString) {
 
 To use this connector you need a correctly configured S3 connection for your AWS S3 account.
 
-## S3 connection profile
+### S3 connection profile
 
 The S3 configuration profile is used by the connector to establish a connection to the backend S3 data store. The profile includes the following fields:
 
@@ -120,7 +121,7 @@ var profile = {
 };
 ```
 
-## Optional: Encrypting the connection profile with Apigee Vault 
+### Optional: Encrypting the connection profile with Apigee Vault 
 
 The ``avault`` module provides local, double-key encrypted storage of sensetive information such as credentials and system endpoints.  This provides an option to store these kinds of data in a format other than `text/plain`.
 
@@ -203,7 +204,7 @@ You'll get a response that looks something like this:
 
 To add an object to a bucket:
 
-``curl -X PUT -H Content-Type: application/json http://localhost:9056/buckets/<bucketId>/object?Key=<theObjectKey> -d {./myfile}
+``curl -X PUT -H Content-Type: application/json http://localhost:9056/buckets/<bucketId>/object?Key=<theObjectKey> -d {./myfile}``
 
 # License
 
