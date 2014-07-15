@@ -1,7 +1,16 @@
 volos-connectors
 ================
 
-Connector Modules for Volos
+Connector Modules for Volos - all open source, all free!
+
+# SaaS Connectors
+Volos Connectors includes modules for the following SaaS Providers:
+
+| SaaS Provider | Volos Connector |
+| -------- | --------------- |
+| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/salesforce_logo-300x235.jpg" alt="Salesforce.com" width="100px"/> | Volos Salesforce.com Connector |
+| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/netsuite-logo-600x500.png" alt="Salesforce.com" width="100px"/> | Volos Netsuite Connector |
+
 
 # SQL Database Connectors
 Volos Connectors includes modules for the following SQL database connections:
@@ -29,7 +38,10 @@ Volos Connectors includes modules for the following SQL database connections:
 | Vendor / Provider | Volos Connector |
 | ----------------- | --------------- |
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/aws-logo-304x200.png" alt="Amazon AWS" width="150px"/> | Volos Amazon SQS Connector <br/> Volos Amazon SNS Connector
+| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/RabbitMQLogo.png" alt="Amazon AWS" width="150px"/> | Volos RabbitMQ (AMQP) Connector
 | Nodemailer | Volos Nodemailer Connector |
+
+
 
 # Security
 | Vendor / Provider | Volos Connector |
