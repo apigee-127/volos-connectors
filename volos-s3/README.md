@@ -101,7 +101,7 @@ vault.get('my_profile_key', function (profileString) {
 
 # Getting started with your app
 
-To use this connector you need two things a correctly configured S3 connection for your S3 account.
+To use this connector you need a correctly configured S3 connection for your AWS S3 account.
 
 ## S3 connection profile
 
