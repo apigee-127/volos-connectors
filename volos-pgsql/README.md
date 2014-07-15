@@ -17,7 +17,6 @@ $ curl http://localhost:9089/employees/jdoe
 ```
 
 which generates a JSON response like this:
-
     
 ```
 [
@@ -26,7 +25,7 @@ which generates a JSON response like this:
         "emp_id": "jdoe"
     }
 ]
-```    
+```
 
 The SQL-to-REST mapping is enabled by simple JSON configuration:
 
@@ -42,7 +41,8 @@ The SQL-to-REST mapping is enabled by simple JSON configuration:
         hire_date: 'hire_date = \'{hire_date}\''
     }
 }
-```    
+```
+
 
 To get a larger set of fields per row, use the query parameter ``expand=true``. This option uses the ``queryStringExpanded`` SQL mapping statment instead of the default ``queryStringBasic`` statement.  This option gives you the flexibility to have a small message payload for a subset of fields if those are all that are required.
 
@@ -68,13 +68,12 @@ $ npm install volos-pgsql
 
 Usage
 -----
-There are two examples below, one basic example and one that uses the ``avault`` (Apigee Vault) Node.js module, which is a secure local storage module. Apigee Vault is used to encrypt and decrypt sensitive login credentials sent to the backend database.
+There are two examples below, one basic example and one that uses the ``avault`` (Apigee Vault) Node.js module, which is a secure local storage module. Apigee Vault is used to encrypt sensitive login credentials sent to the backend database.
 
 
-### Simple example without Apigee Vault
+## Simple example without Apigee Vault
 
-
-The example below shows a simple usage of the ``volos-pgsql`` connector using the ``http`` module to proxy requests to the connector.  Note that you need to specify your credentials and the database endpoint in plaintext (less than desirable).
+The example below shows a simple usage of the ``volos-pgsql`` connector using the ``http`` module to proxy requests to the connector.  Note that you need to specify your credentials and the database endpoint in plaintext (not a best practice).
 
 ```
 var pgConnector = require('volos-pgsql');
@@ -100,11 +99,11 @@ svr.listen(9089, function () {
 
 ```
 
-### Simple example using the Apigee Vault for local secure storage
+## Simple example using the Apigee Vault for local secure storage
 
 This example shows the usage of the avault module to provide a secure local storage option for credentials and endpoint configuration.  
 
-This example assumes you have configured a vault and loaded a configuration profile with a key 'my_profile_key'. See "Database configuration profile" below for a quick example. For a complete description of the ``avault`` module see: XYZ
+This example assumes you have configured a vault and loaded a configuration profile with a key '*my_profile_key*'. See the section "Database configuration profile" below for a quick example. For a complete description of the ``avault`` module see the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
 
 ```
 var pgConnector = require('volos-pgsql');
@@ -162,32 +161,29 @@ var profile = {
 };
 ```
 
-### Optional: Encrypting the connection profile with Apigee Vault 
+## Optional: Encrypting the connection profile with Apigee Vault 
 
 The ``avault`` module provides local, double-key encrypted storage of sensetive information such as credentials and system endpoints.  This provides an option to store these kinds of data in a format other than `text/plain`.
 
 In order to insert a value into the vault a command-line tool is provided called `vaultcli`.  This tool comes with the `avault` module.  Here's an example:
 
-
 ```
     $ vaultcli --verbose --value='{"username":"volos", "password": "volos", "host": "nsa.rds.amazon.com", "port":"5432", "database":"volos"}' my-vault-name
 ```
 
-Note that these are the same keys that are required in the plaintext version of the profile.  If this command completes successfully you will find two new files: `store.js` and `keys.js`. Check to make sure they're present in the root directory of the connector module. 
+Note that these are the same keys that are required in the plaintext version of the profile.  If this command completes successfully you will find two new files: `store.js` and `keys.js`. Place them in the root directory of the ``volos-pgsql`` module. 
 
 For more detailed usage of the `avault` module please refer to the avault page on GitHub.
 
-
-SQL to REST Mapping
--------------------
+# SQL to REST Mapping
 
 The file ``queryToRestMap.js`` maps SQL query parameters to RESTful API resources. The file is JSON, and the pattern you need to follow to configure your mappings is fairly straightforward. Let's see how this works.
 
 > *Note:* For Version 1.0 the ``volos-pgsql`` module only supports Read queries.  Updates will be made in the future for Create, Update and Delete.
 
-### Understanding the mapping file structure
+## Understanding the mapping file structure
 
-The ``queryToRestMap.js`` mapping file consists of a repeating pattern of JSON elements that map  SQL queries to REST API resources and query parameters. A sample pattern for retrieving employee information might look like this:
+The ``queryToRestMap.js`` mapping file consists of a repeating pattern of JSON elements that map  SQL queries to REST API resources and query parameters. A sample pattern for retrieving employee information (GET requests) might look like this:
 
 ```
     'employees': {
@@ -247,7 +243,7 @@ Let's look at the parts one by one:
     ```
 **Note:** You can customize the query parameter names and they *do not* need to map directly to column names. For example, look at this set of query parameters for our employees example:
 
-    ```
+```
     queryParameters : {
         name: 'name = \'{name}\'',
         foobar: 'id = \'{foobar}\'',
