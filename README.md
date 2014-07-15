@@ -34,10 +34,11 @@ Volos Connectors includes modules for the following SQL database connections:
 | Provider | Volos Connector |
 | ----------------- | --------------- |
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/aws-logo-304x200.png" alt="Amazon AWS" width="150px"/> | [Volos Amazon SQS Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-sqs) <br/> [Volos Amazon SNS Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-sns)
-| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/RabbitMQLogo.png" alt="Amazon AWS" width="150px"/> | [Volos RabbitMQ (AMQP) Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-rabbitmq)
+| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/RabbitMQLogo.png" alt="RabbitMQ" width="150px"/> | [Volos RabbitMQ (AMQP) Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-rabbitmq)
 | Nodemailer | [Volos SMTP/Email Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-mailer) |
 
-# Security
+# Security (via API)
 | Provider | Volos Connector |
 | ----------------- | --------------- |
-| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/OpenLDAP-logo.png" alt="Amazon AWS" width="150px"/> | [Volos LDAP Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-ldap)
+| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/OpenLDAP-logo.png" alt="LSAP" width="150px"/> | [Volos LDAP Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-ldap)
+| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/PingIdentity_logo.png" alt="Ping Identity" width="150px"/> | [Volos Ping Identity Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-ping-identity)
