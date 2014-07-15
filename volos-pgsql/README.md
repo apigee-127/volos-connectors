@@ -1,10 +1,9 @@
-Volos PostgreSQL Connector 
-==========================
+# Volos PostgreSQL connector 
+
 
 The Volos PostgreSQL connector is a Node.js module that lets you fetch data from a Postgres database using a RESTful API.  It is a part of the Volos Node.js modules from Apigee and is designed to work on Apigee Edge but can be run anywhere Node.js applications can run.  There is no dependency on Apigee for the module to be used.
 
-Quick Example
--------------
+## Quick example
 
 The module allows you to map SQL queries to RESTful API resources and query parameters. For example, a properly configured SQL connector could map a SQL query like this:
 
@@ -29,7 +28,7 @@ which generates a JSON response like this:
 ]
 ```    
 
-This is enabled by simple configuration:
+The SQL-to-REST mapping is enabled by simple JSON configuration:
 
 ```
 'employees': {
@@ -45,7 +44,7 @@ This is enabled by simple configuration:
 }
 ```    
 
-You can also get a larger set of fields per row by using the query parameter ``expand=true`` which uses the ``queryStringExpanded`` SQL statment vs the ``queryStringBasic`` SQL statement.  This gives you the flexibility to have a small message payload for a subset of fields if those are all that are required.
+To get a larger set of fields per row, use the query parameter ``expand=true``. This option uses the ``queryStringExpanded`` SQL mapping statment instead of the default ``queryStringBasic`` statement.  This option gives you the flexibility to have a small message payload for a subset of fields if those are all that are required.
 
 ```
 [
@@ -61,7 +60,7 @@ You can also get a larger set of fields per row by using the query parameter ``e
 Installation
 ------------
 
-The ``volos-pgsql`` module is designed for Node.js and is available via NPM:
+The ``volos-pgsql`` module is designed for Node.js and is available through npm:
 
 ```
 $ npm install volos-pgsql
@@ -69,9 +68,10 @@ $ npm install volos-pgsql
 
 Usage
 -----
-There are two examples below, one basic example and one that uses the avault module which is a secure local storage module.
+There are two examples below, one basic example and one that uses the ``avault`` (Apigee Vault) Node.js module, which is a secure local storage module. Apigee Vault is used to encrypt and decrypt sensitive login credentials sent to the backend database.
 
-### Simple example without the Apigee Vault
+
+### Simple example without Apigee Vault
 
 
 The example below shows a simple usage of the ``volos-pgsql`` connector using the ``http`` module to proxy requests to the connector.  Note that you need to specify your credentials and the database endpoint in plaintext (less than desirable).
@@ -101,7 +101,10 @@ svr.listen(9089, function () {
 ```
 
 ### Simple example using the Apigee Vault for local secure storage
-This example shows the usage of the avault module to provide a secure local storage option for credentials and endpoint configuration.  This example assumes you have configured a vault and loaded a configuration profile with a key 'my_profile_key'.  For information on using the avault module please refer here: XYZ
+
+This example shows the usage of the avault module to provide a secure local storage option for credentials and endpoint configuration.  
+
+This example assumes you have configured a vault and loaded a configuration profile with a key 'my_profile_key'. See "Database configuration profile" below for a quick example. For a complete description of the ``avault`` module see: XYZ
 
 ```
 var pgConnector = require('volos-pgsql');
@@ -140,7 +143,7 @@ To use this connector you need two things:
 Database Connection Profile
 ---------------------------
 
-The database configuration profile includes the following fields:
+The database configuration profile is used by the connector to establish a connection to the backend database. The profile includes the following fields:
 
 * **username** - The username you use to log on to the database.
 * **password** - The password you use to log on to the database.
@@ -159,18 +162,18 @@ var profile = {
 };
 ```
 
-### Optional: Populating avault with a connection profile
+### Optional: Encrypting the connection profile with Apigee Vault 
 
 The ``avault`` module provides local, double-key encrypted storage of sensetive information such as credentials and system endpoints.  This provides an option to store these kinds of data in a format other than `text/plain`.
 
-In order to insert a value into the vault a command line tool is provided called `vaultcli`.  This tool comes with the `avault` module.  Below you will find an example of the usage of this tool to populate a value in the vault:
+In order to insert a value into the vault a command-line tool is provided called `vaultcli`.  This tool comes with the `avault` module.  Here's an example:
 
 
 ```
     $ vaultcli --verbose --value='{"username":"volos", "password": "volos", "host": "nsa.rds.amazon.com", "port":"5432", "database":"volos"}' my-vault-name
 ```
 
-Note that these are the same keys that are required in the plaintext version of the profile.  If this command completes successfully you will find two new files: `store.js` and `keys.js`. Check to make sure they're present.
+Note that these are the same keys that are required in the plaintext version of the profile.  If this command completes successfully you will find two new files: `store.js` and `keys.js`. Check to make sure they're present in the root directory of the connector module. 
 
 For more detailed usage of the `avault` module please refer to the avault page on GitHub.
 
@@ -180,11 +183,11 @@ SQL to REST Mapping
 
 The file ``queryToRestMap.js`` maps SQL query parameters to RESTful API resources. The file is JSON, and the pattern you need to follow to configure your mappings is fairly straightforward. Let's see how this works.
 
-> *Note:* For Version 1.0 the module only supports Read queries.  Updates will be made in the future for Create, Update and Delete.
+> *Note:* For Version 1.0 the ``volos-pgsql`` module only supports Read queries.  Updates will be made in the future for Create, Update and Delete.
 
 ### Understanding the mapping file structure
 
-The mapping file consists of a repeating pattern of JSON elements that map  SQL queries to REST API resources and query parameters. A sample pattern for retrieving employee information might look like this:
+The ``queryToRestMap.js`` mapping file consists of a repeating pattern of JSON elements that map  SQL queries to REST API resources and query parameters. A sample pattern for retrieving employee information might look like this:
 
 ```
     'employees': {
@@ -194,7 +197,7 @@ The mapping file consists of a repeating pattern of JSON elements that map  SQL 
         queryParameters : {
             name: 'name = \'{name}\'',
             id: 'id = \'{id}\'',
-            role: 'role
+            role: 'role = \'{role}\'',
             hire_date: 'hire_date = \'{hire_date}\'',
         }
     },
@@ -211,8 +214,12 @@ The mapping file consists of a repeating pattern of JSON elements that map  SQL 
 
 Let's look at the parts one by one:
 
-* `'employees'` and `'roles'` - The element names become the REST resource names. So, you might call this API like this: `curl http://localhost:9089/employees` or `curl http://localhost:9089/roles`
-* ``queryStringBasic`` - A SQL query that can be used to return a subset of the information of the `queryStringExpanded` if desired. 
+* `'employees'` and `'roles'` - The element names become the REST resource names. So, you might call this API like this: 
+  
+    `curl http://localhost:9089/employees` or `curl http://localhost:9089/roles`
+
+* ``queryStringBasic`` - A SQL query that can be used to return a subset of the information of the `queryStringExpanded`, if desired. 
+                      
 * ``queryStringExpanded`` - An unfiltered (or less filtered) query. The connector uses this query string when you specify the query parameter ``?expand=true``. For example:
 
     ```
@@ -220,7 +227,7 @@ Let's look at the parts one by one:
     ```
 
 * ``idName`` - The name of the database column to query against.
-* ``queryParameters`` - These let you filter the results of the SQL statement that gets executed and are translated to WHERE clauses of the SQL statement.  For example, to return a list of employees that were hired on January 1, 2014 you could make this call:
+* ``queryParameters`` - These let you filter the results of the SQL statement that gets executed. They are translated to WHERE clauses of the SQL statement.  For example, to return a list of employees that were hired on January 1, 2014 you could make this call:
 
     ```
     $ curl http://localhost:9089/employees?hire_date=2014-01-01
