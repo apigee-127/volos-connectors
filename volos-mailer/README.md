@@ -26,10 +26,12 @@ There are two examples below, one basic example and one that uses the ``avault``
 
 ### Simple example without Apigee Vault
 
-The example below shows a simple usage of the ``volos-mailer`` connector using the ``http`` module to proxy requests to the connector.  Note that you need to specify your credentials and the mail service endpoint in plaintext (not a best practice).
+The example below shows a simple usage of the ``volos-mailer`` connector using the ``http`` module to proxy requests to the connector.  
+
+>In this example, credentials and the mail server endpoint are specified in plaintext. This is not a best practice.
 
 ```
-var mailerConnector = require('volos-mailer');
+var nodemailerConnector = require('volos-mailer');
 var http = require('http');
 
 var profile = {
@@ -38,14 +40,13 @@ var profile = {
   auth: {"user":"myusername","pass":"mypass"}
 };
 
-var mailerConnectorObject = new mailerConnector.mailerConnector({"profile": profile});
-
 var svr = http.createServer(function (req, resp) {
-  mailerConnectorObject.dispatchRequest(req, resp);
+  nodemailerConnectorObject.dispatchRequest(req, resp);
 });
 
 svr.listen(9089, function () {
-  console.log('volos-mailer node server is listening');
+    var nodemailerConnectorObject = new nodemailerConnector.NodemailerConnector({"profile": profile});
+    console.log(nodemailerConnectorObject.applicationName + ' node server is listening');
 });
 
 ```
@@ -55,7 +56,7 @@ svr.listen(9089, function () {
 
 This example shows the usage of the ``avault`` module to provide a secure local storage option for credentials and endpoint configuration.  
 
-This example assumes you have configured a vault and loaded a configuration profile with a key '*my_profile_key*'. See the section "Database configuration profile" below for a quick example. For a complete description of the ``avault`` module see the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
+This example assumes you have configured a vault and loaded a configuration profile with a key '*my_profile_key*'. See the section "[Mailer connection profile](https://github.com/apigee-127/volos-connectors/tree/development/volos-mailer#mailer-connection-profile)" below for a quick example. For a complete description of the ``avault`` module see the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
 
 ```
 var mailerConnector = require('volos-mailer');
@@ -76,18 +77,18 @@ vault.get('my_profile_key', function (profileString) {
 
     svr.listen(9089, function () {
       mailerConnectorObject = new mailerConnector.mailerConnector({"profile": profile});
-      console.log('volos-mailer node server is listening');
+      console.log(nodemailerConnectorObject.applicationName + ' node server is listening');
     });
   }
 });
 ```
 
 
-# Getting Started With Your App
+# Getting started with your app
 
 To use this connector you need to configure the Volos Mailer connection profile, start the Node.js server, and then you can start sending emails.
 
-### Mailer Connection Profile
+### Mailer connection profile
 
 This connector is requires the Node.js module called ``nodemailer``. This module allows you to connect directly to an SMTP server or to some "well known" mail services, like Gmail and Hotmail. 
 
@@ -122,7 +123,7 @@ var profile = {
 
 ### Optional: Encrypting the connection profile with Apigee Vault 
 
-The ``avault`` module provides local, double-key encrypted storage of sensetive information such as credentials and system endpoints.  This provides an option to store these kinds of data in a format other than `text/plain`.
+The ``avault`` module provides local, double-key encrypted storage of sensitive information such as credentials and system endpoints.  This provides an option to store these kinds of data in a format other than `text/plain`.
 
 In order to insert a value into the vault a command-line tool is provided called `vaultcli`.  This tool comes with the `avault` module.  Here's an example:
 
@@ -136,7 +137,7 @@ If you are using one of the well known email services, the command-line usage fo
     ./node_modules/avault/vaultcli.js --verbose --value='{"host":"Gmail",  "auth": {"user": "my-gmail-username", "pass":"my-gmail-password"}}' my-vault-name
 ```
 
-Note that these are the same keys that are required in the plaintext version of the profile.  If this command completes successfully you will find two new files: `store.js` and `keys.js`. Place them in the root directory of the ``volos-mailer`` module. 
+>These are the same keys that are required in the plaintext version of the profile.  If this command completes successfully you will find two new files: `store.js` and `keys.js`. Place them in the root directory of the ``volos-mailer`` module. 
 
 For more detailed usage of the `avault` module refer to the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
 
@@ -155,7 +156,7 @@ Remember to escape invalid URL characters, like white space. For example:
 curl 'http://localhost:9057/mail?from=myemail@gmail.com&to=youremail@gmail.com&subject=Hello%20world&html=<b>Just%20saying%20hello!</b>'
 ```
 
-**Tip:** You can also specify any of these optional query parameters:
+> **Tip:** You can also specify any of these optional query parameters:
 
 'cc', 'bcc', 'replyTo', 'inReplyTo', 'references', 'generateTextFromHTML', 'envelope', 'messageId', 'date', 'encoding', 'charset'
 
