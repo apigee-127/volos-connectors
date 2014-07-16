@@ -4,7 +4,7 @@ The Volos LDAP connector connector lets you search and update an LDAP server thr
 
 ### Quick example
 
-This module maps LDAP search and update operations to RESTful API resources and query parameters. For example, a properly configured LDAP connector might map these LDAP attributes:
+This module maps LDAP search and update operations to RESTful API resources and query parameters. For example, a properly configured LDAP connector might map this LDAP entry:
 
 ``cn=engineering,ou=departments,dc=api-connectors,dc=com``
 
