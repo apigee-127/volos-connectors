@@ -19,42 +19,68 @@ $ curl http://localhost:9089/employees/jdoe
 which generates a JSON response like this:
     
 ```
-[
-    {
-        "emp_name": "Jane Doe",
-        "emp_id": "jdoe"
-    }
-]
+{
+    "action": "GET",
+    "params": {
+        "qp": {}
+    },
+    "path": "/employees/jdoe",
+    "url": "/employees/jdoe",
+    "list": [
+        {
+            "id_emp": "jdoe",
+            "emp_name": "John Doe"
+        }
+    ],
+    "timestamp": 1405541648766,
+    "duration": 248,
+    "applicationName": "volos-pgsql",
+    "count": 1,
+    "sql": "SELECT id_emp, emp_name FROM public.employees WHERE id_emp='jdoe' LIMIT 100"
+}
 ```
 
 The SQL-to-REST mapping is enabled by simple JSON configuration:
 
 ```
-'employees': {
-    queryStringBasic: 'SELECT emp_name, emp_id FROM hr.employees',
-    queryStringExpanded: 'SELECT * FROM hr.employees',
-    idName: 'emp_id',
-    queryParameters : {
-        id: 'emp_id = \'{id}\'',
-        name: 'emp_name = \'{name}\'',
-        role: 'role = \'{role}\'',
-        hire_date: 'hire_date = \'{hire_date}\''
+  'employees': {
+    queryStringBasic: 'SELECT id_emp, emp_name FROM public.employees',
+    queryStringExpanded: 'SELECT * FROM public.employees',
+    idName: 'id_emp',
+    queryParameters: {
+      role: 'id_role = \'{role}\'',
+      hire_date: 'hire_date = \'{hire_date}\''
     }
-}
+  },
 ```
 
 
 To get a larger set of fields per row, use the query parameter ``expand=true``. This option uses the ``queryStringExpanded`` SQL mapping statment instead of the default ``queryStringBasic`` statement.  This option gives you the flexibility to have a small message payload for a subset of fields if those are all that are required.
 
 ```
-[
-    {
-        "emp_id": "jdoe",
-        "emp_name": "Jane Doe",
-        "role": "Manager",
-        "hire_date": "06-27-1978"
-    }
-]
+{
+    "action": "GET",
+    "params": {
+        "qp": {
+            "expand": "true"
+        }
+    },
+    "path": "/employees/jdoe",
+    "url": "/employees/jdoe?expand=true",
+    "list": [
+        {
+            "id_emp": "jdoe",
+            "emp_name": "John Doe",
+            "hire_date": "1978-06-27T07:00:00.000Z",
+            "id_role": "mechanic"
+        }
+    ],
+    "timestamp": 1405541760716,
+    "duration": 382,
+    "applicationName": "volos-pgsql",
+    "count": 1,
+    "sql": "SELECT * FROM public.employees WHERE id_emp='jdoe' LIMIT 100"
+}
 ```
 
 # Installation
@@ -74,11 +100,12 @@ There are two examples below, one basic example and one that uses the ``avault``
 
 The example below shows a simple usage of the ``volos-pgsql`` connector using the ``http`` module to proxy requests to the connector.  
 
->In this example, creditials and the database endpoint are specified in plaintext. This is not a best practice.
+>In this simple example, creditials and the database endpoint are specified in plaintext. This is not a best practice.
 
 ```
 var pgConnector = require('volos-pgsql');
 var http = require('http');
+var vault = require('avault').createVault(__dirname);
 var restMap = require('./queryToRestMap');
 
 var profile = {
@@ -89,14 +116,15 @@ var profile = {
   database: "volos"
 };
 
+var pgConnectorObject = new pgConnector.PgConnector({"profile": profile, "restMap": restMap});
+
 var svr = http.createServer(function (req, resp) {
   pgConnectorObject.dispatchRequest(req, resp);
 });
 
 svr.listen(9089, function () {
-    var pgConnectorObject = new pgConnector.PgConnector({"profile": profile, "restMap": restMap});
-    pgConnectorObject.initializePaths(restMap);
-    console.log(pgConnectorObject.applicationName + ' node server is listening');
+  pgConnectorObject.initializePaths(restMap);
+  console.log(pgConnectorObject.applicationName + ' node server is listening');
 });
 
 ```
@@ -115,20 +143,21 @@ var restMap = require('./queryToRestMap');
 
 var pgConnectorObject;
 
-vault.get('my_profile_key', function (profileString) {
+vault.get('my_profile_key', function(profileString) {
   if (!profileString) {
     console.log('Error: required vault not found.');
   } else {
     var profile = JSON.parse(profileString);
 
-    var svr = http.createServer(function (req, resp) {
+    var svr = http.createServer(function(req, resp) {
       pgConnectorObject.dispatchRequest(req, resp);
+
     });
 
-    svr.listen(9089, function () {
-            pgConnectorObject = new pgConnector.PgConnector({"profile": profile, "restMap": restMap});
-            pgConnectorObject.initializePaths(restMap);
-            console.log(pgConnectorObject.applicationName + ' node server is listening');
+    svr.listen(9089, function() {
+      pgConnectorObject = new pgConnector.PgConnector({"profile": profile, "restMap": restMap});
+      pgConnectorObject.initializePaths(restMap);
+      console.log(pgConnectorObject.applicationName + ' node server is listening');
     });
   }
 });
@@ -167,10 +196,10 @@ var profile = {
 
 The ``avault`` module provides local, double-key encrypted storage of sensetive information such as credentials and system endpoints.  This provides an option to store these kinds of data in a format other than `text/plain`.
 
-In order to insert a value into the vault a command-line tool is provided called `vaultcli`.  This tool comes with the `avault` module.  Here's an example:
+In order to insert a value into the vault a command-line tool is provided called `vaultcli`.  This tool comes with the `avault` module.  Here's an example, to be executed from your project directory::
 
 ```
-    $ vaultcli --verbose --value='{"username":"volos", "password": "volos", "host": "nsa.rds.amazon.com", "port":"5432", "database":"volos"}' my-profile-name
+    $ ./node_modules/avault/vaultcli --verbose --value='{"username":"volos", "password": "volos", "host": "nsa.rds.amazon.com", "port":"5432", "database":"volos"}' my-profile-name
 ```
 
 Note that these are the same keys that are required in the plaintext version of the profile.  If this command completes successfully you will find two new files: `store.js` and `keys.js`. Place them in the root directory of the ``volos-pgsql`` module. 
@@ -188,33 +217,43 @@ The file ``queryToRestMap.js`` maps SQL query parameters to RESTful API resource
 The ``queryToRestMap.js`` mapping file consists of a repeating pattern of JSON elements that map  SQL queries to REST API resources and query parameters. A sample pattern for retrieving employee information (GET requests) might look like this:
 
 ```
-    'employees': {
-        queryStringBasic: 'SELECT name, id, hire_date FROM employees',
-        queryStringExpanded: 'SELECT * from employees',
-        idName: 'employees',
-        queryParameters : {
-            name: 'name = \'{name}\'',
-            id: 'id = \'{id}\'',
-            role: 'role = \'{role}\'',
-            hire_date: 'hire_date = \'{hire_date}\'',
-        }
-    },
-    'roles': {
-        queryStringBasic: 'SELECT role_name, role_id FROM hr.roles',
-        queryStringExpanded: 'SELECT * FROM hr.roles',
-        idName: 'role_id',
-        queryParameters : {
-            name: 'role_name = \'{name}\'',
-            pay_grade: 'grade = \'{pay_grade}\''
-        }
+module.exports = {
+  'employees': {
+    queryStringBasic: 'SELECT id_emp, emp_name FROM public.employees',
+    queryStringExpanded: 'SELECT * FROM public.employees',
+    idName: 'id_emp',
+    queryParameters: {
+      role: 'id_role = \'{role}\'',
+      hire_date: 'hire_date = \'{hire_date}\''
     }
+  },
+  'roles': {
+    queryStringBasic: 'SELECT id_role, role_name FROM public.roles',
+    queryStringExpanded: 'SELECT * FROM public.roles',
+    idName: 'id_role',
+    queryParameters: {
+      pay_grade: 'pay_grade={pay_grade}'
+    }
+  },
+  'emp_roles': {
+    queryStringBasic: 'SELECT e.id_emp, e.emp_name, r.pay_grade FROM public.employees e LEFT OUTER JOIN public.roles r ON e.id_role = r.id_role',
+    queryStringExpanded: 'SELECT e.*, r.* FROM public.employees e LEFT OUTER JOIN public.roles r ON e.id_role = r.id_role',
+    idName: 'e.id_emp',
+    queryParameters: {
+      role: 'id_role = \'{role}\'',
+      hire_date: 'hire_date = \'{hire_date}\''
+    }
+  }
+}
 ```
 
 Let's look at the parts one by one:
 
 * **employees** and **roles** - The element names become the REST resource names. So, you might call this API like this: 
   
-    `curl http://localhost:9089/employees` or `curl http://localhost:9089/roles`
+    ```
+    $ curl http://localhost:9089/employees` or `curl http://localhost:9089/roles
+    ```
 
 * **queryStringBasic** - A SQL query that can be used to return a subset of the information of the `queryStringExpanded`, if desired. 
                       
@@ -232,7 +271,7 @@ Let's look at the parts one by one:
     ```
     This would result in the following SQL being executed:
     ```
-    SELECT * FROM hr.employees WHERE hire_date='2014-01-01'
+    SELECT * FROM public.employees WHERE hire_date='2014-01-01'
     ```
     You can also use multiple query parameters, as you might expect.  This example would return a list of all employees with the role of "manager" hired on January 1, 2014:
 
@@ -241,22 +280,21 @@ Let's look at the parts one by one:
     ```
     This would result in the following SQL being executed:
     ```
-    SELECT * FROM hr.employees WHERE hire_date='2014-01-01' AND role='manager'
+    SELECT * FROM public.employees WHERE hire_date='2014-01-01' AND role='manager'
     ```
 
 >**Note:** You can customize the query parameter names and they *do not* need to map directly to column names. For example, look at this set of query parameters for our employees example:
 
 ```
-    queryParameters : {
-        name: 'name = \'{name}\'',
-        foobar: 'id = \'{foobar}\'',
-        lower_id: 'lower(id) = lower(\'{foobar}\')',
-        role: 'role = \'{role}\'',
-        hire_date: 'hire_date = \'{hire_date}\''
+    queryParameters: {
+      foobar: 'id_emp = \'{foobar}\'',
+      lower_id: 'id_emp = lower(\'{id_emp}\'',
+      role: 'id_role = \'{role}\'',
+      hire_date: 'hire_date = \'{hire_date}\''
     }
 ```
 
-In this case the query parameter `foobar` would be mapped to the WHERE clause of the SQL statement for the `id` column.  Also note that `lower_id` includes a call to the `lower(string)` function of PostgreSQL.
+In this case the query parameter `foobar` would be mapped to the WHERE clause of the SQL statement for the `id_emp` column.  Also note that `lower_id` includes a call to the `lower(string)` function of PostgreSQL.
 
 ### Note the following with regard to query parameters:
 * If you have a join query you may need to include table aliases for your query parameter statements.
