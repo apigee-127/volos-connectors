@@ -48,7 +48,7 @@ There are two examples below, one basic example and one that uses the ``avault``
 
 The example below shows a simple usage of the ``volos-sns`` connector using the ``http`` module to proxy requests to the connector.  
 
->**Note:**For this example, the SNS credentials are specified in plaintext. This is not a best practice.  that you need to specify your SNS credentials (not a best practice).
+> **Note:** For this example, the SNS credentials are specified in plaintext. This is not a best practice.  
 
 
 ```
