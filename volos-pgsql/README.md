@@ -72,7 +72,9 @@ There are two examples below, one basic example and one that uses the ``avault``
 
 ### Simple example without Apigee Vault
 
-The example below shows a simple usage of the ``volos-pgsql`` connector using the ``http`` module to proxy requests to the connector.  Note that in this example, creditials and the database endpoint are specified in plaintext (not a best practice).
+The example below shows a simple usage of the ``volos-pgsql`` connector using the ``http`` module to proxy requests to the connector.  
+
+>In this example, creditials and the database endpoint are specified in plaintext. This is not a best practice.
 
 ```
 var pgConnector = require('volos-pgsql');
