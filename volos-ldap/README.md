@@ -75,7 +75,9 @@ There are two examples below, one basic example and one that uses the ``avault``
 
 ### Simple example without Apigee Vault
 
-The example below shows a simple usage of the ``volos-ldap`` connector using the ``http`` module to proxy requests to the connector.  Note that you need to specify your credentials and the LDAP server endpoint in plaintext (not a best practice).
+The example below shows a simple usage of the ``volos-ldap`` connector using the ``http`` module to proxy requests to the connector.  
+
+>In this example, creditials and the LDAP server endpoint are specified in plaintext. This is not a best practice.ß
 
 ```
 var ldapConnector = require('volos-ldap');
@@ -105,7 +107,7 @@ svr.listen(9089, function () {
 
 This example shows the usage of the ``avault`` module to provide a secure local storage option for credentials and endpoint configuration.  
 
-This example assumes you have configured a vault and loaded a configuration profile with a key '*my_profile_key*'. See the section "Database configuration profile" below for a quick example. For a complete description of the ``avault`` module see the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
+This example assumes you have configured a vault and loaded a configuration profile with a key '*my_profile_key*'. See the section "[LDAP connection profile](https://github.com/apigee-127/volos-connectors/tree/development/volos-ldap#ldap-connection-profile)" below for a quick example. For a complete description of the ``avault`` module see the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
 
 ```
 var ldapConnector = require('volos-ldap');
@@ -143,13 +145,13 @@ To use this connector you need two things:
 Let's start by configuring a connection and testing it with the default mapping file. After that, we'll dive into the details of customizing the mapping file. 
 
 
-### Database connection profile
+### LDAP connection profile
 
 The LDAP configuration profile is used by the connector to establish a connection to the backend LDAP server. The profile includes the following fields:
 
 * **host** - The host IP address for the LDAP server.
 * **port** - The port number for the LDAP server. 
-* **binddn** - The distinguished name for an LDAP entry. For example, "cn=Manager,dc=api-connectors,dc=com"
+* **binddn** - The distinguished name for an LDAP entry. For example,  `cn=Manager,dc=api-connectors,dc=com`
 * **credentials** - The password used to access the LDAP server. 
 
 **Example:**
@@ -198,7 +200,7 @@ The ``configurations.js`` mapping file consists of a repeating pattern of JSON e
 
 Let's look at the parts one by one:
 
-* **engineering** - The element is the REST resource name that will map to the specified LDAP attributes. So, you might call this API like this: http://localhost:9056/engineering.
+* **engineering** - The element is the REST resource name that will map to the specified LDAP attributes. So, you might call this API like this: `http://localhost:9056/engineering`.
 * **base** - Specifies the LDAP relative distinguished names that will be mapped to the resource name. These RDNs must be in the LDAP entry specified when you configured the connection.
 * **attributesBasic** - Specifies a subset of attribute names that you wish to return.
 * **attributesExpanded** - Specifies an expanded list of attributes. The wildcard returns all attributes. 
