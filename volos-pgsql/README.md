@@ -212,8 +212,7 @@ Let's look at the parts one by one:
 
 * **employees** and **roles** - The element names become the REST resource names. So, you might call this API like this: 
   
-    ```curl http://localhost:9089/employees` or `curl http://localhost:9089/roles
-    ```
+    `curl http://localhost:9089/employees` or `curl http://localhost:9089/roles`
 
 * **queryStringBasic** - A SQL query that can be used to return a subset of the information of the `queryStringExpanded`, if desired. 
                       
