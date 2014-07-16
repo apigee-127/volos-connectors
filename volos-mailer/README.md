@@ -128,7 +128,7 @@ The ``avault`` module provides local, double-key encrypted storage of sensitive 
 In order to insert a value into the vault a command-line tool is provided called `vaultcli`.  This tool comes with the `avault` module.  Here's an example:
 
 ```
-    ./node_modules/avault/vaultcli.js --verbose --value='{"host":"my-smtp-server-address", "port": "my-smtp-server-port", "auth": {"user": "my-email username", "pass":"my-email-password"}}' my-vault-name
+    ./node_modules/avault/vaultcli.js --verbose --value='{"host":"my-smtp-server-address", "port": "my-smtp-server-port", "auth": {"user": "my-email username", "pass":"my-email-password"}}' my-profile-name
 ```
 
 If you are using one of the well known email services, the command-line usage follows this pattern:
