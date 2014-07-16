@@ -4,7 +4,7 @@ The Volos Salesforce connector is a Node.js module that lets you fetch data from
 
 ### Quick example
 
-The module maps Salesforce SOQL queries to RESTful API resources and query parameters. For example, the properly configured Salesforce connector might map a SOQL query like this:
+The module maps Salesforce SOQL queries to RESTful API resources and query parameters. For example, a properly configured Salesforce connector might map a SOQL query like this:
 
 ``SELECT id, Owner.Name FROM Opportunity WHERE Owner.Email='jdoe@example.com'``
 
@@ -65,7 +65,9 @@ There are two examples below, one basic example and one that uses the ``avault``
 
 ### Simple example without Apigee Vault
 
-The example below shows a simple usage of the ``volos-salesforce`` connector using the ``http`` module to proxy requests to the connector.  Note that you need to specify your Salesforce credentials endpoint in plaintext (not a best practice).
+The example below shows a simple usage of the ``volos-salesforce`` connector using the ``http`` module to proxy requests to the connector.  
+
+>**Note:** In this example, the Salesforce credentials are specified in plaintext. This is not a best practice. 
 
 
 ```
@@ -94,7 +96,7 @@ svr.listen(9089, function () {
 
 This example shows the usage of the ``avault`` module to provide a secure local storage option for credentials and endpoint configuration.  
 
-This example assumes you have configured a vault and loaded a configuration profile with a key '*my_profile_key*'. See the section "Database configuration profile" below for a quick example. For a complete description of the ``avault`` module see the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
+This example assumes you have configured a vault and loaded a configuration profile with a key '*my_profile_key*'. See the section "[Salesforce connection profile[(#salesforce-connection-profile)" below for a quick example. For a complete description of the ``avault`` module see the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
 
 ```
 var salesforceConnector = require('volos-salesforce');
@@ -128,7 +130,7 @@ To use this connector you need two things:
 * A correctly configured database connection profile _*and*_
 * A customized SOQL-to-REST mapping file
 
-### Database connection profile
+### Salesforce connection profile
 
 The database configuration profile is used by the connector to establish a connection to the backend database. The profile includes the following fields:
 
