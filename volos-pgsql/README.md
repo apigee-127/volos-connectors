@@ -77,6 +77,7 @@ The example below shows a simple usage of the ``volos-pgsql`` connector using th
 ```
 var pgConnector = require('volos-pgsql');
 var http = require('http');
+var restMap = require('./queryToRestMap');
 
 var profile = {
   username: 'volos',
@@ -86,14 +87,14 @@ var profile = {
   database: "volos"
 };
 
-var pgConnectorObject = new pgConnector.PgConnector({"profile": profile});
-
 var svr = http.createServer(function (req, resp) {
   pgConnectorObject.dispatchRequest(req, resp);
 });
 
 svr.listen(9089, function () {
-  console.log('volos-pgsql node server is listening');
+    var pgConnectorObject = new pgConnector.PgConnector({"profile": profile, "restMap": restMap});
+    pgConnectorObject.initializePaths(restMap);
+    console.log(pgConnectorObject.applicationName + ' node server is listening');
 });
 
 ```
@@ -108,6 +109,7 @@ This example assumes you have configured a vault and loaded a configuration prof
 var pgConnector = require('volos-pgsql');
 var http = require('http');
 var vault = require('avault').createVault(__dirname);
+var restMap = require('./queryToRestMap');
 
 var pgConnectorObject;
 
@@ -122,8 +124,9 @@ vault.get('my_profile_key', function (profileString) {
     });
 
     svr.listen(9089, function () {
-      pgConnectorObject = new pgConnector.PgConnector({"profile": profile});
-      console.log('volos-pgsql node server is listening');
+            pgConnectorObject = new pgConnector.PgConnector({"profile": profile, "restMap": restMap});
+            pgConnectorObject.initializePaths(restMap);
+            console.log(pgConnectorObject.applicationName + ' node server is listening');
     });
   }
 });
