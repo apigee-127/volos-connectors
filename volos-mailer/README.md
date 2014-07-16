@@ -40,14 +40,15 @@ var profile = {
   auth: {"user":"myusername","pass":"mypass"}
 };
 
-var svr = http.createServer(function (req, resp) {
-  nodemailerConnectorObject.dispatchRequest(req, resp);
-});
-
-svr.listen(9089, function () {
     var nodemailerConnectorObject = new nodemailerConnector.NodemailerConnector({"profile": profile});
-    console.log(nodemailerConnectorObject.applicationName + ' node server is listening');
-});
+
+    var svr = http.createServer(function (req, resp) {
+      nodemailerConnectorObject.dispatchRequest(req, resp);
+    });
+
+    svr.listen(9089, function () {
+        console.log(nodemailerConnectorObject.applicationName + ' node server is listening');
+    });
 
 ```
 
