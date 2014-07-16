@@ -74,7 +74,7 @@ svr.listen(9089, function () {
 
 This example shows the usage of the ``avault`` module to provide a secure local storage option for credentials and endpoint configuration.  
 
-This example assumes you have configured a vault and loaded a configuration profile with a key '*my_profile_key*'. See the section "S3 configuration profile" below for a quick example. For a complete description of the ``avault`` module see the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
+This example assumes you have configured a vault and loaded a configuration profile with a key '*my_profile_key*'. See the section "[S3 connection profile](https://github.com/apigee-127/volos-connectors/tree/development/volos-s3#s3-connection-profile)" below for a quick example. For a complete description of the ``avault`` module see the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
 
 ```
 var s3Connector = require('volos-s3');
@@ -84,7 +84,7 @@ var configuration = require('./configuration.js');
 
 var s3;
 
-vault.get('aws', function(profileString) {
+vault.get('my-profile-key', function(profileString) {
     if (!profileString) {
         console.log('Error: required vault not found.');
     } else {
@@ -114,7 +114,7 @@ The S3 configuration profile is used by the connector to establish a connection 
 * **acessKeyId** - The access key ID for your Amazon Web Services S3 account.
 * **secretAccessKey** - The secret access key for your Amazon Web Services S3 account. 
 
-**Tip:** Log in to your S3 account to find your security credentials, including AWS access keys.
+>**Tip:** Log in to your S3 account to find your security credentials, including AWS access keys.
 
 **Example:**
 ```
@@ -126,7 +126,7 @@ var profile = {
 
 ### Optional: Encrypting the connection profile with Apigee Vault 
 
-The ``avault`` module provides local, double-key encrypted storage of sensetive information such as credentials and system endpoints.  This provides an option to store these kinds of data in a format other than `text/plain`.
+The ``avault`` module provides local, double-key encrypted storage of sensitive information such as credentials and system endpoints.  This provides an option to store these kinds of data in a format other than `text/plain`.
 
 In order to insert a value into the vault a command-line tool is provided called `vaultcli`.  This tool comes with the `avault` module.  Here's an example:
 
