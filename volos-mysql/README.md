@@ -43,7 +43,7 @@ The SQL-to-REST mapping is enabled by simple JSON configuration. Here is a sampl
 ```
 
 
-To get a larger set of fields per row, use the query parameter ``expand=true``. This option uses the ``queryStringExpanded`` SQL mapping statment instead of the default ``queryStringBasic`` statement.  This option gives you the flexibility to have a small message payload for a subset of fields if those are all that are required.
+To get a larger set of fields per row, use the query parameter ``expand=true``. This option uses the ``queryStringExpanded`` SQL mapping statement instead of the default ``queryStringBasic`` statement.  This option gives you the flexibility to have a small message payload for a subset of fields if those are all that are required.
 
 ```
 [
@@ -69,11 +69,14 @@ There are two examples below, one basic example and one that uses the ``avault``
 
 ### Simple example without Apigee Vault
 
-The example below shows a simple usage of the ``volos-mysql`` connector using the ``http`` module to proxy requests to the connector.  Note that you need to specify your credentials and the database endpoint in plaintext (not a best practice).
+The example below shows a simple usage of the ``volos-mysql`` connector using the ``http`` module to proxy requests to the connector.  
+
+>In this example, credentials and the database endpoint are specified in plaintext. This is not a best practice.
 
 ```
 var mysqlConnector = require('volos-mysql');
 var http = require('http');
+var restMap = require('./queryToRestMap');
 
 var profile = {
   user: 'volos',
@@ -82,14 +85,14 @@ var profile = {
   port: "5432"
 };
 
-var mysqlConnectorObject = new mysqlConnector.mysqlConnector({"profile": profile});
-
 var svr = http.createServer(function (req, resp) {
   mysqlConnectorObject.dispatchRequest(req, resp);
 });
 
 svr.listen(9089, function () {
-  console.log('volos-mysql node server is listening');
+    var mysqlConnectorObject = new mysqlConnector.MySqlConnector({"profile": profile, "restMap": restMap});
+    mysqlConnectorObject.initializePaths(restMap);
+    console.log(mysqlConnectorObject.applicationName + ' node server is listening');
 });
 
 ```
@@ -98,14 +101,15 @@ svr.listen(9089, function () {
 
 This example shows the usage of the ``avault`` module to provide a secure local storage option for credentials and endpoint configuration.  
 
-This example assumes you have configured a vault and loaded a configuration profile with a key '*my_profile_key*'. See the section "Database configuration profile" below for a quick example. For a complete description of the ``avault`` module see the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
+This example assumes you have configured a vault and loaded a configuration profile with a key '*my_profile_key*'. See the section "[Database connection profile](https://github.com/apigee-127/volos-connectors/tree/development/volos-mysql#database-connection-profile)" below for a quick example. For a complete description of the ``avault`` module see the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
 
 ```
 var mysqlConnector = require('volos-mysql');
 var http = require('http');
 var vault = require('avault').createVault(__dirname);
+var restMap = require('./queryToRestMap');
 
-var mysqlConnectorObject;
+ar mysqlConnectorObject;
 
 vault.get('my_profile_key', function (profileString) {
   if (!profileString) {
@@ -118,8 +122,9 @@ vault.get('my_profile_key', function (profileString) {
     });
 
     svr.listen(9089, function () {
-      mysqlConnectorObject = new mysqlConnector.mysqlConnector({"profile": profile});
-      console.log('volos-mysql node server is listening');
+            mysqlConnectorObject = new mysqlConnector.MySqlConnector({"profile": profile, "restMap": restMap});
+            mysqlConnectorObject.initializePaths(restMap);
+            console.log(mysqlConnectorObject.applicationName + ' node server is listening');
     });
   }
 });
@@ -152,7 +157,7 @@ var profile = {
 
 ### Optional: Encrypting the connection profile with Apigee Vault 
 
-The ``avault`` module provides local, double-key encrypted storage of sensetive information such as credentials and system endpoints.  This provides an option to store these kinds of data in a format other than `text/plain`.
+The ``avault`` module provides local, double-key encrypted storage of sensitive information such as credentials and system endpoints.  This provides an option to store these kinds of data in a format other than `text/plain`.
 
 In order to insert a value into the vault a command-line tool is provided called `vaultcli`.  This tool comes with the `avault` module.  Here's an example:
 
@@ -197,20 +202,20 @@ The ``queryToRestMap.js`` mapping file consists of a repeating pattern of JSON e
 
 Let's look at the parts one by one:
 
-* `'employees'` and `'roles'` - The element names become the REST resource names. So, you might call this API like this: 
+* **employees** and **roles** - The element names become the REST resource names. So, you might call this API like this: 
   
     `curl http://localhost:9089/employees` or `curl http://localhost:9089/roles`
 
-* ``queryStringBasic`` - A SQL query that can be used to return a subset of the information of the `queryStringExpanded`, if desired. 
+* **queryStringBasic** - A SQL query that can be used to return a subset of the information of the `queryStringExpanded`, if desired. 
                       
-* ``queryStringExpanded`` - An unfiltered (or less filtered) query. The connector uses this query string when you specify the query parameter ``?expand=true``. For example:
+* **queryStringExpanded** - An unfiltered (or less filtered) query. The connector uses this query string when you specify the query parameter ``?expand=true``. For example:
 
     ```
     $ curl http://localhost:9089/employees?expand=true
     ```
 
-* ``idName`` - The name of the database column to query against.
-* ``queryParameters`` - These let you filter the results of the SQL statement that gets executed. They are translated to WHERE clauses of the SQL statement.  For example, to return a list of employees that were hired on January 1, 2014 you could make this call:
+* **idName** - The name of the database column to query against.
+* **queryParameters** - These let you filter the results of the SQL statement that gets executed. They are translated to WHERE clauses of the SQL statement.  For example, to return a list of employees that were hired on January 1, 2014 you could make this call:
 
     ```
     $ curl http://localhost:9089/employees?hire_date=2014-01-01
@@ -219,7 +224,7 @@ Let's look at the parts one by one:
     ```
     SELECT * FROM hr.employees WHERE hire_date='2014-01-01'
     ```
-    You can also use multiple query parameters as you might expect.  This example would return a list of all employees with the role of manager hired on January 1, 2014:
+    You can also use multiple query parameters as you might expect.  This example would return a list of all employees with the role of "manager" hired on January 1, 2014:
 
     ```
     $ curl http://localhost:9089/employees?hire_date=2014-01-01&role=manager
@@ -264,6 +269,7 @@ Here's an example PUT configuration:
 
 * **updatePerson** - The name of this element.
 * **restSemantic** - Specifies the HTTP verb for this operation.
+* **table** - The database table you wish to query.
 * **path** - The REST API resource for this operation.
 * **queryParameters** - Lets you specify which values to update. 
 
@@ -290,8 +296,8 @@ curl -X POST -Content-Type: application/json http://localhost:9090/employees -d 
 Follow the same pattern for DELETE operations. Refer to the default ``queryToRestMap.js`` file for more examples. 
 
 ### Note the following with regard to query parameters
-* If you have a join query you may need to include table aliases for your query parameter statements
-* Don't neglect the escaped quotes (`\'`) if you want the values of your query parameters to be interpreted as strings
+* If you have a join query you may need to include table aliases for your query parameter statements.
+* Don't neglect the escaped quotes (`\'`) if you want the values of your query parameters to be interpreted as strings.
 
 # License
 
