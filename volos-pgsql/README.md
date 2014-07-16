@@ -241,7 +241,8 @@ Let's look at the parts one by one:
     ```
     SELECT * FROM hr.employees WHERE hire_date='2014-01-01' AND role='manager'
     ```
-**Note:** You can customize the query parameter names and they *do not* need to map directly to column names. For example, look at this set of query parameters for our employees example:
+
+>**Note:** You can customize the query parameter names and they *do not* need to map directly to column names. For example, look at this set of query parameters for our employees example:
 
 ```
     queryParameters : {
