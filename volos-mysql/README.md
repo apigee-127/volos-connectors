@@ -85,15 +85,17 @@ var profile = {
   port: "5432"
 };
 
-var svr = http.createServer(function (req, resp) {
-  mysqlConnectorObject.dispatchRequest(req, resp);
-});
+        var mysqlConnectorObject = new mysqlConnector.MySqlConnector({"profile": profile, "restMap": restMap});
 
-svr.listen(9089, function () {
-    var mysqlConnectorObject = new mysqlConnector.MySqlConnector({"profile": profile, "restMap": restMap});
-    mysqlConnectorObject.initializePaths(restMap);
-    console.log(mysqlConnectorObject.applicationName + ' node server is listening');
-});
+
+        var svr = http.createServer(function (req, resp) {
+          mysqlConnectorObject.dispatchRequest(req, resp);
+        });
+
+        svr.listen(9089, function () {
+            mysqlConnectorObject.initializePaths(restMap);
+            console.log(mysqlConnectorObject.applicationName + ' node server is listening');
+        });
 
 ```
 
