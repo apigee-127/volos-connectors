@@ -71,7 +71,7 @@ There are two examples below, one basic example and one that uses the ``avault``
 
 The example below shows a simple usage of the ``volos-mysql`` connector using the ``http`` module to proxy requests to the connector.  
 
->In this example, credentials and the database endpoint are specified in plaintext. This is not a best practice.
+>**Note:** In this example, credentials and the database endpoint are specified in plaintext. This is not a best practice.
 
 ```
 var mysqlConnector = require('volos-mysql');
@@ -233,7 +233,8 @@ Let's look at the parts one by one:
     ```
     SELECT * FROM hr.employees WHERE hire_date='2014-01-01' AND role='manager'
     ```
-**Note:** You can customize the query parameter names and they *do not* need to map directly to column names. For example, look at this set of query parameters for our employees example:
+
+>**Note:** You can customize the query parameter names and they *do not* need to map directly to column names. For example, look at this set of query parameters for our employees example:
 
 ```
     queryParameters : {
