@@ -46,12 +46,15 @@ There are two examples below, one basic example and one that uses the ``avault``
 
 ### Simple example without Apigee Vault
 
-The example below shows a simple usage of the ``volos-sns`` connector using the ``http`` module to proxy requests to the connector.  Note that you need to specify your SNS credentials (not a best practice).
+The example below shows a simple usage of the ``volos-sns`` connector using the ``http`` module to proxy requests to the connector.  
+
+> **Note:** For this example, the SNS credentials are specified in plaintext. This is not a best practice.  
 
 
 ```
 var snsConnector = require('volos-sns');
 var http = require('http');
+var restMap = require('./configuration.js');
 
 var profile = {
   region: 'myregion'
@@ -59,14 +62,14 @@ var profile = {
   secretAccessKey: 'mysecretkey'
 };
 
-var snsConnectorObject = new snsConnector.snsConnector({"profile": profile});
-
 var svr = http.createServer(function (req, resp) {
   snsConnectorObject.dispatchRequest(req, resp);
 });
 
 svr.listen(9089, function () {
-  console.log('volos-sns node server is listening');
+    var snsConnectorObject = new snsConnector.SnsConnector({"profile": profile, "restMap": restMap});
+    snsConnectorObject.initializePaths(restMap);
+    console.log(snsConnectorObject.applicationName + ' node server is listening');
 });
 
 ```
@@ -76,30 +79,31 @@ svr.listen(9089, function () {
 
 This example shows the usage of the ``avault`` module to provide a secure local storage option for credentials and endpoint configuration.  
 
-This example assumes you have configured a vault and loaded a configuration profile with a key '*my_profile_key*'. See the section "SNS configuration profile" below for a quick example. For a complete description of the ``avault`` module see the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
+This example assumes you have configured a vault and loaded a configuration profile with a key '*my_profile_key*'. See the section "[SNS configuration profile](#sns-connection-profile)" below for a quick example. For a complete description of the ``avault`` module see the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
 
 ```
 var snsConnector = require('volos-sns');
 var http = require('http');
 var vault = require('avault').createVault(__dirname);
+var restMap = require('./configuration.js');
 
-var snsConnectorObject;
+var sns;
 
-vault.get('my_profile_key', function (profileString) {
-  if (!profileString) {
-    console.log('Error: required vault not found.');
-  } else {
-    var profile = JSON.parse(profileString);
+vault.get('my-profile-key', function(profileString) {
+    if (!profileString) {
+        console.log('Error: required vault not found.');
+    } else {
+        var profile = JSON.parse(profileString);
+        var svr = http.createServer(function(req, resp) {
+            sns.dispatchRequest(req, resp);
+        });
 
-    var svr = http.createServer(function (req, resp) {
-      snsConnectorObject.dispatchRequest(req, resp);
-    });
-
-    svr.listen(9089, function () {
-      snsConnectorObject = new snsConnector.snsConnector({"profile": profile});
-      console.log('volos-sns node server is listening');
-    });
-  }
+        svr.listen(9099, function() {
+            sns = new snsConnector.SnsConnector({"profile": profile, configuration: configuration});
+            sns.initializePaths(configuration.restMap);
+            console.log(sns.applicationName + ' server is listening');
+        });
+    }
 });
 ```
 
@@ -129,7 +133,7 @@ var profile = {
 
 ### Optional: Encrypting the connection profile with Apigee Vault 
 
-The ``avault`` module provides local, double-key encrypted storage of sensetive information such as credentials and system endpoints.  This provides an option to store these kinds of data in a format other than `text/plain`.
+The ``avault`` module provides local, double-key encrypted storage of sensitive information such as credentials and system endpoints.  This provides an option to store these kinds of data in a format other than `text/plain`.
 
 In order to insert a value into the vault a command-line tool is provided called `vaultcli`.  This tool comes with the `avault` module.  Here's an example:
 
@@ -178,7 +182,7 @@ For example, to get a list of all of your subscriptions:
 To get a list of all the objects in a specific subscription:
 
 ```
-curl http://localhost:9099/subscriptions?arn=arn:aws:sns:us-east-1:650324470758:emailsupport:cd7ac02f-07a2-410a-b3c4-6ea6b51cdfb5
+curl http://localhost:9099/subscriptions?arn=arn:aws:sns:us-east-1:650324475555:emailsupport:cd7ac02f-5555-5555-5555-6ea6b51cdfb5
 ```
 
 You might get a response like this:
@@ -186,16 +190,16 @@ You might get a response like this:
 ````
 {
     "ResponseMetadata": {
-        "RequestId": "afdad9f2-edad-591f-b71c-95c88b8afca2"
+        "RequestId": "afdad9f2-555-5555-b71c-55555555"
     },
     "Attributes": {
-        "Owner": "650324470758",
+        "Owner": "65032555558",
         "ConfirmationWasAuthenticated": "false",
         "Endpoint": "support@apigee.com",
         "RawMessageDelivery": "false",
         "Protocol": "email",
-        "TopicArn": "arn:aws:sns:us-east-1:650324470758:emailsupport",
-        "SubscriptionArn": "arn:aws:sns:us-east-1:650324470758:emailsupport:cd7ac02f-07a2-410a-b3c4-6ea6b51cdfb5"
+        "TopicArn": "arn:aws:sns:us-east-1:555555555:emailsupport",
+        "SubscriptionArn": "arn:aws:sns:us-east-1:650324470758:emailsupport:cd7ac02f-5555-5555-5555-6ea65555dfb5"
     }
 }
 ````
@@ -205,7 +209,7 @@ To send a push notification to a phone:
 
 ??? need to get the correct call for this???
 
-``curl -X POST 'http://localhost:9099/subscriptions?arn=arn:aws:sns:us-east-1:650324470758:emailsupport:cd7ac02f-07a2-410a-b3c4-6ea6b51cdfb5&phone=13035555555' -d {???} ``
+``curl -X POST 'http://localhost:9099/subscriptions?arn=arn:aws:sns:us-east-1:650324470758:emailsupport:cd555502f-5555-4444-5555-6ea6b5155555&phone=13035555555' -d {???} ``
 
 
 
