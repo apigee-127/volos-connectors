@@ -1,7 +1,5 @@
 # Volos S3 connector
 
-The ``volos-s3`` connector lets you perform CRUD operations on an Amazon Web Services Simple Storage Service (S3) account through a RESTful API. 
-
 The Volos S3 connector is a Node.js module that lets you perform CRUD operations an Amazon Web Services Simple Storage Service (S3) account through a RESTful API. It is one of the Volos Node.js modules from Apigee. The module is designed to work on Apigee Edge but can be run anywhere Node.js applications can run.  You can use this module without any dependency on Apigee.
 
 ### Quick example
@@ -45,26 +43,29 @@ There are two examples below, one basic example and one that uses the ``avault``
 
 ### Simple example without Apigee Vault
 
-The example below shows a simple usage of the ``volos-s3`` connector using the ``http`` module to proxy requests to the connector.  Note that you need to specify your S3 credentials (not a best practice).
+The example below shows a simple usage of the ``volos-s3`` connector using the ``http`` module to proxy requests to the connector.  
+
+>**Note:** For this example, you need to specify your S3 login credentials in plaintext. This is not a best practice. 
 
 
 ```
 var s3Connector = require('volos-s3');
 var http = require('http');
+var configuration = require('./configuration.js');
 
 var profile = {
   accessKeyId: 'myaccesskeyid',
   secretAccessKey: 'mysecretkey'
 };
 
-var s3ConnectorObject = new s3Connector.s3Connector({"profile": profile});
-
 var svr = http.createServer(function (req, resp) {
   s3ConnectorObject.dispatchRequest(req, resp);
 });
 
 svr.listen(9089, function () {
-  console.log('volos-s3 node server is listening');
+    var s3ConnectorObject = new s3Connector.S3Connector({"profile": profile, "restMap": restMap});
+    s3ConnectorObject.initializePaths(restMap);
+    console.log(s3ConnectorObject.applicationName + ' node server is listening');
 });
 
 ```
@@ -79,24 +80,26 @@ This example assumes you have configured a vault and loaded a configuration prof
 var s3Connector = require('volos-s3');
 var http = require('http');
 var vault = require('avault').createVault(__dirname);
+var configuration = require('./configuration.js');
 
-var s3ConnectorObject;
+var s3;
 
-vault.get('my_profile_key', function (profileString) {
-  if (!profileString) {
-    console.log('Error: required vault not found.');
-  } else {
-    var profile = JSON.parse(profileString);
+vault.get('aws', function(profileString) {
+    if (!profileString) {
+        console.log('Error: required vault not found.');
+    } else {
+        var profile = JSON.parse(profileString);
+        var svr = http.createServer(function(req, resp) {
+            s3.dispatchRequest(req, resp);
 
-    var svr = http.createServer(function (req, resp) {
-      s3ConnectorObject.dispatchRequest(req, resp);
-    });
+        });
 
-    svr.listen(9089, function () {
-      s3ConnectorObject = new s3Connector.s3Connector({"profile": profile});
-      console.log('volos-s3 node server is listening');
-    });
-  }
+        svr.listen(9058, function() {
+            s3 = new s3Connector.S3Connector({"profile": profile, "configuration": configuration});
+            s3.initializePaths(configuration.restMap);
+            console.log(s3.applicationName + '  server is listening');
+        });
+    }
 });
 ```
 
