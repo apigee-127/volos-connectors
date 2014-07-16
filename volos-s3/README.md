@@ -131,7 +131,7 @@ The ``avault`` module provides local, double-key encrypted storage of sensitive 
 In order to insert a value into the vault a command-line tool is provided called `vaultcli`.  This tool comes with the `avault` module.  Here's an example:
 
 ```
-    $ vaultcli --verbose --value='{"accessKeyId":"myaccesskeyid", "secretAccessKey": "mysecretaccesskey"}' my-vault-name
+    $ vaultcli --verbose --value='{"accessKeyId":"myaccesskeyid", "secretAccessKey": "mysecretaccesskey"}' my-profile-name
 ```
 
 Note that these are the same keys that are required in the plaintext version of the profile.  If this command completes successfully you will find two new files: `store.js` and `keys.js`. Place them in the root directory of the ``volos-s3`` module. 
@@ -207,7 +207,9 @@ You'll get a response that looks something like this:
 
 To add an object to a bucket:
 
-``curl -X PUT -H Content-Type: application/json http://localhost:9056/buckets/<bucketId>/object?Key=<theObjectKey> -d {./myfile}``
+```
+curl -X PUT -H Content-Type: application/json http://localhost:9056/buckets/<bucketId>/object?Key=<theObjectKey> -d {./myfile}
+```
 
 # License
 
