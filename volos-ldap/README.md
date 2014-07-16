@@ -174,7 +174,7 @@ The ``avault`` module provides local, double-key encrypted storage of sensitive 
 In order to insert a value into the vault a command-line tool is provided called `vaultcli`.  This tool comes with the `avault` module.  Here's an example:
 
 ```
-    ``./node_modules/avault/vaultcli.js --verbose --value='{"host":"my-ldap-server-ip", "port": "my-ldap-port", "binddn": "my-dn", "credentials": my-ldap-password"}' my-profile-name``
+    ./node_modules/avault/vaultcli.js --verbose --value='{"host":"my-ldap-server-ip", "port": "my-ldap-port", "binddn": "my-dn", "credentials": my-ldap-password"}' my-profile-name
 ```
 
 Note that these are the same keys that are required in the plaintext version of the profile.  If this command completes successfully you will find two new files: `store.js` and `keys.js`. Place them in the root directory of the ``volos-ldap`` module. 
@@ -245,6 +245,7 @@ You can define a mapping that does a POST to the LDAP server. For example, the f
 * **path** - Specifies the URI resource endpoint for the REST call. 
 
 The API call for this mapping might look like this:
+??? do we have a test POST I can paste in here? Not sure how to form the payload.
 
 ````
     curl -H "Content-type:application/json" -X POST \
