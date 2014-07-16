@@ -141,7 +141,7 @@ Note that these are the same keys that are required in the plaintext version of 
 
 For more detailed usage of the `avault` module refer to the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
 
-# Using the S3 connector
+# Using the SNS connector
 
 If you run the Node.js server and call the API like this:
 
