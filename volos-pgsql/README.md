@@ -72,7 +72,7 @@ There are two examples below, one basic example and one that uses the ``avault``
 
 ### Simple example without Apigee Vault
 
-The example below shows a simple usage of the ``volos-pgsql`` connector using the ``http`` module to proxy requests to the connector.  Note that you need to specify your credentials and the database endpoint in plaintext (not a best practice).
+The example below shows a simple usage of the ``volos-pgsql`` connector using the ``http`` module to proxy requests to the connector.  Note that in this example, creditials and the database endpoint are specified in plaintext (not a best practice).
 
 ```
 var pgConnector = require('volos-pgsql');
@@ -101,9 +101,9 @@ svr.listen(9089, function () {
 
 ### Simple example using the Apigee Vault for local secure storage
 
-This example shows the usage of the avault module to provide a secure local storage option for credentials and endpoint configuration.  
+This example shows how to use the avault module to provide a secure local storage option for credentials and endpoint configuration.  
 
-This example assumes you have configured a vault and loaded a configuration profile with a key '*my_profile_key*'. See the section "Database configuration profile" below for a quick example. For a complete description of the ``avault`` module see the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
+This example assumes you have configured a vault and loaded a configuration profile with a key '*my_profile_key*'. See the section "[Database configuration profile](https://github.com/apigee-127/volos-connectors/tree/development/volos-pgsql#database-connection-profile)" below for a quick example. For a complete description of the ``avault`` module see the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
 
 ```
 var pgConnector = require('volos-pgsql');
