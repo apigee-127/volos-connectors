@@ -87,7 +87,7 @@ vault.get('my_profile_key', function (profileString) {
 
 To use this connector you need to configure the Volos Mailer connection profile, start the Node.js server, and then you can start sending emails.
 
-### Database Connection Profile
+### Mailer Connection Profile
 
 This connector is requires the Node.js module called ``nodemailer``. This module allows you to connect directly to an SMTP server or to some "well known" mail services, like Gmail and Hotmail. 
 
