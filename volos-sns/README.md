@@ -54,7 +54,7 @@ The example below shows a simple usage of the ``volos-sns`` connector using the 
 ```
 var snsConnector = require('volos-sns');
 var http = require('http');
-var restMap = require('./configuration.js');
+var configuration = require('./configuration.js');
 
 var profile = {
   region: 'myregion'
@@ -62,15 +62,17 @@ var profile = {
   secretAccessKey: 'mysecretkey'
 };
 
-var svr = http.createServer(function (req, resp) {
-  snsConnectorObject.dispatchRequest(req, resp);
-});
+        var snsConnectorObject = new snsConnector.SnsConnector({"profile": profile, "configuration": configuration});
 
-svr.listen(9089, function () {
-    var snsConnectorObject = new snsConnector.SnsConnector({"profile": profile, "restMap": restMap});
-    snsConnectorObject.initializePaths(restMap);
-    console.log(snsConnectorObject.applicationName + ' node server is listening');
-});
+
+        var svr = http.createServer(function (req, resp) {
+          snsConnectorObject.dispatchRequest(req, resp);
+        });
+
+        svr.listen(9089, function () {
+            snsConnectorObject.initializePaths(configuration);
+            console.log(snsConnectorObject.applicationName + ' node server is listening');
+        });
 
 ```
 
