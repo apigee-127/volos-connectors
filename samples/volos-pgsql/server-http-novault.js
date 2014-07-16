@@ -4,12 +4,14 @@ var vault = require('avault').createVault(__dirname);
 var restMap = require('./queryToRestMap');
 
 var profile = {
-  username: 'apigee',
-  password: '97DqcjBSDE8m',
-  host: "a360dw.c7b2twrxxjtc.us-west-2.rds.amazonaws.com",
+  username: 'volos',
+  password: 'volos',
+  host: "nsa.rds.amazon.com",
   port: "5432",
-  database: "ace"
+  database: "volos"
 };
+
+profile = require('./dbprofile').profile;
 
 var pgConnectorObject = new pgConnector.PgConnector({"profile": profile, "restMap": restMap});
 
