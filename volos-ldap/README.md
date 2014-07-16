@@ -82,6 +82,7 @@ The example below shows a simple usage of the ``volos-ldap`` connector using the
 ```
 var ldapConnector = require('volos-ldap');
 var http = require('http');
+var restMap = require('./configurations.js');
 
 var profile = {
   host: 'myldapserver.com',
@@ -90,14 +91,14 @@ var profile = {
   credentials: "myldap-password"
 };
 
-var ldapConnectorObject = new ldapConnector.ldapConnector({"profile": profile});
-
 var svr = http.createServer(function (req, resp) {
   ldapConnectorObject.dispatchRequest(req, resp);
 });
 
 svr.listen(9089, function () {
-  console.log('volos-ldap node server is listening');
+    var ldapConnectorObject = new ldapConnector.LdapConnector({"profile": profile, "restMap": restMap});
+    ldapConnectorObject.initializePaths(restMap);
+    console.log(ldapConnectorObject.applicationName + ' node server is listening');
 });
 
 ```
@@ -113,6 +114,7 @@ This example assumes you have configured a vault and loaded a configuration prof
 var ldapConnector = require('volos-ldap');
 var http = require('http');
 var vault = require('avault').createVault(__dirname);
+var restMap = require('./configurations.js');
 
 var ldapConnectorObject;
 
@@ -127,8 +129,9 @@ vault.get('my_profile_key', function (profileString) {
     });
 
     svr.listen(9089, function () {
-      ldapConnectorObject = new ldapConnector.ldapConnector({"profile": profile});
-      console.log('volos-ldap node server is listening');
+            ldapConnectorObject = new ldapConnector.LdapConnector({"profile": profile, "restMap": restMap});
+            ldapConnectorObject.initializePaths(restMap);
+            console.log(ldapConnectorObject.applicationName + ' node server is listening');
     });
   }
 });
