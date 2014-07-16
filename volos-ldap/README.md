@@ -82,7 +82,7 @@ The example below shows a simple usage of the ``volos-ldap`` connector using the
 ```
 var ldapConnector = require('volos-ldap');
 var http = require('http');
-var restMap = require('./configurations.js');
+var restMap = require('./configuration.js');
 
 var profile = {
   host: 'myldapserver.com',
@@ -91,12 +91,13 @@ var profile = {
   credentials: "myldap-password"
 };
 
+var ldapConnectorObject = new ldapConnector.LdapConnector({"profile": profile, "configuration": configuration});
+
 var svr = http.createServer(function (req, resp) {
   ldapConnectorObject.dispatchRequest(req, resp);
 });
 
 svr.listen(9089, function () {
-    var ldapConnectorObject = new ldapConnector.LdapConnector({"profile": profile, "restMap": restMap});
     ldapConnectorObject.initializePaths(restMap);
     console.log(ldapConnectorObject.applicationName + ' node server is listening');
 });
