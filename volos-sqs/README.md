@@ -4,7 +4,7 @@ The Volos SQS connector is a Node.js module that lets you use Amazon Simple Queu
 
 ### Quick example
 
-This module allows maps SQS operations to RESTful API resources and query parameters. You can perform CRUD operations on objects like subscriptions, publications, and topics. 
+This module allows maps SQS operations to RESTful API resources and query parameters. You can perform CRUD operations on objects like messages and queues. 
 
 For example, you might ask for a list of your SQS subscriptions like this:
 
@@ -22,12 +22,12 @@ and get back a JSON response like this:
     "url": "/queues",
     "list": {
         "ResponseMetadata": {
-            "RequestId": "79968354-1577-55e5-a3da-cf14b4bcf149"
+            "RequestId": "799655555-55555-55555-55555-cf14b4bc55555"
         },
         "QueueUrls": [
-            "https://sqs.us-east-1.amazonaws.com/650324470758/another2",
-            "https://sqs.us-east-1.amazonaws.com/650324470758/another3",
-            "https://sqs.us-east-1.amazonaws.com/650324470758/myqueue"
+            "https://sqs.us-east-1.amazonaws.com/650324455555/another2",
+            "https://sqs.us-east-1.amazonaws.com/650324455555/another3",
+            "https://sqs.us-east-1.amazonaws.com/650324455555/myqueue"
         ]
     },
     "timestamp": 1405525899498,
@@ -55,7 +55,9 @@ There are two examples below, one basic example and one that uses the ``avault``
 
 ### Simple example without Apigee Vault
 
-The example below shows a simple usage of the ``volos-sqs`` connector using the ``http`` module to proxy requests to the connector.  Note that you need to specify your SQS credentials (not a best practice).
+The example below shows a simple usage of the ``volos-sqs`` connector using the ``http`` module to proxy requests to the connector.  
+
+> **Note:** In this example, the SQS credentials are specified in plaintext. This is not a best practice. 
 
 
 ```
@@ -68,14 +70,15 @@ var profile = {
   secretAccessKey: 'mysecretkey'
 };
 
-var sqsConnectorObject = new sqsConnector.sqsConnector({"profile": profile});
+var sqsConnectorObject = new sqsConnector.SqsConnector({"profile": profile, "restMap": restMap});
 
 var svr = http.createServer(function (req, resp) {
   sqsConnectorObject.dispatchRequest(req, resp);
 });
 
 svr.listen(9089, function () {
-  console.log('volos-sqs node server is listening');
+  sqsConnectorObject.initializePaths(restMap);
+  console.log(sqsConnectorObject.applicationName + ' node server is listening');
 });
 
 ```
@@ -85,30 +88,37 @@ svr.listen(9089, function () {
 
 This example shows the usage of the ``avault`` module to provide a secure local storage option for credentials and endpoint configuration.  
 
-This example assumes you have configured a vault and loaded a configuration profile with a key '*my_profile_key*'. See the section "SQS configuration profile" below for a quick example. For a complete description of the ``avault`` module see the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
+This example assumes you have configured a vault and loaded a configuration profile with a key '*my_profile_key*'. See the section "[SQS connection profile](#sns-connection-profile)" below for a quick example. For a complete description of the ``avault`` module see the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
 
 ```
 var sqsConnector = require('volos-sqs');
 var http = require('http');
 var vault = require('avault').createVault(__dirname);
 
-var sqsConnectorObject;
+var sqs;
 
-vault.get('my_profile_key', function (profileString) {
-  if (!profileString) {
-    console.log('Error: required vault not found.');
-  } else {
-    var profile = JSON.parse(profileString);
+vault.get('my-profile-key', function(profileString) {
+    if (!profileString) {
+        console.log('Error: required vault not found.');
+    } else {
+        var profile = JSON.parse(profileString);
+        var svr = http.createServer(function(req, resp) {
+            sqs.dispatchRequest(req, resp);
+        });
 
-    var svr = http.createServer(function (req, resp) {
-      sqsConnectorObject.dispatchRequest(req, resp);
-    });
+        svr.listen(9100, function() {
+            sqs = new snsConnector.SqsConnector({"profile": profile, configuration: configuration, receiveMessageCallback: receiveMessageCallback});
+            sqs.initializePaths(configuration.restMap);
+            console.log(sqs.applicationName + ' server is listening');
+        });
+    }
 
-    svr.listen(9089, function () {
-      sqsConnectorObject = new sqsConnector.sqsConnector({"profile": profile});
-      console.log('volos-sqs node server is listening');
-    });
-  }
+    function receiveMessageCallback(body, message) {
+        var dfd = Q.defer();
+        console.log('body: ' + body + ', message: ' + message);
+        dfd.resolve('');
+        return(dfd.promise);
+    }
 });
 ```
 
