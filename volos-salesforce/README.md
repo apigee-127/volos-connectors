@@ -49,7 +49,7 @@ The SOQL-to-REST mapping is enabled by simple JSON configuration. Here is a samp
     }
 ```
 
-To get a larger set of fields per row, use the query parameter ``expand=true``. This option uses the ``queryStringExpanded`` SOQL mapping statment instead of the default ``queryStringBasic`` statement.  This option gives you the flexibility to have a small message payload for a subset of fields if those are all that are required.
+To get a larger set of fields per row, use the query parameter ``expand=true``. This option uses the ``queryStringExpanded`` SOQL mapping statement instead of the default ``queryStringBasic`` statement.  This option gives you the flexibility to have a small message payload for a subset of fields if those are all that are required.
 
 # Installation
 
@@ -73,6 +73,7 @@ The example below shows a simple usage of the ``volos-salesforce`` connector usi
 ```
 var salesforceConnector = require('volos-salesforce');
 var http = require('http');
+var restMap = require('./queryToRestMap.js');
 
 var profile = {
   username: 'volos',
@@ -80,14 +81,14 @@ var profile = {
   securityToken: "mySalesforceSecurityToken"
 };
 
-var salesforceConnectorObject = new salesforceConnector.salesforceConnector({"profile": profile});
-
 var svr = http.createServer(function (req, resp) {
   salesforceConnectorObject.dispatchRequest(req, resp);
 });
 
 svr.listen(9089, function () {
-  console.log('volos-salesforce node server is listening');
+    var salesforceConnectorObject = new SalesforceConnector.PgConnector({"profile": profile, "restMap": restMap});
+    salesforceConnectorObject.initializePaths(restMap);
+    console.log(salesforceConnectorObject.applicationName + ' node server is listening');
 });
 
 ```
@@ -102,24 +103,25 @@ This example assumes you have configured a vault and loaded a configuration prof
 var salesforceConnector = require('volos-salesforce');
 var http = require('http');
 var vault = require('avault').createVault(__dirname);
+var restMap = require('./queryToRestMap.js');
 
-var salesforceConnectorObject;
+var sfConnectorObject;
 
-vault.get('my_profile_key', function (profileString) {
-  if (!profileString) {
-    console.log('Error: required vault not found.');
-  } else {
-    var profile = JSON.parse(profileString);
+avault.get('my-profile-key', function (profileString) {
+    if (!profileString) {
+        console.log('Error: required vault not found.');
+    } else {
+        var profile = JSON.parse(profileString);
+        var svr = http.createServer(function (req, resp) {
+            sfConnectorObject.dispatchRequest(req, resp);
+        });
 
-    var svr = http.createServer(function (req, resp) {
-      salesforceConnectorObject.dispatchRequest(req, resp);
-    });
-
-    svr.listen(9089, function () {
-      salesforceConnectorObject = new salesforceConnector.salesforceConnector({"profile": profile});
-      console.log('volos-salesforce node server is listening');
-    });
-  }
+        svr.listen(9009, function () {
+            sfConnectorObject = new sfConnector.SfConnector({"profile": profile, restMap: restMap});
+            sfConnectorObject.initializePaths(restMap);
+            console.log(sfConnectorObject.applicationName + ' node server is listening');
+        });
+    }
 });
 ```
 
@@ -149,7 +151,7 @@ var profile = {
 
 ### Optional: Encrypting the connection profile with Apigee Vault 
 
-The ``avault`` module provides local, double-key encrypted storage of sensetive information such as credentials and system endpoints.  This provides an option to store these kinds of data in a format other than `text/plain`.
+The ``avault`` module provides local, double-key encrypted storage of sensitive information such as credentials and system endpoints.  This provides an option to store these kinds of data in a format other than `text/plain`.
 
 In order to insert a value into the vault a command-line tool is provided called `vaultcli`.  This tool comes with the `avault` module.  Here's an example:
 
@@ -163,7 +165,7 @@ For more detailed usage of the `avault` module refer to the [Apigee Vault page o
 
 # Salesforce SOQL to REST mapping
 
-The file ``queryToRestMap.js`` contains the infomation that maps SOQL query parameters to RESTful API resources. The file is JSON, and the pattern you need to follow to configure your mappings is fairly straightforward. Let's see how this works.
+The file ``queryToRestMap.js`` contains the information that maps SOQL query parameters to RESTful API resources. The file is JSON, and the pattern you need to follow to configure your mappings is fairly straightforward. Let's see how this works.
 
 ### Understanding the mapping file structure
 
@@ -195,22 +197,22 @@ The ``queryToRestMap.js`` file consists of a repeating pattern of JSON elements 
 
 Let's look at the parts one by one:
 
-* `'opportunity'` and `'account'` - The element names become the REST resource names. So, you might call this API like this: 
+* **opportunity** and **account** - The element names become the REST resource names. So, you might call this API like this: 
   
     `http://localhost:9089/oportunity?ownerEmail=jdoe@example.com` or
 
     `http://locahost:9089/account?lastDays=30`
 
-* ``queryStringBasic`` - A SOQL query that can be used to return a subset of the information of the `queryStringExpanded`, if desired. 
+* **queryStringBasic** - A SOQL query that can be used to return a subset of the information of the `queryStringExpanded`, if desired. 
                       
-* ``queryStringExpanded`` - An unfiltered (or less filtered) query. The connector uses this query string when you specify the query parameter ``?expand=true``. For example:
+* **queryStringExpanded** - An unfiltered (or less filtered) query. The connector uses this query string when you specify the query parameter ``?expand=true``. For example:
 
     ```
     $ curl http://localhost:9089/opportunity?expand=true
     ```
 
-* ``idName`` - The name of the database column to query against.
-* ``queryParameters`` - These let you filter the results of the SOQL statement that gets executed. They are translated to WHERE clauses of the SOQL statement.  For example, to return a list of opportunities for a given owner you could make this call:
+* **idName** - The name of the database column to query against.
+* **queryParameters** - These let you filter the results of the SOQL statement that gets executed. They are translated to WHERE clauses of the SOQL statement.  For example, to return a list of opportunities for a given owner you could make this call:
 
     ```
     $ curl http://localhost:9089/oportunity?ownerEmail=jdoe@example.com
@@ -228,7 +230,8 @@ Let's look at the parts one by one:
     ```
     SELECT id, Owner.Name FROM Opportunity WHERE Owner.Email='jdoe@example.com&LAST_N_DAYS:30
     ```
-**Note:** You can customize the query parameter names and they *do not* need to map directly to column names. For example, look at this set of query parameters for our employees example:
+
+>**Note:** You can customize the query parameter names and they *do not* need to map directly to column names. For example, look at this set of query parameters for our employees example:
 
 ```
     queryParameters : {
@@ -242,8 +245,8 @@ Let's look at the parts one by one:
 In this case the query parameter `foobar` would be mapped to the WHERE clause of the SOQL statement for the `id` column.  
 
 ### Note the following with regard to query parameters:
-* If you have a join query you may need to include table aliases for your query parameter statements
-* Don't neglect the escaped quotes (`\'`) if you want the values of your query parameters to be interpreted as strings
+* If you have a join query you may need to include table aliases for your query parameter statements.
+* Don't neglect the escaped quotes (`\'`) if you want the values of your query parameters to be interpreted as strings.
 
 License
 -------
