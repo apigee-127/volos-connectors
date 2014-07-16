@@ -88,7 +88,7 @@ svr.listen(9089, function () {
 
 This example shows the usage of the ``avault`` module to provide a secure local storage option for credentials and endpoint configuration.  
 
-This example assumes you have configured a vault and loaded a configuration profile with a key '*my_profile_key*'. See the section "[SQS connection profile](#sns-connection-profile)" below for a quick example. For a complete description of the ``avault`` module see the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
+This example assumes you have configured a vault and loaded a configuration profile with a key '*my_profile_key*'. See the section "[SQS connection profile](#sqs-connection-profile)" below for a quick example. For a complete description of the ``avault`` module see the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
 
 ```
 var sqsConnector = require('volos-sqs');
@@ -135,7 +135,7 @@ The SQS configuration profile is used by the connector to establish a connection
 * **acessKeyId** - The access key ID for your Amazon Web Services SQS account.
 * **secretAccessKey** - The secret access key for your Amazon Web Services SQS account. 
 
-**Tip:** Log in to your SQS account to find your security credentials, including AWS access keys.
+> **Tip:** Log in to your SQS account to find your security credentials, including AWS access keys.
 
 **Example:**
 ```
@@ -156,7 +156,7 @@ In order to insert a value into the vault a command-line tool is provided called
     $ vaultcli --verbose --value='{"region"; "myregion", "accessKeyId":"myaccesskeyid", "secretAccessKey": "mysecretaccesskey"}' my-vault-name
 ```
 
-Note that these are the same keys that are required in the plaintext version of the profile.  If this command completes successfully you will find two new files: `store.js` and `keys.js`. Place them in the root directory of the ``volos-sqs`` module. 
+> **Note:** These are the same keys that are required in the plaintext version of the profile.  If this command completes successfully you will find two new files: `store.js` and `keys.js`. Place them in the root directory of the ``volos-sqs`` module. 
 
 For more detailed usage of the `avault` module refer to the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
 
