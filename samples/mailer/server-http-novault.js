@@ -2,12 +2,11 @@ var nodemailerConnector = require('volos-mailer');
 var http = require('http');
 
 var profile = {
-  username: 'volos',
-  password: 'volos',
-  host: "nsa.rds.amazon.com",
-  port: "5432",
-  database: "volos"
+  host: 'mymailserver.example.com',
+  port: '5432',
+  auth: {"user":"myusername","pass":"mypass"}
 };
+
 
 // optionally store the profile data in a separate file and add that file to .gitignore so it doesn't make it to git :)
 // profile = require('./novault').profile;
