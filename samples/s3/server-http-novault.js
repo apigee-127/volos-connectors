@@ -5,11 +5,9 @@ var http = require('http');
 var s3;
 
 var profile = {
-  username: 'volos',
-  password: 'volos',
-  host: "nsa.rds.amazon.com",
-  port: "5432",
-  database: "volos"
+  region: 'us-west-1',
+  accessKeyId: 'myaccesskeyid',
+  secretAccessKey: 'mysecretkey'
 };
 
 // optionally store the profile data in a separate file and add that file to .gitignore so it doesn't make it to git :)

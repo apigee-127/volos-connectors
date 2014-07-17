@@ -7,11 +7,9 @@ var Q = require('q');
 var sqs;
 
 var profile = {
-  username: 'volos',
-  password: 'volos',
-  host: "nsa.rds.amazon.com",
-  port: "5432",
-  database: "volos"
+  region: 'us-west-1',
+  accessKeyId: 'myaccesskeyid',
+  secretAccessKey: 'mysecretkey'
 };
 
 profile = require('./novault').profile;
