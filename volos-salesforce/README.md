@@ -81,12 +81,14 @@ var profile = {
   securityToken: "mySalesforceSecurityToken"
 };
 
+var salesforceConnectorObject = new sfConnector.SfConnector({"profile": profile, "restMap": restMap});
+
+
 var svr = http.createServer(function (req, resp) {
   salesforceConnectorObject.dispatchRequest(req, resp);
 });
 
 svr.listen(9089, function () {
-    var salesforceConnectorObject = new SalesforceConnector.PgConnector({"profile": profile, "restMap": restMap});
     salesforceConnectorObject.initializePaths(restMap);
     console.log(salesforceConnectorObject.applicationName + ' node server is listening');
 });

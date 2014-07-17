@@ -58,15 +58,16 @@ var profile = {
   secretAccessKey: 'mysecretkey'
 };
 
-var svr = http.createServer(function (req, resp) {
-  s3ConnectorObject.dispatchRequest(req, resp);
-});
-
-svr.listen(9089, function () {
     var s3ConnectorObject = new s3Connector.S3Connector({"profile": profile, "configuration": configuration});
-    s3ConnectorObject.initializePaths(configuration.restMap);
-    console.log(s3ConnectorObject.applicationName + ' node server is listening');
-});
+
+    var svr = http.createServer(function (req, resp) {
+          s3ConnectorObject.dispatchRequest(req, resp);
+    });
+
+    svr.listen(9089, function () {
+            s3ConnectorObject.initializePaths(configuration.restMap);
+            console.log(s3ConnectorObject.applicationName + ' node server is listening');
+    });
 
 ```
 

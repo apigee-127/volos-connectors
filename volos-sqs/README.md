@@ -63,6 +63,8 @@ The example below shows a simple usage of the ``volos-sqs`` connector using the 
 ```
 var sqsConnector = require('volos-sqs');
 var http = require('http');
+var configuration = require('./configuration.js');
+
 
 var profile = {
   region: 'myregion'
@@ -70,14 +72,14 @@ var profile = {
   secretAccessKey: 'mysecretkey'
 };
 
-var sqsConnectorObject = new sqsConnector.SqsConnector({"profile": profile, "restMap": restMap});
+vvar sqsConnectorObject = new sqsConnector.SqsConnector({"profile": profile, "configuration": configuration});
 
 var svr = http.createServer(function (req, resp) {
   sqsConnectorObject.dispatchRequest(req, resp);
 });
 
 svr.listen(9089, function () {
-  sqsConnectorObject.initializePaths(restMap);
+  sqsConnectorObject.initializePaths(configuration);
   console.log(sqsConnectorObject.applicationName + ' node server is listening');
 });
 
