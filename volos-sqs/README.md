@@ -20,7 +20,7 @@ and get back a JSON response like this:
     },
     "path": "/queues",
     "url": "/queues",
-    "list": {
+    "data": {
         "ResponseMetadata": {
             "RequestId": "799655555-55555-55555-55555-cf14b4bc55555"
         },
@@ -215,7 +215,7 @@ You might get a response like this:
     },
     "path": "/messages",
     "url": "/messages?queueUrl=https://sqs.us-east-1.amazonaws.com/555555555555/myqueue",
-    "list": {
+    "data": {
         "receiveResult": {
             "ResponseMetadata": {
                 "RequestId": "5555-5555-5555-ad1e-ec975555364c"
