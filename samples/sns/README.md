@@ -1,0 +1,1 @@
+# Samples for Volos SNS Connector

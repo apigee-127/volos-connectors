@@ -1,4 +1,1 @@
-volos-connectors
-================
-
-Connector Modules for Volos
+# Samples for Volos Connector Modules
