@@ -79,23 +79,22 @@ var http = require('http');
 var restMap = require('./queryToRestMap');
 
 var profile = {
-  user: 'volos',
-  password: 'volos',
-  host: "nsa.rds.amazon.com",
-  port: "5432"
+    user: 'volos',
+    password: 'volos',
+    host: "nsa.rds.amazon.com",
+    port: "5432"
 };
 
-        var mysqlConnectorObject = new mysqlConnector.MySqlConnector({"profile": profile, "restMap": restMap});
+ var mysqlConnectorObject = new mysqlConnector.MySqlConnector({"profile": profile, "restMap": restMap});
 
+var svr = http.createServer(function (req, resp) {
+    mysqlConnectorObject.dispatchRequest(req, resp);
+});
 
-        var svr = http.createServer(function (req, resp) {
-          mysqlConnectorObject.dispatchRequest(req, resp);
-        });
-
-        svr.listen(9089, function () {
-            mysqlConnectorObject.initializePaths(restMap);
-            console.log(mysqlConnectorObject.applicationName + ' node server is listening');
-        });
+svr.listen(9089, function () {
+    mysqlConnectorObject.initializePaths(restMap);
+    console.log(mysqlConnectorObject.applicationName + ' node server is listening');
+});
 
 ```
 
@@ -167,7 +166,7 @@ In order to insert a value into the vault a command-line tool is provided called
     $ vaultcli --verbose --value='{"username":"volos", "password": "volos", "host": "nsa.rds.amazon.com", "port":"5432", "database":"volos"}' my-vault-name
 ```
 
->**Note:**These are the same keys that are required in the plaintext version of the profile.  If this command completes successfully you will find two new files: `store.js` and `keys.js`. Place them in the root directory of the ``volos-mysql`` module. 
+> **Note:** These are the same keys that are required in the plaintext version of the profile.  If this command completes successfully you will find two new files: `store.js` and `keys.js`. Place them in the root directory of the ``volos-mysql`` module. 
 
 For more detailed usage of the `avault` module refer to the [Apigee Vault page on GitHub](https://github.com/apigee-127/avault). 
 
