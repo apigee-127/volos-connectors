@@ -12,7 +12,8 @@ var profile = {
   database: "volos"
 };
 
-profile = require('./novault').profile;
+// optionally store the profile data in a separate file and add that file to .gitignore so it doesn't make it to git :)
+// profile = require('./novault').profile;
 
 var svr = http.createServer(function (req, resp) {
   sfConnectorObject.dispatchRequest(req, resp);
