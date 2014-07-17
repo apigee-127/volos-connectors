@@ -1,6 +1,15 @@
 var nodemailerConnector = require('volos-mailer');
 var http = require('http');
-var avault = require('avault').createVault(__dirname);
+
+var profile = {
+  username: 'volos',
+  password: 'volos',
+  host: "nsa.rds.amazon.com",
+  port: "5432",
+  database: "volos"
+};
+
+profile = require('./novault').profile;
 
 //
 // sample usage:
@@ -11,18 +20,11 @@ console.log('connector-nodemailer application starting...');
 
 var nodemailerConnectorObject;
 
-avault.get('mySmtpServer', function(profileString) {
-    if (!profileString) {
-        console.log('Error: required vault not found.');
-    } else {
-        var profile = JSON.parse(profileString);
-        var svr = http.createServer(function (req, resp) {
-            nodemailerConnectorObject.dispatchRequest(req, resp, "member");
-        });
+var svr = http.createServer(function (req, resp) {
+  nodemailerConnectorObject.dispatchRequest(req, resp, "member");
+});
 
-        svr.listen(9057, function () {
-            nodemailerConnectorObject = new nodemailerConnector.NodemailerConnector({"profile": profile});
-            console.log(nodemailerConnectorObject.applicationName + ' server is listening');
-        });
-    }
+svr.listen(9057, function () {
+  nodemailerConnectorObject = new nodemailerConnector.NodemailerConnector({"profile": profile});
+  console.log(nodemailerConnectorObject.applicationName + ' server is listening');
 });

@@ -10,7 +10,7 @@ var profile = {
   database: "volos"
 };
 
-profile = require('./dbprofile').profile;
+profile = require('./novault').profile;
 
 var pgConnectorObject = new pgConnector.PgConnector({"profile": profile, "restMap": restMap});
 

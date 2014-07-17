@@ -1,23 +1,25 @@
 var http = require('http');
-var vault = require('avault').createVault(__dirname);
 var restMap = require('./queryToRestMap.js');
 var mysqlConnector = require('volos-mysql');
 
 var mysqlConnectorObject;
 
-vault.get('jeff', function(profileString) {
-    if (!profileString) {
-        console.log('Error: required vault not found.');
-    } else {
-        var profile = JSON.parse(profileString);
-        var svr = http.createServer(function(req, resp) {
-            mysqlConnectorObject.dispatchRequest(req, resp);
-        });
+var profile = {
+  username: 'volos',
+  password: 'volos',
+  host: "nsa.rds.amazon.com",
+  port: "5432",
+  database: "volos"
+};
 
-        svr.listen(9090, function() {
-            mysqlConnectorObject = new mysqlConnector.MySqlConnector({profile: profile, restMap : restMap, includeMetaDeta: false});
-            mysqlConnectorObject.initializePaths(restMap);
-            console.log(mysqlConnectorObject.applicationName + ' node server is listening');
-        });
-    }
+profile = require('./novault').profile;
+
+var svr = http.createServer(function (req, resp) {
+  mysqlConnectorObject.dispatchRequest(req, resp);
+});
+
+svr.listen(9090, function () {
+  mysqlConnectorObject = new mysqlConnector.MySqlConnector({profile: profile, restMap: restMap, includeMetaDeta: false});
+  mysqlConnectorObject.initializePaths(restMap);
+  console.log(mysqlConnectorObject.applicationName + ' node server is listening');
 });

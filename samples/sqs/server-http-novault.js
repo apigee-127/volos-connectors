@@ -6,26 +6,30 @@ var Q = require('q');
 
 var sqs;
 
-vault.get('aws', function(profileString) {
-    if (!profileString) {
-        console.log('Error: required vault not found.');
-    } else {
-        var profile = JSON.parse(profileString);
-        var svr = http.createServer(function(req, resp) {
-            sqs.dispatchRequest(req, resp);
-        });
+var profile = {
+  username: 'volos',
+  password: 'volos',
+  host: "nsa.rds.amazon.com",
+  port: "5432",
+  database: "volos"
+};
 
-        svr.listen(9100, function() {
-            sqs = new snsConnector.SqsConnector({"profile": profile, configuration: configuration, receiveMessageCallback: receiveMessageCallback});
-            sqs.initializePaths(configuration.restMap);
-            console.log(sqs.applicationName + ' server is listening');
-        });
-    }
+profile = require('./novault').profile;
 
-    function receiveMessageCallback(body, message) {
-        var dfd = Q.defer();
-        console.log('body: ' + body + ', message: ' + message);
-        dfd.resolve('');
-        return(dfd.promise);
-    }
+var svr = http.createServer(function (req, resp) {
+  sqs.dispatchRequest(req, resp);
 });
+
+svr.listen(9100, function () {
+  sqs = new snsConnector.SqsConnector({"profile": profile, configuration: configuration, receiveMessageCallback: receiveMessageCallback});
+  sqs.initializePaths(configuration.restMap);
+  console.log(sqs.applicationName + ' server is listening');
+});
+
+
+function receiveMessageCallback(body, message) {
+  var dfd = Q.defer();
+  console.log('body: ' + body + ', message: ' + message);
+  dfd.resolve('');
+  return(dfd.promise);
+}
