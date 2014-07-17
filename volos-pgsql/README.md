@@ -105,7 +105,6 @@ The example below shows a simple usage of the ``volos-pgsql`` connector using th
 ```
 var pgConnector = require('volos-pgsql');
 var http = require('http');
-var vault = require('avault').createVault(__dirname);
 var restMap = require('./queryToRestMap');
 
 var profile = {
