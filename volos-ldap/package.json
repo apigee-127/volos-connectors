@@ -1,0 +1,29 @@
+{
+  "name": "volos-ldap",
+  "version": "0.0.1",
+  "description": "Volos ldap Connector",
+  "main": "ldapConnector.js",
+  "dependencies": {
+    "lodash": "^2.4.1",
+    "q": "^1.0.1",
+    "ldapjs": "^0.7.1",
+    "volos-connectors-common": "^0.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/apigee-127/volos-connectors.git"
+  },
+  "keywords": [
+    "ldap"
+  ],
+  "author": "Randy Solton <rsolton@apigee.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/apigee-127/volos-connectors/issues"
+  },
+  "homepage": "https://github.com/apigee-127/volos-connectors"
+}

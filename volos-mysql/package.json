@@ -1,0 +1,29 @@
+{
+  "name": "volos-mysql",
+  "version": "0.0.1",
+  "description": "Volos MySQL Database Connector",
+  "main": "mysqlConnector.js",
+  "dependencies": {
+    "lodash": "^2.4.1",
+    "volos-connectors-common": "^0.0.3",
+    "mysql": "^2.4.0",
+    "q": "^1.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/apigee-127/volos-connectors.git"
+  },
+  "keywords": [
+    "mysql"
+  ],
+  "author": "Randy Solton <rsolton@apigee.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/apigee-127/volos-connectors/issues"
+  },
+  "homepage": "https://github.com/apigee-127/volos-connectors"
+}

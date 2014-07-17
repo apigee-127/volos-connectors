@@ -1,0 +1,30 @@
+{
+  "name": "volos-sns",
+  "version": "0.0.1",
+  "description": "Volos AWS SNS Connector",
+  "main": "snsConnector.js",
+  "dependencies": {
+    "q": "^1.0.1",
+    "aws-sdk": "^2.0.8",
+    "lodash": "^2.4.1",
+    "volos-connectors-common": "^0.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/apigee-127/volos-connectors.git"
+  },
+  "keywords": [
+    "aws",
+    "sns"
+  ],
+  "author": "Randy Solton <rsolton@apigee.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/apigee-127/volos-connectors/issues"
+  },
+  "homepage": "https://github.com/apigee-127/volos-connectors"
+}

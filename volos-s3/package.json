@@ -1,0 +1,31 @@
+{
+  "name": "volos-s3",
+  "version": "0.0.1",
+  "description": "Volos AWS S3 Connector",
+  "main": "s3Connector.js",
+  "dependencies": {
+    "aws-sdk": "^2.0.8",
+    "lodash": "^2.4.1",
+    "q": "^1.0.1",
+    "volos-connectors-common": "^0.0.4",
+    "xmldom": "^0.1.19"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/apigee-127/volos-connectors.git"
+  },
+  "keywords": [
+    "aws",
+    "s3"
+  ],
+  "author": "Randy Solton <rsolton@apigee.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/apigee-127/volos-connectors/issues"
+  },
+  "homepage": "https://github.com/apigee-127/volos-connectors"
+}
