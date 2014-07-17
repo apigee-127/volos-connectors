@@ -26,7 +26,7 @@ which generates a JSON response like this:
     },
     "path": "/employees/jdoe",
     "url": "/employees/jdoe",
-    "list": [
+    "data": [
         {
             "id_emp": "jdoe",
             "emp_name": "John Doe"
@@ -67,7 +67,7 @@ To get a larger set of fields per row, use the query parameter ``expand=true``. 
     },
     "path": "/employees/jdoe",
     "url": "/employees/jdoe?expand=true",
-    "list": [
+    "data": [
         {
             "id_emp": "jdoe",
             "emp_name": "John Doe",
