@@ -5,14 +5,16 @@ Volos connectors are a set of Node.js modules that allow you to connect to enter
 
 We have developed connectors for the following areas:
 
-* [SaaS Connectors](#connectors_saas)
-* [SQL Database Connectors](#connectors_sql)
-* [NoSQL Database Connectors](#connectors_nosql)
-* [Cloud Storage Connectors](#connectors_storage)
-* [Asynchronous Messaging Connectors](#connectors_messaging)
-* [Security Connectors](#connectors_security)
+* [SaaS API Connectors](#connectors_saas)
+* [SQL Database API Connectors](#connectors_sql)
+* [NoSQL Database API Connectors](#connectors_nosql)
+* [Cloud Storage API Connectors](#connectors_storage)
+* [Asynchronous Messaging API Connectors](#connectors_messaging)
+* [Security API Connectors](#connectors_security)
 
-# SaaS Connectors
+=======
+
+# SaaS API Connectors
 <a name="connectors_saas"></a>
 Volos Connectors includes modules for the following SaaS Providers:
 
@@ -21,7 +23,7 @@ Volos Connectors includes modules for the following SaaS Providers:
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/salesforce_logo-300x235.jpg" alt="Salesforce.com" width="150px"/> | [Volos Salesforce.com Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-salesforce) |
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/netsuite-logo-600x500.png" alt="Salesforce.com" width="150px"/> | Volos Netsuite Connector (coming soon) |
 
-# SQL Database Connectors
+# SQL Database API Connectors
 <a name="connectors_sql"></a>
 Volos Connectors includes modules for the following SQL database connections:
 
@@ -31,24 +33,23 @@ Volos Connectors includes modules for the following SQL database connections:
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/PostgreSQL_logo.3colors.120x120.png" alt="PostgreSQL" width="100px"/>  | [Volos PostgreSQL Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-pgsql) |
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/SQL-Server-2012.png" alt="MS SQL" width="150px"/> |  Volos MS SQL Connector (coming soon) |
 
-# NoSQL Database Connectors
+# NoSQL Database API Connectors
 <a name="connectors_nosql"></a>
 
 | Database | Volos Connector |
 | :------: | --------------- |
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/MongoDB_Logo.png" alt="MongoDB" width="150px"/> | Volos MongoDB Connector (coming soon) |
 
-# Cloud Storage Connectors
+# Cloud Storage API Connectors
 <a name="connectors_storage"></a>
 
 | Provider | Volos Connector |
 | :------: | --------------- |
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/aws-logo-304x200.png" alt="Amazon AWS" width="150px"/> | [Volos Amazon S3 Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-s3) |
-| <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/ftp-logo.png" alt="ftp" width="150px"/> | Volos FTP Connector (coming soon) |
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/Box-logo.png" alt="Box.com" width="100px"/> | Volos Box.com Connector (coming soon) |
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/dropbox-logos_dropbox-vertical-blue.png" alt="Dropbox.com" height="100px"/> | Volos Dropbox Connector (coming soon) |
 
-# Asynchronous Messaging & Email
+# Asynchronous Messaging API Connectors
 <a name="connectors_messaging"></a>
 
 | Provider | Volos Connector |
@@ -56,7 +57,7 @@ Volos Connectors includes modules for the following SQL database connections:
 | <img src="https://raw.githubusercontent.com/apigee-127/volos-connectors/development/docs/images/aws-logo-304x200.png" alt="Amazon AWS" width="150px"/> | [Volos Amazon SQS Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-sqs) <br/> [Volos Amazon SNS Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-sns) | 
 | Nodemailer | [Volos SMTP/Email Connector](https://github.com/apigee-127/volos-connectors/tree/development/volos-mailer) |
 
-# Security (via API)
+# Security API Connectors
 <a name="connectors_security"></a>
 
 | Provider | Volos Connector |
