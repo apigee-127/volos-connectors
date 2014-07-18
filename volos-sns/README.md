@@ -207,12 +207,17 @@ You might get a response like this:
 ````
 
 
-To send a push notification to a phone:
+To send a subscription offer to a given mobile phone
 
-??? need to get the correct call for this???
+```
+curl  -X POST http://localhost:9099/subscriptions-d 'phone=15105551212&arn=arn:aws:sns:us-east-1:650324470758:mytopic'
+```
 
-``curl -X POST 'http://localhost:9099/subscriptions?arn=arn:aws:sns:us-east-1:650324470758:emailsupport:cd555502f-5555-4444-5555-6ea6b5155555&phone=13035555555' -d {???} ``
+To send an SMS message to a mobile phone that has opted in:
 
+```
+curl -X POST http://localhost:9099/publications -d 'message=Want to go to dinner tonight&subject=Dinner?&arn=asd&arn=arn:aws:sns:us-east-1:650324470758:mytopic'
+```
 
 
 
