@@ -1,6 +1,6 @@
 {
   "name": "volos-mailer",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Volos Mailer Connector",
   "main": "nodemailerConnector.js",
   "dependencies": {

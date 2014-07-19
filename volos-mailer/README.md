@@ -12,6 +12,12 @@ For example, you might send an email through the connector like this:
 curl 'http://localhost:9089/mail?from=me@example.com&to=you@example.com&subject=Hello%20world&html=<b>Just%20saying%20hello!</b>'
 ```
 
+Alternatively, you can send email using POST through the connector like this:
+
+```
+curl -X POST http://localhost:9057/mail -d '{"from": "me at the corner.com<blah@mememe.com>", "to": "someguy@somecompany.com", "subject": "Just% Saying Goodbye", "html": "<b>yes sir</b>"}' -H 'Content-Type: application/json
+```
+
 # Installation
 
 The ``volos-mailer`` module is designed for Node.js and is available through npm:
@@ -29,6 +35,7 @@ There are two examples below, one basic example and one that uses the ``avault``
 The example below shows a simple usage of the ``volos-mailer`` connector using the ``http`` module to proxy requests to the connector.  
 
 >In this example, credentials and the mail server endpoint are specified in plaintext. This is not a best practice.
+
 
 ```
 var nodemailerConnector = require('volos-mailer');

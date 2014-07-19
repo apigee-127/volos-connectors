@@ -3,7 +3,7 @@ var Q = require('q');
 var serverBase = require('volos-connectors-common').serverBase;
 
 var NodemailerConnector = function (options) {
-    this.configuration = options.configuration;
+    this.configuration = options.configuration || require('./configuration.js');
     this.applicationName = 'volos-mailer';
     //  rowCallback, rowCallbackContext
     this.options = options;
