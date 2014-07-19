@@ -1,6 +1,5 @@
 var http = require('http');
 var avault = require('avault').createVault(__dirname);
-var restMap = require('./queryToRestMap.js');
 var sfConnector = require('volos-salesforce');
 
 var sfConnectorObject;
@@ -15,8 +14,13 @@ avault.get('sf', function (profileString) {
         });
 
         svr.listen(9009, function () {
-            sfConnectorObject = new sfConnector.SfConnector({"profile": profile, restMap: restMap});
-            sfConnectorObject.initializePaths(restMap);
+            //
+            // to override default configuration:
+            // var restMap = require('./queryToRestMap.js');
+            // and then pass restMap in constructor options.
+            //
+            sfConnectorObject = new sfConnector.SfConnector({"profile": profile, restMap: undefined});
+            sfConnectorObject.initializePaths(sfConnectorObject.restMap);
             console.log(sfConnectorObject.applicationName + ' node server is listening');
         });
     }
