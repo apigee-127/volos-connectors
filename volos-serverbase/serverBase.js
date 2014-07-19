@@ -239,7 +239,7 @@ ServerBase.prototype.parseUrl = function (req) {
  * @param data 'application/x-www-form-urlencoded' key value pairs from POST or PUT.
  */
 ServerBase.prototype.parseFormvars = function (data) {
-    var formVarsObjects = {}
+    var formVarsObjects = {};
     var formVars = data.split('&');
 
     for (var i = 0; i < formVars.length; ++i) {
@@ -322,7 +322,7 @@ ServerBase.prototype.initializePaths = function (restMap, implicitCollectionName
     if (!this.init) {
         this.init = true;
         this.restMap = restMap
-        var regExpWord = '([a-z_\\-\\s0-9\\.]+)';
+        var regExpWord = '([a-zA-Z_\\-\\s0-9\\.]+)';
         var templateChar = ':';
 
         for (var key in restMap) {
