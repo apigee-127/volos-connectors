@@ -5,7 +5,7 @@ var mysqlConnector = require('volos-mysql');
 
 var mysqlConnectorObject;
 
-vault.get('jeff', function(profileString) {
+vault.get('mysql', function(profileString) {
     if (!profileString) {
         console.log('Error: required vault not found.');
     } else {

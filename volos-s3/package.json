@@ -1,6 +1,6 @@
 {
   "name": "volos-s3",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Volos AWS S3 Connector",
   "main": "s3Connector.js",
   "dependencies": {

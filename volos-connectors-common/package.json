@@ -1,15 +1,12 @@
 {
-  "name": "volos-mailer",
-  "version": "0.0.3",
-  "description": "Volos Mailer Connector",
-  "main": "nodemailerConnector.js",
+  "name": "volos-connectors-common",
+  "version": "0.0.5",
+  "description": "Basic support library for Volos Connectors.",
+  "main": "lib/index.js",
   "dependencies": {
-    "nodemailer": "^1.0.3",
-    "volos-connectors-common": "^0.0.4",
     "lodash": "^2.4.1",
     "q": "^1.0.1"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,8 +15,7 @@
     "url": "https://github.com/apigee-127/volos-connectors.git"
   },
   "keywords": [
-    "nodemailer",
-    "mailer"
+    "connectors"
   ],
   "author": "Randy Solton <rsolton@apigee.com>",
   "license": "MIT",

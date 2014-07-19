@@ -112,11 +112,12 @@ var SqsConnector = function (options) {
                             function (receiveMessageCallbackResult) {
                                 self.dequeue(sqs, message, queueUrl).then(
                                     function (dequeueResult) {
-                                        var wrappedResult = {
+                                        /*var wrappedResult = {
                                             receiveResult: data,
                                             dequeueResult: dequeueResult
-                                        }
-                                        var wrappedResult2 = self.wrapResult(req, resp, wrappedResult, self.applicationName);
+                                        }*/
+
+                                        var wrappedResult2 = self.wrapResult(req, resp, data.Messages, self.applicationName, data.ResponseMetadata);
                                         self.handleSuccess(req, resp, wrappedResult2, 201);
                                         dfd.resolve(wrappedResult);
                                     },
@@ -138,7 +139,7 @@ var SqsConnector = function (options) {
                             }
                         );
                     } else {
-                        var wrappedResult = self.wrapResult(req, resp, data, self.applicationName);
+                        var wrappedResult = self.wrapResult(req, resp, {}, self.applicationName, data.ResponseMetadata);
                         self.handleSuccess(req, resp, wrappedResult, 200);
                         dfd.resolve(wrappedResult);
                     }
@@ -169,7 +170,7 @@ var SqsConnector = function (options) {
 
     this.sendMessage = function (req, resp, sqs, queryInfo, body) {
         var dfd = Q.defer();
-        var formVars = this.parseFormvars(body);
+        var formVars = req.body;
         var self = this;
 
         var messageBody = formVars[this.getTemplateName(queryInfo.formVars.MessageBody)];
@@ -261,7 +262,7 @@ var SqsConnector = function (options) {
     }
 
     this.createQueue = function (req, resp, sqs, queryInfo, body) {
-        var formVars = this.parseFormvars(body);
+        var formVars = req.body;
         var promise = this.validateFormVars(req, resp, queryInfo.formVars, formVars);
 
         if (!promise) {
@@ -305,7 +306,7 @@ var SqsConnector = function (options) {
     },
 
     this.updateQueue = function (req, resp, sqs, queryInfo, body) {
-        var formVars = this.parseFormvars(body);
+        var formVars = req.body;
         var promise = this.validateFormVars(req, resp, queryInfo.formVars, formVars);
 
         if (!promise) {
