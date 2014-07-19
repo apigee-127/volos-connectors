@@ -119,7 +119,7 @@ var PgConnector = function (options) {
           var responseString = JSON.stringify(wrappedResult, undefined, '\t');
           //resp.status(200).setHeader('Content-Type', 'application/json').send(responseString);
 
-          resp.writeHead(200, responseString, {'Content-Type': 'application/json'});
+          resp.writeHead(200, {'Content-Type': 'application/json'});
           resp.end(responseString);
         });
       });
