@@ -12,7 +12,7 @@ var avault = require('avault').createVault(__dirname);
 
 var nodemailerConnectorObject;
 
-avault.get('its', function(profileString) {
+avault.get('mySmtpServer', function(profileString) {
     if (!profileString) {
         console.log('Error: required vault not found.');
     } else {
