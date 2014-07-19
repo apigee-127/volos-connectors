@@ -176,7 +176,7 @@ ServerBase.prototype.getHelp = function (restMap) {
         first = true;
         for (var fv in item.optionalFormVars) {
             if (first) {
-                commandline += '  Optioanl FormVars: ';
+                commandline += '  Optional FormVars: ';
                 first = false;
             } else {
                 commandline += ', ';
