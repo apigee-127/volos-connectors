@@ -4,7 +4,7 @@ var Q = require('q');
 var sqlServerBase = require('volos-connectors-common').sqlServerBase;
 
 var SfConnector = function (options) {
-    this.restMap = options.restMap;
+    this.restMap = options.restMap || require('./queryToRestMap.js');
     //  rowCallback, rowCallbackContext
     this.applicationName = "volos-salesforce";
     this.options = options;
