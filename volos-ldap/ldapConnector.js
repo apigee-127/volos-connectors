@@ -96,7 +96,7 @@ var LdapConnector = function (options) {
     this.search = function (req, resp, client, queryInfo) {
         var dfd = Q.defer();
 
-        var id = req.params.memberid;
+        var id = req.params.memberid || req.params.id;
         var limit = this.getParameter(req.query, 'limit', "100");
         var isExpand = this.getParameter(req.query, 'expand') === "true";
         var attributes = id ? queryInfo.attributesId :
@@ -134,8 +134,7 @@ var LdapConnector = function (options) {
     }
 
     this.verifyCredentials = function (req, resp, client, queryInfo, body) {
-        var formVars = this.parseFormvars(body);
-        var promise = this.validateFormVars(req, resp, queryInfo.formVars, formVars);
+        var promise = this.validateFormVars(req, resp, queryInfo.formVars, req.body);
 
         if (!promise) {
             var dfd = Q.defer();
@@ -157,7 +156,7 @@ var LdapConnector = function (options) {
                             var item = data[i];
                             var user = item[credentialsInformation.attributeNameUser];
                             var password = item[credentialsInformation.attributeNamePassword];
-                            if (formVars.user === user && formVars.password == password) {
+                            if (req.body.user === user && req.body.password == password) {
                                 valid = true;
                             }
                         }

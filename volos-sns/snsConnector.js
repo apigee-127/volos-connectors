@@ -62,8 +62,7 @@ var SnsConnector = function (options) {
                 dfd.resolve(prepareRequestResult);
             },
             function (err) {
-                handleError(req, resp, err, 400, '"executeOperation" failed');
-                dfd.reject();
+                dfd.reject(err);
             },
             function (progress) {
 
@@ -75,7 +74,7 @@ var SnsConnector = function (options) {
     }
 
     this.createTopic = function (req, resp, sns, queryInfo, body) {
-        var formVars = this.parseFormvars(body);
+        var formVars = req.body;
         var promise = this.validateFormVars(req, resp, queryInfo.formVars, formVars);
 
         if (!promise) {
@@ -110,7 +109,7 @@ var SnsConnector = function (options) {
     }
     this.unsubscribeSms = function (req, resp, sns, queryInfo, body) {
         var promise;
-        var formVars = this.parseFormvars(body);
+        var formVars = req.body;
 
         if (formVars.arn) {
             promise = this._unsubscribeSms(sns, req, resp, formVars.arn);
@@ -142,7 +141,7 @@ var SnsConnector = function (options) {
     }
 
     this.subscribeSms = function (req, resp, sns, queryInfo, body) {
-        var formVars = this.parseFormvars(body);
+        var formVars = req.body;
         var promise = this.validateFormVars(req, resp, queryInfo.formVars, formVars);
 
         if (!promise) {
@@ -171,7 +170,7 @@ var SnsConnector = function (options) {
     }
 
     this.publish = function (req, resp, sns, queryInfo, body) {
-        var formVars = this.parseFormvars(body);
+        var formVars = req.body;
         var promise = this.validateFormVars(req, resp, queryInfo.formVars, formVars);
 
         if (!promise) {

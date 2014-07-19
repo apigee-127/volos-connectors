@@ -3,6 +3,7 @@ var Q = require('q');
 var serverBase = require('volos-connectors-common').serverBase;
 
 var NodemailerConnector = function (options) {
+    this.configuration = options.configuration;
     this.applicationName = 'volos-mailer';
     //  rowCallback, rowCallbackContext
     this.options = options;
@@ -13,8 +14,8 @@ var NodemailerConnector = function (options) {
         return(this.establishConnection(req, resp));
     }
 
-    this.executeOperation = function (req, resp, smtpTransport) {
-        return(this.sendMail(req, resp, smtpTransport));
+    this.executeOperation = function (req, resp, setupResult) {
+        return(setupResult ? setupResult.executeMethod.call(this, req, resp, setupResult.smtpTransport) : this.unknownPath(req, resp));
     }
 
 
@@ -32,27 +33,49 @@ var NodemailerConnector = function (options) {
         dfd.resolve('');
         return(dfd.promise);
     }
+
+    this.supplyHelpObject = function () {
+        return(this.configuration.restMap);
+    }
     // <-- overrides
-    // private -->
+
     this.establishConnection = function (req, resp) {
         var dfd = Q.defer();
+        var self = this;
 
-        // create reusable transport method (opens pool of SMTP connections)
-        var smtpTransport = nodemailer.createTransport("SMTP", this.options.profile);
-        dfd.resolve(smtpTransport);
+        this.prepareRequest(req, resp).then(
+            function (prepareRequestResult) {
+
+                // create reusable transport method (opens pool of SMTP connections)
+                var smtpTransport = nodemailer.createTransport(self.options.profile);
+                prepareRequestResult.smtpTransport = smtpTransport;
+                dfd.resolve(prepareRequestResult);
+            },
+            function (err) {
+                dfd.reject(err);
+            }
+        );
 
         return dfd.promise;
     }
 
-    this.sendMail = function (req, resp, smtpTransport) {
+    this.mail = function(req, resp, smtpTransport) {
+        return(this.sendMail(req, resp, smtpTransport, req.query));
+    }
+
+    this.postMail = function(req, resp, smtpTransport) {
+        return(this.sendMail(req, resp, smtpTransport, req.body));
+    }
+
+    this.sendMail = function (req, resp, smtpTransport, data) {
         var dfd = Q.defer();
 
         // setup e-mail data with unicode symbols
-        var from = this.getParameter(req.query, 'from', null);
-        var to = this.getParameter(req.query, 'to', null);
-        var subject = this.getParameter(req.query, 'subject', null);
-        var text = this.getParameter(req.query, 'text', null);
-        var html = this.getParameter(req.query, 'html', null);
+        var from = this.getParameter(data, 'from', null);
+        var to = this.getParameter(data, 'to', null);
+        var subject = this.getParameter(data, 'subject', null);
+        var text = this.getParameter(data, 'text', null);
+        var html = this.getParameter(data, 'html', null);
 
         if (!from || !to || !subject || (!text && !html)) {
             var error = {
@@ -93,7 +116,7 @@ var NodemailerConnector = function (options) {
             var options = ['cc', 'bcc', 'replyTo', 'inReplyTo', 'references', 'generateTextFromHTML', 'envelope',
                            'messageId', 'date', 'encoding', 'charset'];
             for (var i = 0; i < options.length; ++i) {
-                this.addOptional(req, mailOptions, options[i]);
+                this.addOptional(data, mailOptions, options[i]);
             }
 
             var self = this;
@@ -105,7 +128,7 @@ var NodemailerConnector = function (options) {
                     throw error;
                 } else {
                     dfd.resolve(response);
-                    console.log("Message sent: " + response.message);
+                    console.log("Message sent: " + response.response);
 
                     var wrappedResult = self.wrapResult(req, resp, response, self.applicationName);
                     resp.writeHead(200, response.message, {'Content-Type': 'application/json'});
@@ -117,8 +140,8 @@ var NodemailerConnector = function (options) {
         return dfd.promise;
     }
 
-    this.addOptional = function (req, mailOptions, optionName) {
-        var option = this.getParameter(req.query, optionName, null);
+    this.addOptional = function (data, mailOptions, optionName) {
+        var option = this.getParameter(data, optionName, null);
         if (option) {
             mailOptions[optionName] = option;
         }
@@ -133,7 +156,6 @@ var NodemailerConnector = function (options) {
         }
         return(existingErrorMesssage);
     }
-// <-- private
 
 };
 

@@ -7,6 +7,7 @@ var _ = require('lodash');
 var serverBase = require('volos-connectors-common').serverBase;
 
 var S3Connector = function (options) {
+    this.doParseBody = false; // just pass on any body of any content-type to s3
     this.applicationName = 'volos-s3';
     this.configuration = options.configuration;
     var connector = this;
@@ -34,6 +35,7 @@ var S3Connector = function (options) {
         dfd.resolve('');
         return(dfd.promise);
     }
+
     this.supplyHelpObject = function () {
         return(this.configuration.restMap);
     }
