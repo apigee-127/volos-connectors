@@ -1,6 +1,6 @@
 {
   "name": "volos-salesforce",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Volos Salesforce Connector",
   "main": "sfConnector.js",
   "dependencies": {
