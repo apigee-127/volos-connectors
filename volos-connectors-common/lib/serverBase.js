@@ -338,7 +338,7 @@ ServerBase.prototype.initializePaths = function (restMap, implicitCollectionName
     if (!this.init) {
         this.init = true;
         this.restMap = restMap
-        var regExpWord = '([a-z_\\-\\s0-9\\.]+)';
+        var regExpWord = '([a-zA-Z\@\%_\\-\\s0-9\\.]+)';
         var templateChar = ':';
 
         for (var key in restMap) {
