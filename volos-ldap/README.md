@@ -16,22 +16,58 @@ and which might generate a JSON response like this:
 
 ```
 {
-        "distinguishedName": {
-            "cn": "engineering",
-            "ou": "departments",
-            "dc": [
-                "api-connectors",
-                "com"
-            ]
+    "action": "GET",
+    "params": {
+        "qp": {}
+    },
+    "path": "/departments/engineeering",
+    "url": "/departments/engineeering",
+    "data": [
+        {
+            "distinguishedName": {
+                "cn": "engineering",
+                "ou": "departments",
+                "dc": [
+                    "api-connectors",
+                    "com"
+                ]
+            },
+            "commonName": "engineering",
+            "member": {
+                "cn": "rsolton",
+                "ou": "people",
+                "dc": [
+                    "api-connectors",
+                    "com"
+                ]
+            }
         },
-        "member": {
-            "cn": "jdoe",
-            "ou": "people",
-            "dc": [
-                "api-connectors",
-                "com"
-            ]
+        {
+            "distinguishedName": {
+                "cn": "products",
+                "ou": "departments",
+                "dc": [
+                    "api-connectors",
+                    "com"
+                ]
+            },
+            "commonName": "products",
+            "member": {
+                "cn": "jwest",
+                "ou": "people",
+                "dc": [
+                    "api-connectors",
+                    "com"
+                ]
+            }
         }
+    ],
+    "targetMetadata": {},
+    "timestamp": 1406155542438,
+    "duration": 781,
+    "applicationName": "volos-ldap",
+    "count": 2
+}
 ```
 
 The LDAP-to-REST mapping is enabled by simple JSON configuration. Here is a sample:

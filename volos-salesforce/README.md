@@ -14,23 +14,38 @@ to a RESTful API that you could call like this:
 
 and which might generate a JSON response like this:
 
-```[
+```
+{
+    "action": "GET",
+    "params": {
+        "qp": {}
+    },
+    "path": "/opportunity",
+    "url": "/opportunity",
+    "data": [
    {
         "attributes": {
             "type": "Opportunity",
-            "url": "/services/data/v2.0/sobjects/Opportunity/00670000XcYHJ3"
+            "url": "/services/data/v2.0/sobjects/Opportunity/05555555XcYHJ3"
         },
         "Id": "00670000XcYHJ3",
         "Owner": {
             "attributes": {
                 "type": "User",
-                "url": "/services/data/v2.0/sobjects/User/005700002hJ12"
+                "url": "/services/data/v2.0/sobjects/User/0057555555J12"
             },
             "Name": "John Doe"
         }
     },
  ...
-]
+],
+    "targetMetadata": {},
+    "timestamp": 1406156417290,
+    "duration": 2888,
+    "applicationName": "volos-salesforce",
+    "count": 100,
+    "sql": "SELECT id, Owner.Name FROM Opportunity LIMIT 100"
+}
 ```
 
 The SOQL-to-REST mapping is enabled by simple JSON configuration. Here is a sample:

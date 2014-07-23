@@ -11,17 +11,37 @@ This module maps S3 operations to RESTful API resources and query parameters. Fo
 and you get back a JSON response like this:
 
 ````
-[{
-    "Buckets": [
+{
+    "action": "GET",
+    "params": {
+        "qp": {}
+    },
+    "path": "/buckets",
+    "url": "/buckets",
+    "data": [
         {
-            "Name": "com.mycompany.bucket",
-            "CreationDate": "2014-07-10T17:23:57.000Z"
+            "Name": "mybucket1",
+            "CreationDate": "2013-11-06T01:25:50.000Z"
+        },
+        {
+            "Name": "mybucket2",
+            "CreationDate": "2013-11-06T01:25:57.000Z"
+        },
+        {
+            "Name": "mybucket3",
+            "CreationDate": "2014-02-14T01:50:50.000Z"
         }
     ],
-    "Owner": {
-        "DisplayName": "jdoe",
-        "ID": "<a long string>"
-    }
+    "targetMetadata": {
+        "Owner": {
+            "DisplayName": "my-accounts",
+            "ID": "555555555555555555555555555"
+        }
+    },
+    "timestamp": 1406154878586,
+    "duration": 1706,
+    "applicationName": "my-app",
+    "count": 3
 }
 ````
 
