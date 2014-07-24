@@ -34,7 +34,7 @@ and which might generate a JSON response like this:
             },
             "commonName": "engineering",
             "member": {
-                "cn": "rsolton",
+                "cn": "jdoe",
                 "ou": "people",
                 "dc": [
                     "api-connectors",
@@ -53,7 +53,7 @@ and which might generate a JSON response like this:
             },
             "commonName": "products",
             "member": {
-                "cn": "jwest",
+                "cn": "kumarv",
                 "ou": "people",
                 "dc": [
                     "api-connectors",
