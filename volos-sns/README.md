@@ -14,18 +14,36 @@ and get back a JSON response like this:
 
 ```
 {
-    "ResponseMetadata": {
-        "RequestId": "d6cc8493-8c95-5389-bbe4-c8a9e4de09ec"
+    "action": "GET",
+    "params": {
+        "qp": {}
     },
-    "Subscriptions": [
-        {
-            "SubscriptionArn": "arn:aws:sns:us-east-1:650324470758:connector-test2:5c3f491e-5c4c-4bed-965f-666c95287211",
-            "Owner": "650324470758",
-            "Protocol": "sms",
-            "Endpoint": "15105526538",
-            "TopicArn": "arn:aws:sns:us-east-1:650324470758:connector-test2"
-        },
-    ...
+    "path": "/subscriptions",
+    "url": "/subscriptions",
+    "data": {
+        "Subscriptions": [
+            {
+                "SubscriptionArn": "arn:aws:sns:us-east-1:650324470758:connector-test2:5c3f491e-5c4c-4bed-965f-666c95287211",
+                "Owner": "650555570758",
+                "Protocol": "sms",
+                "Endpoint": "15155556538",
+                "TopicArn": "arn:aws:sns:us-east-1:65032555558:connector-test2"
+            },
+            {
+                "SubscriptionArn": "PendingConfirmation",
+                "Owner": "650355550758",
+                "Protocol": "sms",
+                "Endpoint": "15105555538",
+                "TopicArn": "arn:aws:sns:us-east-1:650325555758:yat"
+            },
+        ]
+    },
+    "targetMetadata": {
+        "RequestId": "d2fc3925-5555-5c55-5555-75695555b0f9"
+    },
+    "timestamp": 1406319559371,
+    "duration": 771,
+    "applicationName": "volos-sns"
 ```
 
 To get a larger set of attributes, use the query parameter ``expand=true``.  This option gives you the flexibility to have a small message payload for a subset of fields if those are all that are required. For example:
