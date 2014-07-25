@@ -7,53 +7,95 @@ The Volos MySQL connector is a Node.js module that lets you perform CRUD operati
 This module allows you to map SQL queries to RESTful API resources and query parameters. For example, a properly configured SQL connector could map a SQL query like this:
 
 ```
-SELECT emp_name, emp_id FROM employees WHERE emp_id='jdoe'
+'SELECT idpeople FROM example.people'
 ```
 to a RESTful API that you could call like this:
 
 ```
-$ curl http://localhost:9089/employees/jdoe
+$ curl http://localhost:9089/people
 ```
 
 which generates a JSON response like this:
     
 ```
-[
-    {
-        "emp_name": "Jane Doe",
-        "emp_id": "jdoe"
-    }
-]
+{
+    "action": "GET",
+    "params": {
+        "qp": {}
+    },
+    "path": "/people",
+    "url": "/people",
+    "data": [
+        {
+            "idpeople": 0
+        },
+        {
+            "idpeople": 1
+        },
+        {
+            "idpeople": 2
+        }
+    ],
+    "targetMetadata": {},
+    "timestamp": 1406238731690,
+    "duration": 1576,
+    "applicationName": "volos-mysql",
+    "count": 3,
+    "sql": "SELECT idpeople FROM example.people LIMIT 100"
+}
 ```
 
 The SQL-to-REST mapping is enabled by simple JSON configuration. Here is a sample:
 
 ```
-'employees': {
-    queryStringBasic: 'SELECT emp_name, emp_id FROM hr.employees',
-    queryStringExpanded: 'SELECT * FROM hr.employees',
-    idName: 'emp_id',
-    queryParameters : {
-        id: 'emp_id = \'{id}\'',
-        name: 'emp_name = \'{name}\'',
-        role: 'role = \'{role}\'',
-        hire_date: 'hire_date = \'{hire_date}\''
+'people': {
+        queryStringBasic: 'SELECT idpeople FROM example.people',
+        queryStringExpanded: 'SELECT * FROM example.people',
+        idName: 'idpeople',
+        queryParameters: {
+            firstname: 'firstname = \'{firstname}\'',
+            lastname: 'lastname = \'{lastname}\''
+        }
     }
-}
 ```
 
 
 To get a larger set of fields per row, use the query parameter ``expand=true``. This option uses the ``queryStringExpanded`` SQL mapping statement instead of the default ``queryStringBasic`` statement.  This option gives you the flexibility to have a small message payload for a subset of fields if those are all that are required.
 
 ```
-[
-    {
-        "emp_id": "jdoe",
-        "emp_name": "Jane Doe",
-        "role": "Manager",
-        "hire_date": "06-27-1978"
-    }
-]
+{
+    "action": "GET",
+    "params": {
+        "qp": {
+            "expand": "true"
+        }
+    },
+    "path": "/people",
+    "url": "/people?expand=true",
+    "data": [
+        {
+            "idpeople": 0,
+            "firstname": "John",
+            "lastname": "Doe"
+        },
+        {
+            "idpeople": 1,
+            "firstname": "Chris",
+            "lastname": "Logan"
+        },
+        {
+            "idpeople": 2,
+            "firstname": "Susan",
+            "lastname": "North"
+        }
+    ],
+    "targetMetadata": {},
+    "timestamp": 1406306063184,
+    "duration": 894,
+    "applicationName": "volos-mysql",
+    "count": 11,
+    "sql": "SELECT * FROM example.people LIMIT 100"
+}
 ```
 
 # Installation
