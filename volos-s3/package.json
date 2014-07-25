@@ -1,13 +1,13 @@
 {
   "name": "volos-s3",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Volos AWS S3 Connector",
   "main": "s3Connector.js",
   "dependencies": {
     "aws-sdk": "^2.0.8",
     "lodash": "^2.4.1",
     "q": "^1.0.1",
-    "volos-connectors-common": "^0.0.4",
+    "volos-connectors-common": "^0.0.7",
     "xmldom": "^0.1.19"
   },
   "devDependencies": {},

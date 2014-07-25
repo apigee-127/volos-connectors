@@ -19,7 +19,7 @@ avault.get('sf', function (profileString) {
             // var restMap = require('./queryToRestMap.js');
             // and then pass restMap in constructor options.
             //
-            sfConnectorObject = new sfConnector.SfConnector({"profile": profile, restMap: undefined});
+            sfConnectorObject = new sfConnector.SfConnector({profile: profile, restMap: undefined, defaults: {limit: 5}});
             sfConnectorObject.initializePaths(sfConnectorObject.restMap);
             console.log(sfConnectorObject.applicationName + ' node server is listening');
         });

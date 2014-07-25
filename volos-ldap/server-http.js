@@ -5,7 +5,7 @@ var vault = require('avault').createVault(__dirname);
 
 var ldap;
 
-vault.get('jeff', function(profileString) {
+vault.get('ldap', function(profileString) {
     if (!profileString) {
         console.log('Error: required vault not found.');
     } else {

@@ -1,7 +1,7 @@
 module.exports = {
     'opportunity': {
         queryStringBasic: 'SELECT id, Owner.Name FROM Opportunity',
-        queryStringExpanded: 'SELECT id, AccountId, Account.Name, RecordType.Name, Owner.Name, Owner.Email FROM Opportunity',
+        queryStringExpanded: 'SELECT id, AccountId, Account.Name, Owner.Name, Owner.Email FROM Opportunity',
         idName: 'Id',
         queryParameters: {
             lastDays: 'lastmodifieddate=LAST_N_DAYS: {lastDays}',
@@ -12,7 +12,7 @@ module.exports = {
     },
     'account': {
         queryStringBasic: 'SELECT id, Owner.Name FROM Account',
-        queryStringExpanded: 'SELECT id, Owner.Id, Owner.Name, Owner.Email,Owner.Region__c FROM Account',
+        queryStringExpanded: 'SELECT id, Owner.Id, Owner.Name, Owner.Email FROM Account',
         idName: 'Id',
         queryParameters: {
             lastDays: 'lastmodifieddate=LAST_N_DAYS: {lastDays}'
@@ -21,14 +21,6 @@ module.exports = {
     'case': {
         queryStringBasic: 'SELECT id, Owner.Name FROM Case',
         queryStringExpanded: 'SELECT id, Owner.Id, Owner.Name, Owner.Email, Owner.UserRole.Name, RecordType.Name FROM Case',
-        idName: 'Id',
-        queryParameters: {
-            lastDays: 'lastmodifieddate=LAST_N_DAYS: {lastDays}'
-        }
-    },
-    'customer': {
-        queryStringBasic: 'SELECT id, Account__r.Id, Account__r.Name FROM Customer__c',
-        queryStringExpanded: 'SELECT id, Account__r.Id, Account__r.Name FROM Customer__c',
         idName: 'Id',
         queryParameters: {
             lastDays: 'lastmodifieddate=LAST_N_DAYS: {lastDays}'
