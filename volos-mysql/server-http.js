@@ -15,7 +15,7 @@ vault.get('mysql', function(profileString) {
         });
 
         svr.listen(9090, function() {
-            mysqlConnectorObject = new mysqlConnector.MySqlConnector({profile: profile, restMap : restMap, includeMetaDeta: false});
+            mysqlConnectorObject = new mysqlConnector.MySqlConnector({profile: profile, restMap : restMap, defaults: {limit:5, expand: true, includeMetaDeta: false}});
             mysqlConnectorObject.initializePaths(restMap);
             console.log(mysqlConnectorObject.applicationName + ' node server is listening');
         });

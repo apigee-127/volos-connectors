@@ -7,6 +7,7 @@ var ServerBase = function () {
     this.init = false;
     this.doParseBody = true;
     this.regExpForRestMap = [];
+    this.defaults = {includeMetadata: true};
 }
 
 ServerBase.prototype = Object.create(null);
@@ -581,7 +582,6 @@ ServerBase.prototype.wrapResult = function(req, resp, result, applicationName, m
         "path" : req._parsedUrl.pathname,
         "url" : req.url,
         "data" : result,
-        "targetMetadata" : metadata || {},
         "timestamp" : new Date().valueOf(),
         "duration" : timeOut - req._timeIn,
         "applicationName" : applicationName,
@@ -590,6 +590,10 @@ ServerBase.prototype.wrapResult = function(req, resp, result, applicationName, m
     if (sql) {
         wrappedResult.sql = sql;
     }
+    if (this.defaults.includeMetaDeta) {
+        wrappedResult.targetMetadata = metadata || {};
+    }
+
     return(wrappedResult);
 }
 

@@ -9,7 +9,7 @@ var serverBase = require('volos-connectors-common').serverBase;
 var S3Connector = function (options) {
     this.doParseBody = false; // just pass on any body of any content-type to s3
     this.applicationName = 'volos-s3';
-    this.configuration = options.configuration;
+    this.configuration = options.configuration || require('./configuration.js');
     var connector = this;
     this.options = options;
 

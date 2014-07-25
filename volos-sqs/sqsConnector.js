@@ -8,7 +8,7 @@ var _ = require('lodash');
 
 var SqsConnector = function (options) {
     this.applicationName = 'volos-sqs';
-    this.configuration = options.configuration;
+    this.configuration = options.configuration || require('./configuration.js');
     var connector = this;
     this.options = options;
 

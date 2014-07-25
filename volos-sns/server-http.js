@@ -1,4 +1,3 @@
-var configuration = require('./configuration.js');
 var snsConnector = require('volos-sns');
 var vault = require('avault').createVault(__dirname);
 var http = require('http');
@@ -15,8 +14,8 @@ vault.get('aws', function(profileString) {
         });
 
         svr.listen(9099, function() {
-            sns = new snsConnector.SnsConnector({"profile": profile, configuration: configuration});
-            sns.initializePaths(configuration.restMap);
+            sns = new snsConnector.SnsConnector({"profile": profile, configuration: undefined});
+            sns.initializePaths(sns.configuration.restMap);
             console.log(sns.applicationName + ' server is listening');
         });
     }

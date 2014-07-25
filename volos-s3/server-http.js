@@ -1,4 +1,3 @@
-var configuration = require('./configuration.js');
 var s3Connector = require('volos-s3');
 var http = require('http');
 var vault = require('avault').createVault(__dirname);
@@ -16,8 +15,8 @@ vault.get('aws', function(profileString) {
         });
 
         svr.listen(9058, function() {
-            s3 = new s3Connector.S3Connector({"profile": profile, "configuration": configuration});
-            s3.initializePaths(configuration.restMap);
+            s3 = new s3Connector.S3Connector({profile: profile, configuration: undefined});
+            s3.initializePaths(s3.configuration.restMap);
             console.log(s3.applicationName + '  server is listening');
         });
     }

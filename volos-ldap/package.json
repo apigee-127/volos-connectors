@@ -1,13 +1,13 @@
 {
   "name": "volos-ldap",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Volos ldap Connector",
   "main": "ldapConnector.js",
   "dependencies": {
     "lodash": "^2.4.1",
     "q": "^1.0.1",
     "ldapjs": "^0.7.1",
-    "volos-connectors-common": "^0.0.3"
+    "volos-connectors-common": "^0.0.7"
   },
   "devDependencies": {},
   "scripts": {

@@ -293,7 +293,7 @@ var LdapConnector = function (options) {
                 dfd.reject(errResult);
             });
             res.on('end', function (result) {
-                console.log('status: ' + result.status);
+                //console.log('status: ' + result.status);
 
                 if (errResult) {
                     dfd.reject(errResult);

@@ -1,13 +1,13 @@
 {
   "name": "volos-sns",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Volos AWS SNS Connector",
   "main": "snsConnector.js",
   "dependencies": {
     "q": "^1.0.1",
     "aws-sdk": "^2.0.8",
     "lodash": "^2.4.1",
-    "volos-connectors-common": "^0.0.4"
+    "volos-connectors-common": "^0.0.7"
   },
   "devDependencies": {},
   "scripts": {

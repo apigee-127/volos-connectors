@@ -1,5 +1,6 @@
 var http = require('http');
 var Q = require('q');
+var _ = require('lodash');
 var sqlServerBase = require('volos-connectors-common').sqlServerBase;
 
 var MySqlConnector = function(options) {
@@ -9,6 +10,7 @@ var MySqlConnector = function(options) {
     this.restMap = options.restMap;
     this.options = options;
 
+    this.defaults = _.merge(this.defaults, this.options.defaults);
     // overrides -->
     this.setup = function(req, resp) {
         return(this.establishConnection(req, resp));
@@ -19,11 +21,8 @@ var MySqlConnector = function(options) {
     }
 
     this.getQueryData = function(req, resp, setupResult) {
-        var limit = this.getParameter(req.query, 'limit', "100");
-
         var queryString = this.buildQuery(req, resp, setupResult);
-
-        return(this.performQuery(req, resp, queryString, limit, setupResult.connection, options.rowCallback, options.rowCallbackContext));
+        return(this.performQuery(req, resp, queryString, setupResult.connection, options.rowCallback, options.rowCallbackContext));
     }
 
     this.teardown = function(req, resp, setupResult, executeOperationResult) {
@@ -77,7 +76,7 @@ var MySqlConnector = function(options) {
         return dfd.promise;
     }
 
-    this.performQuery = function(req, resp, queryString, limit, connection, rowCallback, rowCallbackContext) {
+    this.performQuery = function(req, resp, queryString, connection, rowCallback, rowCallbackContext) {
         var performQueryDfd = Q.defer();
 
         var rows = [];
@@ -86,7 +85,7 @@ var MySqlConnector = function(options) {
 
         try {
             connection.query(queryString, function(err, rows, fields) {
-                var metaData = self.options.includeMetaDeta ? {fields :fields} : {};
+                var metaData = {fields :fields};
                 var wrappedresult = self.wrapResult(req, resp, (err ? err : rows), self.applicationName, metaData, queryString);
                 if (err) {
                     self.handleError(req, resp, wrappedresult, 400, '"query" failed');

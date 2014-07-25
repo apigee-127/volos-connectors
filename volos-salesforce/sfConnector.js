@@ -1,6 +1,7 @@
 var sf = require('node-salesforce');
 var http = require('http');
 var Q = require('q');
+var _ = require('lodash');
 var sqlServerBase = require('volos-connectors-common').sqlServerBase;
 
 var SfConnector = function (options) {
@@ -9,6 +10,7 @@ var SfConnector = function (options) {
     this.applicationName = "volos-salesforce";
     this.options = options;
     var connector = this;
+    this.defaults = _.merge(this.defaults, this.options.defaults);
 
     // overrides -->
     this.setup = function (req, resp) {

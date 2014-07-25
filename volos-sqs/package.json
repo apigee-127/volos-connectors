@@ -1,13 +1,13 @@
 {
   "name": "volos-sqs",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Volos AWS SQS Connector",
   "main": "sqsConnector.js",
   "dependencies": {
     "aws-sdk": "^2.0.8",
     "q": "^1.0.1",
     "lodash": "^2.4.1",
-    "volos-connectors-common": "^0.0.3"
+    "volos-connectors-common": "^0.0.7"
   },
   "devDependencies": {},
   "scripts": {

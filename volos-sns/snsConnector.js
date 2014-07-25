@@ -8,7 +8,7 @@ var _ = require('lodash');
 
 var SnsConnector = function (options) {
     this.applicationName = 'volos-sns';
-    this.configuration = options.configuration;
+    this.configuration = options.configuration || require('./configuration.js');
     snsProtocols = {
         PROTOCOL_HTTP: 'http',
         PROTOCOL_HTTPS: 'https',
@@ -263,6 +263,7 @@ var SnsConnector = function (options) {
 
     this._collectionId = function (req, resp, sns, queryInfo, snsMethodName, snsIdMethodName, arnName, arn) {
         var dfd = Q.defer();
+        var self = this;
 
         var params = {};
         params[arnName] = arn;
@@ -276,7 +277,7 @@ var SnsConnector = function (options) {
             }
         } else {
             method.call(sns, params, function (err, data) {
-                self.handleResponse(req, resp, err, responseObject, dfd);
+                self.handleResponse(req, resp, err, data, dfd);
             });
         }
         return(dfd.promise);

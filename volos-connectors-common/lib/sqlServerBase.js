@@ -1,10 +1,11 @@
 var serverBase = require('./serverBase');
 var Q = require('q');
+var _ = require('lodash');
 
 var SqlServerBase = function() {
+    this.defaults = _.merge(this.defaults, {expand: false, limit: 100});
 }
 
-SqlServerBase.prototype = Object.create(new serverBase.ServerBase());
 SqlServerBase.prototype = new serverBase.ServerBase();
 
 SqlServerBase.prototype.supplyHelpObject = function() {
@@ -33,7 +34,7 @@ SqlServerBase.prototype.buildQuery = function(req, resp, setupResult) {
 SqlServerBase.prototype.buildSelect = function(req, resp, setupResult) {
     var queryInfo = setupResult.requestInfo.queryInfo;
 
-    var isExpand = this.getParameter(req.query, 'expand') === "true";
+    var isExpand = this.getParameter(req.query, 'expand', this.defaults.expand + '') === "true";
 
     var queryString = isExpand ? queryInfo.queryStringExpanded : queryInfo.queryStringBasic;
     queryString = this.addWhereClause(req, queryInfo, queryString);
@@ -43,7 +44,7 @@ SqlServerBase.prototype.buildSelect = function(req, resp, setupResult) {
         queryString = this.addOrderBy(queryString, orderby);
     }
 
-    var limit = this.getParameter(req.query, 'limit', "100");
+    var limit = this.getParameter(req.query, 'limit', this.defaults.limit);
     queryString += " LIMIT " + limit;
 
     console.log("SQL Query:", queryString);

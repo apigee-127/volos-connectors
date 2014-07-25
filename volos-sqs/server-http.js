@@ -1,5 +1,4 @@
-var configuration = require('./configuration.js');
-var snsConnector = require('volos-sqs');
+var sqsConnector = require('volos-sqs');
 var vault = require('avault').createVault(__dirname);
 var http = require('http');
 var Q = require('q');
@@ -16,8 +15,8 @@ vault.get('aws', function(profileString) {
         });
 
         svr.listen(9100, function() {
-            sqs = new snsConnector.SqsConnector({"profile": profile, configuration: configuration, receiveMessageCallback: receiveMessageCallback});
-            sqs.initializePaths(configuration.restMap);
+            sqs = new sqsConnector.SqsConnector({"profile": profile, configuration: undefined, receiveMessageCallback: receiveMessageCallback});
+            sqs.initializePaths(sqs.configuration.restMap);
             console.log(sqs.applicationName + ' server is listening');
         });
     }
