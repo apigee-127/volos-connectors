@@ -226,12 +226,14 @@ ServerBase.prototype.parseUrl = function (req) {
     if (!req._parsedUrl) {
         req._parsedUrl = parsedUrl;
     }
-    req.query = parsedUrl.query;
-    req.params = {};
 
     var results = this.findPath(req.url, req.method);
     if (results) {
         req._parsedUrl.key = results.regExpForRestMapItem.key;
+
+        if (!req.params) {
+            req.params = {};
+        }
 
         var pathParts = results.regExpForRestMapItem.pathParts;
         req._ids = [];
