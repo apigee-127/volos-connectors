@@ -77,6 +77,10 @@ var SfConnector = function (options) {
                     }
 
                 }
+            },
+            function (err) {
+                self.handleError(req, resp, err, 400, '"prepareRequest" failed');
+                dfd.reject();
             });
 
         return dfd.promise;

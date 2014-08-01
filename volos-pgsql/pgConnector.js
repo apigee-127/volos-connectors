@@ -44,97 +44,10 @@ var PgConnector = function (options) {
         return(dfd.promise);
     }
 
-    this.createDynamicRestMap = function (cb, context, schemas) {
-        var restMap = {};
-        var self = this;
-
-        // SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE table_type = 'BASE TABLE'
-        // then extract all table names.
-        // for each table:
-        // SELECT column_name, data_type, ordinal_position table_schema, table_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '{tableName}'
-        // create queryStringExpanded using all columns, exclusing "data_type": 'bytea'
-        // create queryStringBasic using: column whose ordinal_position is 1
-
-        var conString = this.buildConnectionString(this.options.profile);
-
-        try {
-            pg.connect(conString, function (err, client, done) {
-                if (err) {
-                    console.error('error fetching client from pool', err);
-                    cb.call(context, err, undefined);
-                }
-                else {
-                    promises = [];
-                    var queryString = 'SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE table_type = \'BASE TABLE\'';
-                    if (schemas) {
-                        queryString += ' AND table_schema IN (' + _.map(schemas, function(schema) {
-                            return('\'' + schema + '\'');
-                        }).join(',') + ')';
-                    }
-                    console.log(queryString);
-                    self.doQuery(client, queryString). then(
-                        function(tablesInfo) {
-                            for (var i = 0; i < tablesInfo.length; ++i) {
-                                var table = tablesInfo[i];
-                                var queryStringColumns =  'SELECT column_name, data_type, ordinal_position, table_schema, table_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = \''  + table.table_name + '\'';
-                                var promise = self.doQuery(client, queryStringColumns);
-                                promises.push(promise);
-                                promise.then(
-                                    function (table, columnsInfo) {
-                                        var queryParameters = {};
-                                        var idName = undefined;
-                                        var idNameOrdinal = undefined;
-                                        for (var j = 0; j < columnsInfo.length; ++j) {
-                                            var column = columnsInfo[j];
-                                            var columnName = column.column_name;
-                                            queryParameters[columnName] = columnName +' = \'{' + columnName + '}\'';
-                                            if (column.ordinal_position === 1) {
-                                                idNameOrdinal = columnName;
-                                            }
-                                            if (!idName && columnName.indexOf('id') > -1) {
-                                                idName = columnName;
-                                            }
-                                        }
-                                        if (!idName) {
-                                            idName = idNameOrdinal;
-                                        }
-                                        var queryStringExpanded = 'SELECT * FROM ' + table.table_schema + '.' + table.table_name;
-                                        var queryStringBasic = 'SELECT ' + idName + ' FROM ' + table.table_schema + '.' + table.table_name;
-                                        restMap[table.table_schema + '_' + table.table_name] = {
-                                            queryStringBasic: queryStringBasic,
-                                            queryStringExpanded: queryStringExpanded,
-                                            path: restMap[table.table_name] ? (restMap[table.table_schema + '/' + table.table_name]) : table.table_name,
-                                            idName: idName,
-                                            queryParameters: queryParameters
-                                        }
-                                    }.bind(self, table),
-                                    function (err) {
-
-                                    }
-                                );
-                            }
-                            Q.allSettled(promises).then(function () {
-                                self.restMap = restMap;
-                                cb.call(context, undefined, restMap);
-                            });
-
-                        },
-                        function(err) {
-
-                        }
-                    );
-                }
-            });
-        } catch (e) {
-            console.error('Error connecting to Database!', e);
-            throw e;
-        }
-
-    }
-    // <-- Overrides
-
-    this.doQuery = function(client, queryString) {
+    this.doQuery = function(connectResult, queryString) {
         var dfd = Q.defer();
+
+        var client = connectResult.client;
 
         var query = client.query(queryString);
         var rows = [];
@@ -149,6 +62,28 @@ var PgConnector = function (options) {
         return dfd.promise;
     }
 
+    this.connect = function() {
+        var dfd = Q.defer();
+
+        var conString = this.buildConnectionString(this.options.profile);
+
+        pg.connect(conString, function (err, client, done) {
+            if (err) {
+                console.error('error fetching client from pool', err);
+                dfd.reject(err);
+            }
+            else {
+                var wrappedResult = {
+                    client: client,
+                    done: done
+                };
+                dfd.resolve(wrappedResult);
+            }
+        });
+
+        return dfd.promise;
+    }
+    // <-- Overrides
 
     // private -->
     this.handleRequest = function (queryInfo, req, resp) {
@@ -189,6 +124,10 @@ var PgConnector = function (options) {
                     }
 
                 }
+            },
+            function (err) {
+                self.handleError(req, resp, err, 400, '"prepareRequest" failed');
+                dfd.reject();
             });
 
         return dfd.promise;
