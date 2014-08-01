@@ -153,20 +153,29 @@ SqlServerBase.prototype.addWhereClause = function(req, queryInfo, queryString)
         }
     }
 
-    var id = req.params.id;
-    if (id) {
-        queryString = this.addWhere(queryString, queryInfo.idName + '=\'' + id + '\'');
+    for (var key in req.params) {
+      if (key === '_id') {
+          queryString = this.addWhere(queryString, queryInfo.idName + ' = \'' + req.params._id + '\'');
+      } else if (queryInfo.templateParameters) {
+          var whereFragment = queryInfo.templateParameters[key];
+          if (whereFragment) {
+              var templatedWhereFragment = whereFragment.replace('{' + key + '}', req.params[key]);
+              queryString = this.addWhere(queryString, templatedWhereFragment);
+          }
+      }
     }
 
-    for (var key in nonstockQueryParameters) {
-        if (queryInfo.queryParameters[key] != undefined) {
-            var whereFragment =  queryInfo.queryParameters[key];
-            var templatedWhereFragment = whereFragment.replace('{' + key + '}', nonstockQueryParameters[key]);
-            queryString = this.addWhere(queryString, templatedWhereFragment);
-        }
+    if (queryInfo.queryParameters) {
+      for (var key in nonstockQueryParameters) {
+          var whereFragment = queryInfo.queryParameters[key];
+          if (whereFragment) {
+              var templatedWhereFragment = whereFragment.replace('{' + key + '}', nonstockQueryParameters[key]);
+              queryString = this.addWhere(queryString, templatedWhereFragment);
+          }
+      }
     }
 
-    return(queryString);
+    return queryString;
 }
 
 SqlServerBase.prototype.addWhere = function(queryString, whereFragment)
