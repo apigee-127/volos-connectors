@@ -64,7 +64,7 @@ var MySqlConnector = function(options) {
                     }
                 },
                 function (err) {
-                    handleError(req, resp, err, 400, '"prepareRequest" failed');
+                    self.handleError(req, resp, err, 400, '"prepareRequest" failed');
                     dfd.reject();
                 },
                 function (progress) {
