@@ -227,7 +227,9 @@ ServerBase.prototype.parseUrl = function (req) {
         req._parsedUrl = parsedUrl;
     }
     req.query = parsedUrl.query;
-    req.params = {};
+    if (!req.params) {
+        req.params = {};
+    }
 
     var results = this.findPath(req.url, req.method);
     if (results) {
@@ -512,7 +514,7 @@ ServerBase.prototype.prepareRequest = function (req, resp) {
             errorMessage: "Not Found"
         };
         stuff.response = response;
-        dfd.reject();
+        dfd.reject(stuff);
     }
     return(dfd.promise);
 }
