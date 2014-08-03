@@ -163,9 +163,18 @@ var PgConnector = function (options) {
                 performQueryDfd.resolve(rows);
 
                 Q.allSettled(promises).then(function () {
-                    var wrappedResult = self.wrapResult(req, resp, rows, self.applicationName, {}, queryString);
+                    var result = rows;
+
+                    if (req.params.id) {
+                        if (rows.length === 1) {
+                            result = rows[0];
+                        } else if (!rows) {
+                            result = null;
+                        }
+                    }
+
+                    var wrappedResult = self.wrapResult(req, resp, result, self.applicationName, {}, queryString);
                     var responseString = JSON.stringify(wrappedResult, undefined, '\t');
-                    //resp.status(200).setHeader('Content-Type', 'application/json').send(responseString);
 
                     resp.writeHead(200, {'Content-Type': 'application/json'});
                     resp.end(responseString);
