@@ -307,7 +307,7 @@ ServerBase.prototype.registerPathsExpress = function (app, queryToRestMap) {
             self.dispatchRequestExpress(key, queryToRestMap, req, resp);
         }.bind(null, key));
 
-        app.get('/' + key + '/:_id', function (key, req, resp) {
+        app.get('/' + key + '/:id', function (key, req, resp) {
             self.dispatchRequestExpress(key, queryToRestMap, req, resp);
         }.bind(null, key));
 

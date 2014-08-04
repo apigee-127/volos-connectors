@@ -154,8 +154,8 @@ SqlServerBase.prototype.addWhereClause = function(req, queryInfo, queryString)
     }
 
     for (var key in req.params) {
-      if (key === '_id') {
-          queryString = this.addWhere(queryString, queryInfo.idName + ' = \'' + req.params._id + '\'');
+      if (key === 'id') {
+          queryString = this.addWhere(queryString, queryInfo.idName + ' = \'' + req.params.id + '\'');
       } else if (queryInfo.templateParameters) {
           var whereFragment = queryInfo.templateParameters[key];
           if (whereFragment) {
