@@ -1,13 +1,13 @@
 {
   "name": "volos-pgsql",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Volos PostgreSQL Database Connector",
   "main": "pgConnector.js",
   "dependencies": {
     "lodash": "^2.4.1",
     "pg": "^3.4.0",
     "q": "^1.0.1",
-    "volos-connectors-common": "^0.0.7"
+    "volos-connectors-common": "^0.0.9"
   },
   "devDependencies": {},
   "scripts": {

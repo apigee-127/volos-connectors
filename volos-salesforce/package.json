@@ -1,13 +1,13 @@
 {
   "name": "volos-salesforce",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Volos Salesforce Connector",
   "main": "sfConnector.js",
   "dependencies": {
     "lodash": "^2.4.1",
     "node-salesforce": "^0.8.0",
     "q": "^1.0.1",
-    "volos-connectors-common": "^0.0.7"
+    "volos-connectors-common": "^0.0.9"
   },
   "devDependencies": {},
   "scripts": {

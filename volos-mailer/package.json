@@ -1,11 +1,11 @@
 {
   "name": "volos-mailer",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Volos Mailer Connector",
   "main": "nodemailerConnector.js",
   "dependencies": {
     "nodemailer": "^1.0.3",
-    "volos-connectors-common": "^0.0.7",
+    "volos-connectors-common": "^0.0.9",
     "lodash": "^2.4.1",
     "q": "^1.0.1"
   },
