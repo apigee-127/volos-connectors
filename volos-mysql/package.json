@@ -1,11 +1,11 @@
 {
   "name": "volos-mysql",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Volos MySQL Database Connector",
   "main": "mysqlConnector.js",
   "dependencies": {
     "lodash": "^2.4.1",
-    "volos-connectors-common": "^0.0.3",
+    "volos-connectors-common": "^0.0.9",
     "mysql": "^2.4.0",
     "q": "^1.0.1"
   },
