@@ -47,15 +47,16 @@ var profile = {
   auth: {"user":"myusername","pass":"mypass"}
 };
 
-    var nodemailerConnectorObject = new nodemailerConnector.NodemailerConnector({"profile": profile});
+var nodemailerConnectorObject = new nodemailerConnector.NodemailerConnector({"profile": profile});
 
-    var svr = http.createServer(function (req, resp) {
-      nodemailerConnectorObject.dispatchRequest(req, resp);
-    });
+var svr = http.createServer(function (req, resp) {
+  nodemailerConnectorObject.dispatchRequest(req, resp);
+});
 
-    svr.listen(9089, function () {
-        console.log(nodemailerConnectorObject.applicationName + ' node server is listening');
-    });
+svr.listen(9089, function () {
+  nodemailerConnectorObject.initializePaths(nodemailerConnectorObject.configuration.restMap);
+  console.log(nodemailerConnectorObject.applicationName + ' node server is listening');
+});
 
 ```
 
