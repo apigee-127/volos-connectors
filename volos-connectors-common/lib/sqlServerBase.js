@@ -44,7 +44,13 @@ SqlServerBase.prototype.buildSelect = function(req, resp, setupResult) {
         queryString = this.addOrderBy(queryString, orderby);
     }
 
-    var limit = this.getParameter(req.query, 'limit', this.defaults.limit);
+    var limit;
+    var id = req.params.id;
+    if (id) {
+      limit = 1;
+    } else {
+      limit = this.getParameter(req.query, 'limit', this.defaults.limit);
+    }
     queryString += " LIMIT " + limit;
 
     console.log("SQL Query:", queryString);
