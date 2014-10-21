@@ -7,7 +7,7 @@
     "lodash": "^2.4.1",
     "pg": "^3.4.0",
     "q": "^1.0.1",
-    "volos-connectors-common": "^0.0.12"
+    "volos-connectors-common": "^0.0.14"
   },
   "devDependencies": {},
   "scripts": {
