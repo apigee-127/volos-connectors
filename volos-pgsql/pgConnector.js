@@ -1,3 +1,4 @@
+var debug = require('debug')('volos-pgsql');
 var pg = require('pg');
 var http = require('http');
 var Q = require('q');
@@ -44,19 +45,41 @@ var PgConnector = function (options) {
         return(dfd.promise);
     }
 
-    this.doQuery = function(connectResult, queryString) {
-        var dfd = Q.defer();
+    this.localQuery = function(/* queryArgs */){
+        var args = Array.prototype.slice.call(arguments);
+        var self = this;
 
+        return this.connect().then(function(connectResult){
+            args.unshift(connectResult);
+            return self.doQuery.apply(self, args)
+              .then(function(queryResult) {
+                connectResult.done();
+                return queryResult;
+              });
+        });
+    };
+
+    this.doQuery = function(connectResult /*, queryArgs... */) {
+        var queryArgs = Array.prototype.slice.call(arguments);
+        queryArgs.shift();
+
+        var dfd = Q.defer();
         var client = connectResult.client;
 
-        var query = client.query(queryString);
+        var query = client.query.apply(client, queryArgs);
         var rows = [];
+
         query.on('row', function (row) {
             rows.push(row);
         });
+
         query.on('end', function () {
             dfd.resolve(rows);
-            //client.end.bind(client);
+        });
+
+        query.on('error', function(err){
+            debug(err);
+            dfd.reject(new Error(err));
         });
 
         return dfd.promise;
@@ -173,6 +196,7 @@ var PgConnector = function (options) {
             });
 
         } catch (e) {
+            debug(e);
             throw e;
         }
 

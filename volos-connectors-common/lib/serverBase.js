@@ -2,6 +2,7 @@ var http = require('http');
 var Q = require('q');
 var url = require('url');
 var _ = require('lodash');
+var debug = require('debug')('volos-connector-common');
 
 var ServerBase = function () {
     this.init = false;
@@ -226,7 +227,11 @@ ServerBase.prototype.parseUrl = function (req) {
     if (!req._parsedUrl) {
         req._parsedUrl = parsedUrl;
     }
-    req.query = parsedUrl.query;
+    if(!req.query)
+      req.query = {};
+
+    _.extend(req.query,parsedUrl.query);
+
     if (!req.params) {
         req.params = {};
     }
@@ -234,6 +239,10 @@ ServerBase.prototype.parseUrl = function (req) {
     var results = this.findPath(req.url, req.method);
     if (results) {
         req._parsedUrl.key = results.regExpForRestMapItem.key;
+
+        if (!req.params) {
+            req.params = {};
+        }
 
         var pathParts = results.regExpForRestMapItem.pathParts;
         req._ids = [];
