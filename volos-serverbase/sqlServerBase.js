@@ -1,3 +1,4 @@
+var debug = require('debug')('volos-serverbase');
 var serverBase = require('./serverBase.js');
 var Q = require('q');
 

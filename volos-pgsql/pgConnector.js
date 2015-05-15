@@ -7,7 +7,7 @@ var _ = require('lodash');
 
 var PgConnector = function (options) {
     //  rowCallback, rowCallbackContext
-    this.applicationName = 'volos-pgsql';
+    this.applicationName = 'volos-connectors-pgsql';
     this.options = options;
     this.restMap = options.restMap;
     var connector = this;
@@ -17,25 +17,13 @@ var PgConnector = function (options) {
     // Overrides -->
     this.setup = function (req, resp) {
         return(this.establishConnection(req, resp));
-    }
-
-    this.executeOperation = function (req, resp, setupResult) {
-        return(this.getQueryData(req, resp, setupResult));
-    }
-
-    this.getQueryData = function (req, resp, setupResult) {
-        var limit = this.getParameter(req.query, 'limit', "100");
-        var queryString = connector.buildQuery(req, resp, setupResult);
-
-        return(this.performQuery(req, resp, queryString, limit, setupResult.client, setupResult.done,
-                                 options.rowCallback, options.rowCallbackContext));
-    }
+    };
 
     this.teardown = function (req, resp, setupResult, executeOperationResult) {
         var dfd = Q.defer();
 
         try {
-            // call `done()` to release the client back to the pool
+            // call `done()` to release the client back to the pool            
             setupResult.done();
         } catch (e) {
             throw e;
@@ -43,47 +31,25 @@ var PgConnector = function (options) {
 
         dfd.resolve('');
         return(dfd.promise);
-    }
-
-    this.localQuery = function(/* queryArgs */){
-        var args = Array.prototype.slice.call(arguments);
-        var self = this;
-
-        return this.connect().then(function(connectResult){
-            args.unshift(connectResult);
-            return self.doQuery.apply(self, args)
-              .then(function(queryResult) {
-                connectResult.done();
-                return queryResult;
-              });
-        });
     };
 
-    this.doQuery = function(connectResult /*, queryArgs... */) {
-        var queryArgs = Array.prototype.slice.call(arguments);
-        queryArgs.shift();
-
+    this.doQuery = function(connectResult, queryString) {
         var dfd = Q.defer();
+
         var client = connectResult.client;
 
-        var query = client.query.apply(client, queryArgs);
+        var query = client.query(queryString);
         var rows = [];
-
         query.on('row', function (row) {
             rows.push(row);
         });
-
         query.on('end', function () {
             dfd.resolve(rows);
-        });
-
-        query.on('error', function(err){
-            debug(err);
-            dfd.reject(new Error(err));
+            //client.end.bind(client);
         });
 
         return dfd.promise;
-    }
+    };
 
     this.connect = function() {
         var dfd = Q.defer();
@@ -105,13 +71,15 @@ var PgConnector = function (options) {
         });
 
         return dfd.promise;
-    }
+    };
+
     // <-- Overrides
 
     // private -->
     this.handleRequest = function (queryInfo, req, resp) {
+
         resp.send(queryInfo.queryStringBasic);
-    }
+    };
 
     this.establishConnection = function (req, resp) {
         var dfd = Q.defer();
@@ -122,7 +90,7 @@ var PgConnector = function (options) {
                     dfd.reject(requestInfo.response);
                 } else {
                     var profile = self.options.profile;
-
+                    
                     var conString = 'postgres://' + profile.username + ':' + profile.password + '@' + profile.host +
                         (profile.port ? (':' + profile.port) : '') + '/' + profile.database;
 
@@ -156,58 +124,66 @@ var PgConnector = function (options) {
         return dfd.promise;
     }
 
-    this.performQuery = function (req, resp, queryString, limit, client, done, rowCallback, rowCallbackContext) {
+    this.executeOperation = function (req, resp, setupResult) {
+        
+        var sql = connector.buildQuery(req, resp, setupResult);
+        return(this.performQuery(req, resp, sql, setupResult.client, setupResult.done));
+
+    };    
+
+    this.performQuery = function (req, resp, sql, client, done, rowCallback, rowCallbackContext) {
         var performQueryDfd = Q.defer();
 
         try {
-            var rows = [];
             var promises = [];
             var self = this;
 
-            client.on('error', function (error) {
-                console.error('error running query', error);
-                performQueryDfd.reject(error);
-            });
+            var query = client.query(sql, function(err, results){
 
-            var query = client.query(queryString);
+                if(err){
+                    console.error('error running query', err);
+                    resp.error(err);
+                    performQueryDfd.reject(err);                    
 
-            query.on('row', function (row) {
-                if (rowCallback) {
-                    var promise = rowCallback.call(rowCallbackContext, row);
-                    if (promise) {
-                        promises.push(promise);
+                }else{
+                    //client.end.bind(client);
+                    done();
+
+                    if (rowCallback) {
+                        var rows = [];
+                        _.map(results, function(row){
+                            var promise = rowCallback.call(rowCallbackContext, row);
+                            if (promise) {
+                                promises.push(promise);
+                            }
+                            rows.push(row);
+                        });
+                        results = rows;
                     }
+
+                    performQueryDfd.resolve(results);
+
+                    Q.allSettled(promises).then(function () {
+                        var wrappedResult = self.wrapResult(req, resp, results, self.applicationName, {}, sql);
+                        resp.set("Connection", "close");
+                        resp.json(wrappedResult);                        
+                    });
                 }
-                rows.push(row);
+
             });
-            query.on('end', function () {
-                //disconnect client manually
-                client.end.bind(client);
-                performQueryDfd.resolve(rows);
-
-                Q.allSettled(promises).then(function () {
-                    var wrappedResult = self.wrapResult(req, resp, rows, self.applicationName, {}, queryString);
-                    var responseString = JSON.stringify(wrappedResult, undefined, '\t');
-                    //resp.status(200).setHeader('Content-Type', 'application/json').send(responseString);
-
-                    resp.writeHead(200, {'Content-Type': 'application/json'});
-                    resp.end(responseString);
-                });
-            });
-
+            
         } catch (e) {
-            debug(e);
             throw e;
         }
 
         return(performQueryDfd.promise);
 
-    }
+    };
 
     this.buildConnectionString = function(profile) {
         return('postgres://' + profile.username + ':' + profile.password + '@' + profile.host +
             (profile.port ? (':' + profile.port) : '') + '/' + profile.database);
-    }
+    };
     // <-- private
 
 };

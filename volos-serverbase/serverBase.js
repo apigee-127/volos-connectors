@@ -1,3 +1,4 @@
+var debug = require('debug')('volos-serverbase');
 var http = require('http');
 var Q = require('q');
 var url = require('url');
@@ -30,7 +31,6 @@ ServerBase.prototype.dispatchRequest = function (req, resp) {
                     function (executeOperationResult) {
                         self.teardown(req, resp, setupResult, executeOperationResult).then(
                             function (teardownResult) {
-                                dfd.resolve(teardownResult);
                             },
                             function (err) {
                                 handleError(req, resp, err, 400, '"teardown" failed');
