@@ -1,3 +1,4 @@
+var debug = require('debug')('volos-connectors-common');
 var serverBase = require('./serverBase');
 var Q = require('q');
 var _ = require('lodash');

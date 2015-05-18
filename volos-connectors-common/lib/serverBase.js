@@ -1,8 +1,8 @@
+var debug = require('debug')('volos-connectors-common');
 var http = require('http');
 var Q = require('q');
 var url = require('url');
 var _ = require('lodash');
-var debug = require('debug')('volos-connector-common');
 
 var ServerBase = function () {
     this.init = false;
@@ -32,8 +32,7 @@ ServerBase.prototype.dispatchRequest = function (req, resp) {
                 self.executeOperation(req, resp, setupResult).then(
                     function (executeOperationResult) {
                         self.teardown(req, resp, setupResult, executeOperationResult).then(
-                            function (teardownResult) {
-                                dfd.resolve(teardownResult);
+                            function (teardownResult) {                                
                             },
                             function (err) {
                                 handleError(req, resp, err, 400, '"teardown" failed');
@@ -227,11 +226,7 @@ ServerBase.prototype.parseUrl = function (req) {
     if (!req._parsedUrl) {
         req._parsedUrl = parsedUrl;
     }
-    if(!req.query)
-      req.query = {};
-
-    _.extend(req.query,parsedUrl.query);
-
+    req.query = parsedUrl.query;
     if (!req.params) {
         req.params = {};
     }
@@ -239,10 +234,6 @@ ServerBase.prototype.parseUrl = function (req) {
     var results = this.findPath(req.url, req.method);
     if (results) {
         req._parsedUrl.key = results.regExpForRestMapItem.key;
-
-        if (!req.params) {
-            req.params = {};
-        }
 
         var pathParts = results.regExpForRestMapItem.pathParts;
         req._ids = [];
