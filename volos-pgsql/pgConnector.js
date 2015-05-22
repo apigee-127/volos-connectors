@@ -151,20 +151,20 @@ var PgConnector = function (options) {
 
                     if (rowCallback) {
                         var rows = [];
-                        _.map(results, function(row){
+                        _.map(results.rows, function(row){
                             var promise = rowCallback.call(rowCallbackContext, row);
                             if (promise) {
                                 promises.push(promise);
                             }
                             rows.push(row);
                         });
-                        results = rows;
+                        results.rows = rows;
                     }
 
                     performQueryDfd.resolve(results);
 
                     Q.allSettled(promises).then(function () {
-                        var wrappedResult = self.wrapResult(req, resp, results, self.applicationName, {}, sql);
+                        var wrappedResult = self.wrapResult(req, resp, results.rows, self.applicationName, {}, sql);
                         resp.set("Connection", "close");
                         resp.json(wrappedResult);                        
                     });
