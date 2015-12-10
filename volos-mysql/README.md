@@ -127,7 +127,7 @@ var profile = {
     port: "5432"
 };
 
- var mysqlConnectorObject = new mysqlConnector.MySqlConnector({"profile": profile, "restMap": restMap});
+var mysqlConnectorObject = new mysqlConnector.MySqlConnector({"profile": profile, "restMap": restMap});
 
 var svr = http.createServer(function (req, resp) {
     mysqlConnectorObject.dispatchRequest(req, resp);
@@ -152,7 +152,7 @@ var http = require('http');
 var vault = require('avault').createVault(__dirname);
 var restMap = require('./queryToRestMap');
 
-ar mysqlConnectorObject;
+var mysqlConnectorObject;
 
 vault.get('my_profile_key', function (profileString) {
   if (!profileString) {
